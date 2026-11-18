@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Security Alert — bunyanx</title>
+    <style>
+        :root {
+            --bg-base: #020617;
+            --bg-card: #0f172a;
+            --accent: #ef4444; /* Danger red */
+            --accent-glow: rgba(239, 68, 68, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at center, var(--accent-glow) 0%, transparent 60%);
+        }
+
+        .container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top red accent line */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .details-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-family: monospace;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .target-domain {
+            color: #fcd34d; /* Yellow warning for domain */
+        }
+
+        .footer {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 32px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🛡️</div>
+        
+        <div class="title">Access Denied</div>
+        <div class="subtitle">
+            This connection was intercepted and blocked by the Enterprise DNS Sinkhole engine.
+        </div>
+
+        <div class="details-box">
+            <div class="detail-row">
+                <span class="detail-label">Requested Target</span>
+                <span class="detail-value target-domain">{{TARGET_DOMAIN}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Client IP</span>
+                <span class="detail-value">{{CLIENT_IP}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Intercept Time</span>
+                <span class="detail-value">{{TIMESTAMP}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Security Incident ID</span>
+                <span class="detail-value" style="color:var(--accent);">SINKHOLE-BLOCK</span>
+            </div>
+        </div>
+
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+            If you believe this categorization is incorrect, please contact your SOC Administrator and provide the Incident ID and Target Domain.
+        </p>
+
+        <div class="footer">
+            Powered by bunyanx NGFW • DNS Web Filter Engine
+        </div>
+    </div>
+</body>
+</html>

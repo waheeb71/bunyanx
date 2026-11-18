@@ -1,0 +1,13 @@
+name: http_inspection
+version: "2.0.0"
+description: "Deep HTTP/HTTPS Protocol Inspection"
+type: inspector
+priority: 25
+requires:
+  - config
+provides: []
+event_subscriptions: []
+event_publications:
+  - packet.inspected
+  - threat.detected
+

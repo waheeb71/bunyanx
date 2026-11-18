@@ -1,0 +1,37 @@
+predictive_ai:
+  tpe:
+    enabled: true
+    weights:
+      geopolitical: 0.25
+      sector_base: 0.3
+      vulnerability: 0.2
+      cti_campaign: 0.15
+      historical: 0.1
+    dynamic_weights:
+      enabled: true
+      learning_rate: 0.05
+    calibration:
+      temperature: 1.0
+    thresholds:
+      pre_arm_trigger: 0.65
+      honeypot_trigger: 0.8
+      level_high: 0.75
+      level_medium: 0.5
+  AEGIS:
+    prevent_cpci_override_on_threats: true
+    sensitivity:
+      normal_threshold: 0.55
+      prearmed_threshold: 0.4
+      deception_boost: 1.5
+    cso_weights:
+      alpha_disruption: 1.0
+      beta_cost: 0.5
+      gamma_deception: 1.2
+      lambda_escalation: 2.0
+    deception_engine (DIE):
+      enabled: true
+      decoy_subnet: 10.99.88.
+      max_active_decoys: 256
+      default_ttl_seconds: 1800
+    performance:
+      max_tracked_ips: 4096

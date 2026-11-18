@@ -1,0 +1,178 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\providecommand{\doi}[1]{https://doi.org/#1}
+
+\bibitem{abnormal2024attune}
+{Abnormal Security}: Attune 1.0: The behavioral {AI} foundation model for human
+  behavior security. Abnormal Security Technical Documentation (2024),
+  \url{https://abnormalsecurity.com}
+
+\bibitem{almutairi2025business}
+Almutairi, A., Kang, B.H., Alhashimy, N.: Business email compromise: A
+  systematic review of understanding, detection, and challenges. Computers \&
+  Security  \textbf{158},  104630 (2025). \doi{10.1016/j.cose.2024.104630}
+
+\bibitem{almutairi2024taxonomy}
+Almutairi, A.M., Kang, B.H., Hashimy, N.A.L.: Business email compromise: A
+  comprehensive taxonomy for detection and prevention. In: Proceedings of the
+  7th International Conference on Information Science and Systems (ICISS)
+  (2024)
+
+\bibitem{betts2024exploring}
+Betts, L., Biddle, R., Lottridge, D., Russello, G.: Exploring content
+  concealment in email. arXiv preprint arXiv:2410.11169  (Oct 2024)
+
+\bibitem{chanis2024enhancing}
+Chanis, I., Arampatzis, A.: Enhancing phishing email detection with stylometric
+  features and classifier stacking. International Journal of Information
+  Security  (2024). \doi{10.1007/s10207-024-00928-7}
+
+\bibitem{chen2011authorship}
+Chen, X., Hao, P., Chandramouli, R., Subbalakshmi, K.P.: Authorship similarity
+  detection from email messages. In: Machine Learning and Data Mining in
+  Pattern Recognition (MLDM 2011). Lecture Notes in Computer Science,
+  vol.~6871, pp. 375--389. Springer, Berlin, Heidelberg (2011)
+
+\bibitem{cidon2019high}
+Cidon, A., Gavish, L., Bleier, I., Korshun, N., Schweighauser, M., Tsitkin, A.:
+  High precision detection of business email compromise. In: Proceedings of the
+  28th USENIX Security Symposium. pp. 1291--1307. Santa Clara, CA, USA (Aug
+  2019)
+
+\bibitem{ciscotalos2024}
+{Cisco Talos}: Too salty to handle: Exposing cases of {CSS} abuse for hidden
+  text salting. Cisco Talos Intelligence Blog (Oct 2024),
+  \url{https://blog.talosintelligence.com/too-salty-to-handle-exposing-cases-of-css-abuse-for-hidden-text-salting/}
+
+\bibitem{cormack2008ceas}
+Cormack, G.: {CEAS} 2008 spam filtering challenge. In: Proceedings of the 5th
+  Conference on Email and Anti-Spam (CEAS). Mountain View, CA, USA (2008)
+
+\bibitem{cross2020exploiting}
+Cross, C., Gillett, R.: Exploiting trust for financial gain: an overview of
+  business email compromise ({BEC}) fraud. Journal of Financial Crime
+  \textbf{27}(3),  871--884 (2020). \doi{10.1108/JFC-02-2020-0026}
+
+\bibitem{dosovitskiy2021image}
+Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X.,
+  Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S.,
+  Uszkoreit, J., Houlsby, N.: An image is worth 16x16 words: Transformers for
+  image recognition at scale. In: Proceedings of the 9th International
+  Conference on Learning Representations (ICLR) (2021)
+
+\bibitem{duman2016emailprofiler}
+Duman, S., Cakmakci, K.K., Egele, M., Robertson, W., Kirda, E.:
+  {EmailProfiler}: Spearphishing filtering with header and stylometric features
+  of emails. In: Proceedings of the IEEE 40th Annual Computer Software and
+  Applications Conference (COMPSAC). Atlanta, GA, USA (2016)
+
+\bibitem{fang2019phishing}
+Fang, Y., Zhang, C., Huang, C., Liu, L., Yang, Y.: Phishing email detection
+  using improved {RCNN} model with multilevel vectors and attention mechanism.
+  IEEE Access  \textbf{7},  56329--56340 (2019).
+  \doi{10.1109/ACCESS.2019.2913705}
+
+\bibitem{fbi2023ic3}
+{Federal Bureau of Investigation Internet Crime Complaint Center}: 2023
+  internet crime report. Tech. rep., U.S. Department of Justice, Washington,
+  DC, USA (2024), \url{https://www.ic3.gov/}
+
+\bibitem{grondahl2019text}
+Gr{\"o}ndahl, T., Asokan, N.: Text analysis in adversarial settings: Does
+  deception leave a stylistic trace? ACM Computing Surveys  \textbf{52}(3),
+  49:1--49:36 (2019). \doi{10.1145/3310331}
+
+\bibitem{guo2025email}
+Guo, B., Liu, M., Ma, Y., Li, R., Shi, F., Zhang, M., Liu, B., Xu, C., Duan,
+  H., Hong, G., Yang, M., Pan, Q.: Email cloaking: Deceiving users and spam
+  email detectors with invisible {HTML} settings. In: Proceedings of the 30th
+  European Symposium on Research in Computer Security (ESORICS). Lecture Notes
+  in Computer Science, Springer, Heidelberg (2025)
+
+\bibitem{hazell2023spear}
+Hazell, J.: Spear phishing with large language models. arXiv preprint
+  arXiv:2305.06972  (May 2023)
+
+\bibitem{heiding2024devising}
+Heiding, F., Schneier, B., Vishwanath, A., Bernstein, J., Park, P.S.: Devising
+  and detecting phishing emails using large language models. IEEE Access
+  \textbf{12},  42131--42146 (2024). \doi{10.1109/ACCESS.2024.3375882}
+
+\bibitem{easyocr2024}
+{JaidedAI}: {EasyOCR} v1.7: Ready-to-use {OCR} with 80+ supported languages and
+  {CUDA} acceleration support. GitHub Repository (2024),
+  \url{https://github.com/JaidedAI/EasyOCR}
+
+\bibitem{klimt2004enron}
+Klimt, B., Yang, Y.: The enron corpus: A new dataset for email classification
+  research. In: Proceedings of the 15th European Conference on Machine Learning
+  (ECML). Lecture Notes in Computer Science, vol.~3201, pp. 217--226. Springer,
+  Heidelberg (Sep 2004)
+
+\bibitem{koide2024chatspamdetector}
+Koide, T., Fukushi, N., Nakano, H., Chiba, D.: {ChatSpamDetector}: Leveraging
+  large language models for effective phishing email detection. In: Proceedings
+  of the 20th EAI International Conference on Security and Privacy in
+  Communication Networks (SecureComm). Lecture Notes in Computer Science,
+  Springer, Heidelberg (2024)
+
+\bibitem{liu2022inferring}
+Liu, R., Lin, Y., Yang, X., Ng, S.K., Divakaran, D.M., Dong, J.S., Tang,
+  A.H.Y.: Inferring phishing intention via webpage appearance and dynamics: A
+  deep vision based approach. In: Proceedings of the 31st USENIX Security
+  Symposium. Boston, MA, USA (Aug 2022)
+
+\bibitem{playwright2024}
+{Microsoft Corporation}: Playwright for {Python} v1.40: Browser automation
+  library. GitHub Repository (2024),
+  \url{https://github.com/microsoft/playwright-python}
+
+\bibitem{microsoft2024defender}
+{Microsoft Corporation}: What's new in {Microsoft Defender for Office 365}:
+  {AI}-powered {BEC} detection and automatic attack disruption. Microsoft
+  Security Documentation (2024),
+  \url{https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/}
+
+\bibitem{nazario2004phishing}
+Nazario, J.: Phishing corpus (2004), \url{https://monkey.org/~jose/phishing/}
+
+\bibitem{pearl2012detecting}
+Pearl, L., Steyvers, M.: Detecting authorship deception: a supervised machine
+  learning approach using author writeprints. Literary and Linguistic Computing
+   \textbf{27}(2),  183--201 (2012). \doi{10.1093/llc/fqs003}
+
+\bibitem{proofpoint2024supernova}
+{Proofpoint Inc.}: Advanced {BEC} defense: Technical architecture of the
+  supernova detection engine. Proofpoint Technical Documentation (2024),
+  \url{https://www.proofpoint.com}
+
+\bibitem{reimers2021minilm}
+Reimers, N.: all-{MiniLM}-{L6}-v2. Hugging Face Model Hub,
+  Sentence-Transformers (2021),
+  \url{https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2}
+
+\bibitem{reimers2019sentence}
+Reimers, N., Gurevych, I.: Sentence-{BERT}: Sentence embeddings using siamese
+  {BERT}-networks. In: Proceedings of the 2019 Conference on Empirical Methods
+  in Natural Language Processing (EMNLP-IJCNLP). pp. 3982--3992. Hong Kong,
+  China (Nov 2019)
+
+\bibitem{rose2020zero}
+Rose, S., Borchert, O., Mitchell, S., Connelly, S.: Zero trust architecture.
+  Special Publication 800-207, National Institute of Standards and Technology
+  (NIST), Gaithersburg, MD, USA (Aug 2020). \doi{10.6028/NIST.SP.800-207}
+
+\bibitem{wang2020minilm}
+Wang, W., Wei, F., Dong, L., Bao, H., Yang, N., Zhou, M.: {MiniLM}: Deep
+  self-attention distillation for task-agnostic compression of pre-trained
+  transformers. In: Proceedings of the 34th Conference on Neural Information
+  Processing Systems (NeurIPS). pp. 5776--5788 (2020)
+
+\bibitem{wosah2025analysing}
+Wosah, P.N., Mirza, A., Khan, Q., Sayers, W.: Analysing the email data using
+  stylometric method and deep learning to mitigate phishing attack.
+  International Journal of Information Technology  \textbf{17},  3823--3834
+  (2025)
+
+\end{thebibliography}

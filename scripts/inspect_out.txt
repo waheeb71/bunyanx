@@ -1,0 +1,66 @@
+﻿
+============================================================
+  modules/dns_security/engine/plugin.py
+============================================================
+  L  25: from system.events.bus import EventBus
+  L 478: bus = await EventBus.instance()
+  L 479: await bus.publish(Topics.DNS_THREAT, payload)
+  L 480: loop.create_task(_publish_dns())
+
+============================================================
+  modules/email_security/engine/core/email_inspector.py
+============================================================
+  L  42: from system.events.bus import EventBus
+  L 591: bus = await EventBus.instance()
+  L 592: await bus.publish(Topics.EMAIL_THREAT, {
+  L 598: loop.create_task(_publish_email())
+
+============================================================
+  modules/firewall/engine/firewall_plugin.py
+============================================================
+  L  24: from system.events.bus import EventBus
+  L 282: bus = await EventBus.instance()
+  L 283: await bus.publish(Topics.RESPONSE_BLOCK, {
+  L 288: loop.create_task(_publish_fw())
+
+============================================================
+  modules/predictive_ai/engine/AEGIS/core/AEGIS_engine.py
+============================================================
+  L  53: from system.events.bus import EventBus
+  L 349: bus = await EventBus.instance()
+  L 350: await bus.publish(Topics.AI_SCORE_GENERATED, result.to_dict())
+  L 351: loop.create_task(_publish_ai())
+
+============================================================
+  modules/uba/engine/core/uba_plugin.py
+============================================================
+  L  22: from system.events.bus import EventBus
+  L 196: bus = await EventBus.instance()
+  L 197: await bus.publish(Topics.ANOMALY_SCORED, result.metadata["uba"])
+  L 198: loop.create_task(_publish_uba())
+
+============================================================
+  modules/vpn/module.py
+============================================================
+  L  56: from system.events.bus import EventBus
+  L  58: bus = await EventBus.instance()
+  L  59: await bus.publish(Topics.VPN_FAILURE, {
+  L  66: logger.warning(f"[VPN] Failed to publish vpn.failure: {_ve}")
+
+============================================================
+  modules/vpn/policy/vpn/portal.py
+============================================================
+  L  23: from system.events.bus import EventBus
+  L 329: """Invoke the event callback if registered and publish to EventBus."""
+  L 341: bus = await EventBus.instance()
+  L 342: topic = Topics.VPN_FAILURE if "terminate" in event_type else Topics.VPN_RESTORED
+  L 343: await bus.publish(topic, details)
+  L 344: loop.create_task(_publish_vpn())
+
+============================================================
+  modules/web_filter/engine/plugin.py
+============================================================
+  L  28: from system.events.bus import EventBus
+  L 194: bus = await EventBus.instance()
+  L 195: await bus.publish(Topics.WEB_FILTER_BLOCK, payload)
+  L 196: loop.create_task(_publish_web())

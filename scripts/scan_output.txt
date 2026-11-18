@@ -1,0 +1,25 @@
+﻿=================================================================
+  NEEDS FIX ظ¤ broken thread pattern detected
+=================================================================
+
+=================================================================
+  ALREADY FIXED ظ¤ uses publish_from_thread
+=================================================================
+  modules\dlp\engine\dlp_engine.py
+  modules\ids_ips\engine\core\engine.py
+  modules\malware_av\engine\plugin.py
+  modules\waf\engine\waf_inspector.py
+
+=================================================================
+  HAS EventBus publish but no broken pattern
+=================================================================
+  modules\dns_security\engine\plugin.py
+  modules\email_security\engine\core\email_inspector.py
+  modules\firewall\engine\firewall_plugin.py
+  modules\predictive_ai\engine\AEGIS\core\AEGIS_engine.py
+  modules\uba\engine\core\uba_plugin.py
+  modules\vpn\module.py
+  modules\vpn\policy\vpn\portal.py
+  modules\web_filter\engine\plugin.py
+
+Summary: 0 need fix, 4 fixed, 8 other

@@ -1,0 +1,311 @@
+تمام—خلّيني أعطيك **برومبتات منظمة لكل مرحلة** بحيث تقدر تستخدمها مع أي نموذج/Agent أو حتى كمواصفات لمطورينك.
+
+الفكرة هنا: أنت تبني **Pipeline تدريجي** وليس طلب واحد ضخم.
+
+---
+
+# 🧱 🥇 المرحلة 1: Unified Event Model (UEM)
+
+## 🎯 الهدف
+
+تحويل كل datasets (Network + Endpoint) إلى شكل حدث موحد واحد.
+
+---
+
+## 🧾 PROMPT — UEM Normalization
+
+```text id="uem01"
+You are a senior cybersecurity data engineer.
+
+Your task is to normalize heterogeneous cybersecurity datasets into a Unified Event Model (UEM).
+
+DATASETS:
+- CIC-IDS2018
+- CIC-DDoS2019
+- UNSW-NB15
+- CERT Insider Threat Dataset (r4.1)
+- Sysmon Logs
+
+GOAL:
+Convert ALL raw records into a single unified event schema.
+
+UNIFIED SCHEMA:
+{
+  "timestamp": "",
+  "source_type": "network | endpoint",
+  "entity_id": "",
+  "action": "",
+  "attributes": {},
+  "label_raw": "",
+  "dataset_source": ""
+}
+
+RULES:
+- DO NOT drop events unless corrupted
+- DO NOT infer missing values
+- DO NOT create synthetic data
+- Preserve original labels in label_raw
+- Normalize timestamps to ISO-8601
+- Ensure consistent field names across all datasets
+
+OUTPUT:
+- uem_events.jsonl (streaming format)
+- schema_report.json (missing fields + coverage stats)
+
+GOAL:
+Create a clean, analysis-ready event stream for downstream entity resolution.
+```
+
+---
+
+# 🧠 🥈 المرحلة 2: Entity Resolution Layer
+
+## 🎯 الهدف
+
+ربط IP ↔ Host ↔ User ↔ Process
+
+---
+
+## 🧾 PROMPT — Entity Resolution
+
+```text id="er02"
+You are building an Entity Resolution System for cybersecurity data fusion.
+
+INPUT:
+- Unified Event Model (UEM) dataset
+
+TASK:
+Build a cross-domain identity mapping layer that links:
+- IP addresses
+- Hosts
+- Users
+- Processes
+
+OBJECTIVE:
+Create a unified identity graph where each entity is assigned a stable ID.
+
+OUTPUT SCHEMA:
+{
+  "entity_id": "",
+  "entity_type": "ip | host | user | process",
+  "linked_entities": [],
+  "confidence_score": 0.0
+}
+
+RULES:
+- Use only observed relationships (NO guessing)
+- Use temporal correlation when direct mapping is missing
+- Build probabilistic links but include confidence score
+- Do not overwrite original events
+
+OUTPUT:
+- entity_graph.json
+- resolved_events.jsonl (events enriched with entity_id mapping)
+
+GOAL:
+Enable cross-dataset correlation between network and endpoint behaviors.
+```
+
+---
+
+# 🧩 🥉 المرحلة 3: Sessionization Engine
+
+## 🎯 الهدف
+
+تحويل الأحداث إلى “سلاسل سلوكية”
+
+---
+
+## 🧾 PROMPT — Session Builder
+
+```text id="sess03"
+You are designing a Cybersecurity Sessionization Engine.
+
+INPUT:
+- Entity-resolved event stream
+
+TASK:
+Group events into behavioral sessions representing a single attacker or system activity.
+
+SESSION RULES:
+- Same entity_id OR linked entities
+- Time gap threshold: dynamic (default ±5 seconds, adaptive allowed)
+- Preserve chronological order
+
+OUTPUT FORMAT:
+{
+  "session_id": "",
+  "entity_id": "",
+  "start_time": "",
+  "end_time": "",
+  "events": [
+    {
+      "timestamp": "",
+      "source_type": "",
+      "action": "",
+      "attributes": {}
+    }
+  ]
+}
+
+RULES:
+- Do NOT drop short sessions
+- Do NOT merge unrelated behavior chains
+- Preserve full temporal order
+
+OUTPUT:
+- sessions.jsonl
+- session_stats.json
+
+GOAL:
+Transform raw events into coherent behavioral sequences.
+```
+
+---
+
+# 🧠 🏆 المرحلة 4: Attack Story Builder (الأهم 🔥)
+
+## 🎯 الهدف
+
+تحويل sessions إلى “قصص هجوم كاملة”
+
+---
+
+## 🧾 PROMPT — Attack Narrative Builder
+
+```text id="story04"
+You are a Cybersecurity Threat Intelligence Engine.
+
+INPUT:
+- Sessionized behavioral data
+- MITRE ATT&CK dataset
+
+TASK:
+Convert each session into a complete ATTACK STORY.
+
+A STORY represents:
+- attacker intent
+- sequence of actions
+- mapped MITRE techniques
+- attack lifecycle stages
+
+OUTPUT SCHEMA:
+{
+  "story_id": "",
+  "session_id": "",
+  "timeline": [],
+  "attack_type": "",
+  "attack_intent": "",
+  "ttp_chain": [],
+  "tactic_chain": [],
+  "is_attack": 0 | 1
+}
+
+MITRE RULES:
+- Map sequences (not single events)
+- Multiple TTPs per session allowed
+- Preserve ordering of attack progression
+
+INTENT EXAMPLES:
+- credential theft
+- lateral movement
+- data exfiltration
+- reconnaissance
+
+RULES:
+- Do NOT hallucinate intent if unclear → mark "unknown"
+- Do NOT force MITRE mapping if confidence is low
+- Keep explainable reasoning structure
+
+OUTPUT:
+- attack_stories.jsonl
+- mitre_mapping_report.json
+
+GOAL:
+Produce structured attack narratives for deep learning models.
+```
+
+---
+
+# 🧠 🚀 المرحلة 5: Dataset Builder للـ Transformer
+
+## 🎯 الهدف
+
+تحويل القصص إلى training format
+
+---
+
+## 🧾 PROMPT — Transformer Dataset Builder
+
+```text id="train05"
+You are preparing a multimodal dataset for training a Transformer-based cybersecurity model.
+
+INPUT:
+- Attack Stories (structured narratives)
+
+TASK:
+Convert each story into a model-ready training sample.
+
+OUTPUT FORMAT:
+{
+  "input_sequence": [
+    "event_1",
+    "event_2",
+    "event_3"
+  ],
+  "metadata": {
+    "entities": {},
+    "time_span": "",
+    "source": ""
+  },
+  "labels": {
+    "is_attack": 0 | 1,
+    "attack_type": "",
+    "ttp_sequence": [],
+    "intent": ""
+  }
+}
+
+RULES:
+- Preserve temporal order
+- Do NOT compress sequences too aggressively
+- Ensure consistency across samples
+- Normalize event descriptions into compact tokens
+
+OUTPUT:
+- transformer_dataset.jsonl
+- dataset_quality_report.json
+
+GOAL:
+Create high-quality sequential data for training a multi-modal Transformer model.
+```
+
+---
+
+# 🔥 الخلاصة (مهم جداً)
+
+أنت الآن لا تبني pipeline عادي…
+
+أنت تبني:
+
+> 🧠 Cyber Attack Narrative Engine → Transformer-ready intelligence system
+
+---
+
+# ⚡ إذا تبغى الخطوة التالية
+
+أقدر أبني لك واحد من التالي:
+
+### 🔥 1. Architecture Diagram (احترافي للنشر/التوثيق)
+
+### 🔥 2. Python implementation (Spark/Polars production code)
+
+### 🔥 3. Transformer input design (tokenization + embeddings)
+
+### 🔥 4. Graph-based correlation engine (أقوى من الـ rules)
+
+قل لي فقط:
+
+> “كمل التصميم للـ Transformer”
+
+وأبني لك المرحلة اللي بعدها مباشرة.

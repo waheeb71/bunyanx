@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# BunyanX NGFW — Proxy Module Configuration
+# Path: modules/proxy/config/proxy.yaml
+#
+# All proxy-specific settings. Referenced from manifest.yaml.
+# Shared values (internal_networks, trusted_ips, thresholds) live in
+# system/config/settings.yaml — never duplicate them here.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Inspection bridge ─────────────────────────────────────────────────────────
+# Controls how the proxy calls the InspectionPipeline via InspectionBridge.
+inspection:
+  enabled: true
+  # Auto-block TTL for IPs blocked by the inspection pipeline (seconds). Default: 600 (10 minutes)
+  auto_block_ttl: 600
+  # fail_open: if pipeline errors, allow or block the connection?
+  # This value is read from system/config/settings.yaml at runtime.
+  # Set here ONLY to override per-proxy (overrides global setting).
+  # fail_open: true
+
+  # Maximum body size to parse and send to WAF/DLP (bytes)
+  # Bodies larger than this are truncated before inspection
+  max_body_inspection_bytes: 1048576    # 1 MB
+
+  # Only inspect client→server direction in relay mode
+  # Server→client inspection is deferred (future response inspection)
+  relay_inspect_request_only: true
+
+# ── Connection settings ───────────────────────────────────────────────────────
+connection:
+  buffer_size: 65536           # Read buffer per chunk (bytes)
+  max_connections: 10000       # Max concurrent connections (semaphore)
+  connection_timeout: 300      # Seconds before idle connection is closed
+  health_check_interval: 10    # Seconds between backend health checks
+  health_check_timeout: 6      # Timeout for health check requests
+
+# ── HTTP hardening ────────────────────────────────────────────────────────────
+# These settings control the HTTPCloaker middleware (server header stripping)
+# Full list of strip_headers is in base.yaml proxy.hardening.strip_headers
+hardening:
+  cloaking_enabled: true
+  server_banner: "BunyanX-NGFW"

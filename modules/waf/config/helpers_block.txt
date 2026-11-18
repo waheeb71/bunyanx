@@ -1,0 +1,762 @@
+﻿
+# ─── OMML NAMESPACE & MATH FORMULAS ──────────────────────────────────────────
+OMML_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+
+EQ1 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:acc>
+    <m:accPr><m:chr m:val="̂"/></m:accPr>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>p</m:t></m:r></m:e>
+  </m:acc>
+  <m:r><m:t xml:space="preserve"> = </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∑</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>α</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>i</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>i</m:t></m:r></m:sub>
+  </m:sSub>
+</m:oMath>"""
+
+EQ2 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>B</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) = </m:t></m:r>
+  <m:f>
+    <m:fPr><m:ctrlPr/></m:fPr>
+    <m:num>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>e</m:t></m:r></m:e>
+        <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r></m:sub>
+      </m:sSub>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>|</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)</m:t></m:r>
+      <m:sSup>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>B</m:t></m:r></m:e>
+        <m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>-</m:t></m:r></m:sup>
+      </m:sSup>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)</m:t></m:r>
+    </m:num>
+    <m:den>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∑</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>e</m:t></m:r></m:e>
+        <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r></m:sub>
+      </m:sSub>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>|</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>')</m:t></m:r>
+      <m:sSup>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>B</m:t></m:r></m:e>
+        <m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>-</m:t></m:r></m:sup>
+      </m:sSup>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>')</m:t></m:r>
+    </m:den>
+  </m:f>
+</m:oMath>"""
+
+EQ3 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>*</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:r><m:t xml:space="preserve"> = argmax </m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>E</m:t></m:r></m:e>
+    <m:sub>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Π</m:t></m:r></m:e>
+        <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:sub>
+      </m:sSub>
+    </m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>[</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>U</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>D</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>,</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)] - </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>λ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> · </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ER</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>D</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>,</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Π</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)</m:t></m:r>
+</m:oMath>"""
+
+EQ4 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>CPCI</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> = [1 - </m:t></m:r>
+  <m:f>
+    <m:fPr><m:ctrlPr/></m:fPr>
+    <m:num>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>|</m:t></m:r>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r></m:e>
+        <m:sub>
+          <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>1-</m:t></m:r>
+          <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>α</m:t></m:r>
+        </m:sub>
+      </m:sSub>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>| - 1</m:t></m:r>
+    </m:num>
+    <m:den>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>|</m:t></m:r>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:e>
+        <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:sub>
+      </m:sSub>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>|</m:t></m:r>
+    </m:den>
+  </m:f>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>] · [1 - </m:t></m:r>
+  <m:f>
+    <m:fPr><m:ctrlPr/></m:fPr>
+    <m:num>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>H</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+      <m:sSup>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>B</m:t></m:r></m:e>
+        <m:sup><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r></m:sup>
+      </m:sSup>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)</m:t></m:r>
+    </m:num>
+    <m:den>
+      <m:r><m:t>log </m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>K</m:t></m:r>
+    </m:den>
+  </m:f>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>]</m:t></m:r>
+</m:oMath>"""
+
+# EQ5: Default weight vector (alpha vector)
+EQ5 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:r><m:rPr><m:sty m:val="b"/></m:rPr><m:t xml:space="preserve">α </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= (0.22,  0.27,  0.18,  0.13,  0.09,  0.11)</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t xml:space="preserve">,    </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∑</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>α</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>i</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 1</m:t></m:r>
+</m:oMath>"""
+
+# EQ6: Hybrid blended prediction Π_A
+EQ6 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Π</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>A</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) = (1 − </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ω</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) </m:t></m:r>
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Π</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Q</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) + </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ω</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t xml:space="preserve">  </m:t></m:r>
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Π</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>Attn</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>),    </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ω</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 0.30</m:t></m:r>
+</m:oMath>"""
+
+# EQ7: VCFE Chain Exploitation Probability
+EQ7 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>chain</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(C) = </m:t></m:r>
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∏</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>n</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ε</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>v</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ci</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) · </m:t></m:r>
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>∏</m:t></m:r></m:e>
+    <m:sup><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>n−1</m:t></m:r></m:sup>
+  </m:sSup>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>P</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>trans</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>v</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ci</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>→</m:t></m:r>
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>v</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>ci+1</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) · </m:t></m:r>
+  <m:sSup>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>e</m:t></m:r></m:e>
+    <m:sup>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>−μ(n−1)</m:t></m:r>
+    </m:sup>
+  </m:sSup>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>,    μ = 0.15</m:t></m:r>
+</m:oMath>"""
+
+# EQ8: TD(lambda) Q-table update rule
+EQ8 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Q</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s, a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) ← </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Q</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s, a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) + </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>η</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> · </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>δ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> · </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>e</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>s, a</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>),    </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>η</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 0.05,  </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>γ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 0.95,  </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>λ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 0.80</m:t></m:r>
+</m:oMath>"""
+
+# EQ9: GTATM - Phi_TZ timezone multiplier (simplified display form)
+EQ9 = f"""<m:oMath xmlns:m="{OMML_NS}">
+  <m:sSub>
+    <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>Φ</m:t></m:r></m:e>
+    <m:sub><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>TZ</m:t></m:r></m:sub>
+  </m:sSub>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>) = 1 + </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>κ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> · max</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>(0, cos(</m:t></m:r>
+  <m:f>
+    <m:fPr><m:ctrlPr/></m:fPr>
+    <m:num>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>2π(</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>t</m:t></m:r>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t> − </m:t></m:r>
+      <m:sSub>
+        <m:e><m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>h</m:t></m:r></m:e>
+        <m:sub><m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>peak</m:t></m:r></m:sub>
+      </m:sSub>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)</m:t></m:r>
+    </m:num>
+    <m:den>
+      <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>24</m:t></m:r>
+    </m:den>
+  </m:f>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>)),    </m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="i"/></m:rPr><m:t>κ</m:t></m:r>
+  <m:r><m:rPr><m:sty m:val="p"/></m:rPr><m:t>= 0.40</m:t></m:r>
+</m:oMath>"""
+
+
+# ─── TEMPLATE CONVERSION & INSPECTION HELPERS ─────────────────────────────────
+
+
+def ensure_docx_template(template_path):
+    """
+    Ensures python-docx can open the template. If it's a binary .doc, 
+    converts it to .docx using win32com (Word) on Windows.
+    """
+    if not os.path.exists(template_path):
+        raise FileNotFoundError(f"Template file not found at: {template_path}")
+        
+    # Read magic bytes to determine file type
+    with open(template_path, 'rb') as f:
+        magic = f.read(4)
+        
+    # Check if file starts with 'PK' (ZIP format, used by .docx)
+    if magic.startswith(b'PK\x03\x04'):
+        if template_path.lower().endswith('.docx'):
+            return template_path
+        else:
+            docx_path = template_path + "x"
+            print(f"Template is a renamed docx file. Copying to {docx_path}...")
+            import shutil
+            shutil.copy2(template_path, docx_path)
+            return docx_path
+            
+    # Binary .doc file detection
+    if template_path.lower().endswith('.doc'):
+        docx_path = template_path + "x"
+        if os.path.exists(docx_path):
+            print(f"Using already converted docx template: {docx_path}")
+            return docx_path
+            
+        print(f"Template is a binary .doc file. Attempting conversion via MS Word COM...")
+        try:
+            import win32com.client
+            word = win32com.client.Dispatch("Word.Application")
+            word.Visible = False
+            abs_doc = os.path.abspath(template_path)
+            abs_docx = os.path.abspath(docx_path)
+            
+            doc = word.Documents.Open(abs_doc)
+            # 16 stands for wdFormatXMLDocument (.docx)
+            doc.SaveAs2(abs_docx, FileFormat=16)
+            doc.Close()
+            word.Quit()
+            print(f"Conversion successful! Converted to: {docx_path}")
+            return docx_path
+        except Exception as e:
+            print(f"COM conversion failed: {e}")
+            print("Please check if MS Word is installed. Or manually save the template as a .docx file and try again.")
+            raise e
+            
+    return template_path
+
+
+def find_style(doc, target_name, default='Normal'):
+    """
+    Looks for the best matching style name in the document's style sheet.
+    Performs case-insensitive search and removes spaces. Only matches PARAGRAPH styles.
+    """
+    from docx.enum.style import WD_STYLE_TYPE
+    target = target_name.lower().replace(' ', '').replace('_', '')
+    
+    # Check exact or prefix matches
+    best_match = None
+    for style in doc.styles:
+        if style.type != WD_STYLE_TYPE.PARAGRAPH:
+            continue
+        s_name = style.name.lower().replace(' ', '').replace('_', '')
+        if s_name == target:
+            return style.name
+        if target in s_name:
+            best_match = style.name
+            
+    if best_match:
+        return best_match
+        
+    # Pre-defined mapping for standard IEEE/AIPCP templates
+    fallback_map = {
+        'papertitle': ['title', 'paper title', 'document title'],
+        'authorname': ['author', 'author name', 'authors'],
+        'authoraffiliation': ['affiliation', 'author affiliation', 'affiliations', 'aff'],
+        'authoremail': ['email', 'author email', 'email address'],
+        'abstract': ['abstract', 'abstract text'],
+        'heading1': ['heading 1', 'heading1', 'h1'],
+        'heading2': ['heading 2', 'heading2', 'h2'],
+        'heading3': ['heading 3', 'heading3', 'h3'],
+        'paragraph': ['body', 'body text', 'normal', 'paragraph'],
+        'reference': ['reference', 'references', 'reference text', 'bib']
+    }
+    
+    if target in fallback_map:
+        for fb in fallback_map[target]:
+            fb_norm = fb.lower().replace(' ', '').replace('_', '')
+            for style in doc.styles:
+                if style.type != WD_STYLE_TYPE.PARAGRAPH:
+                    continue
+                s_name = style.name.lower().replace(' ', '').replace('_', '')
+                if fb_norm in s_name:
+                    return style.name
+                    
+    return default
+
+
+# ─── PARSING & FORMATTING HELPERS ─────────────────────────────────────────────
+
+def add_formatted_paragraph(doc, text, style='Normal', indent=None):
+    """
+    Parses string for markdown styles (***bolditalic***, **bold**, *italic*, `code`)
+    and writes formatting runs. Uses Times New Roman and default styling.
+    """
+    p = doc.add_paragraph(style=style)
+    if indent is not None:
+        p.paragraph_format.first_line_indent = indent
+        
+    # Regex splits markdown patterns while capturing boundaries
+    pattern = re.compile(r'(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|`.*?`)')
+    parts = pattern.split(text)
+    
+    for part in parts:
+        if not part:
+            continue
+        if part.startswith('***') and part.endswith('***'):
+            r = p.add_run(part[3:-3])
+            r.font.name = "Times New Roman"
+            r.font.bold = True
+            r.font.italic = True
+        elif part.startswith('**') and part.endswith('**'):
+            r = p.add_run(part[2:-2])
+            r.font.name = "Times New Roman"
+            r.font.bold = True
+        elif part.startswith('*') and part.endswith('*'):
+            r = p.add_run(part[1:-1])
+            r.font.name = "Times New Roman"
+            r.font.italic = True
+        elif part.startswith('`') and part.endswith('`'):
+            r = p.add_run(part[1:-1])
+            r.font.name = "Consolas"
+            r.font.size = Pt(9.0)
+        else:
+            r = p.add_run(part)
+            r.font.name = "Times New Roman"
+    return p
+
+
+def insert_equation_native(doc, omml_str, eq_num, style='Normal'):
+    """
+    Inserts a single paragraph with a centered equation and a right-aligned number.
+    """
+    p = doc.add_paragraph(style=style)
+    p.paragraph_format.space_before = Pt(3)
+    p.paragraph_format.space_after = Pt(3)
+    p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Render and insert math ML
+    eq_el = etree.fromstring(omml_str)
+    p._p.append(eq_el)
+    
+    # Equation number in run
+    r = p.add_run(f'    ({eq_num})')
+    r.font.name = "Times New Roman"
+    r.font.size = Pt(9.5)
+    return p
+
+
+def format_ieee_table(table):
+    """
+    Sets clean scientific rules on the table (similar to booktabs / IEEE rules):
+    - Top/Bottom borders: solid 1.0 pt
+    - Header bottom border: solid 0.5 pt
+    - No vertical borders, no inside horizontal borders.
+    """
+    tblPr = table._tbl.tblPr
+    tblBorders = tblPr.find(qn('w:tblBorders'))
+    if tblBorders is None:
+        tblBorders = OxmlElement('w:tblBorders')
+        tblPr.append(tblBorders)
+    else:
+        tblBorders.clear()
+        
+    # Top border (size 8 = 1.0 pt)
+    top = OxmlElement('w:top')
+    top.set(qn('w:val'), 'single')
+    top.set(qn('w:sz'), '8')
+    top.set(qn('w:space'), '0')
+    top.set(qn('w:color'), 'auto')
+    tblBorders.append(top)
+    
+    # Bottom border (size 8 = 1.0 pt)
+    bottom = OxmlElement('w:bottom')
+    bottom.set(qn('w:val'), 'single')
+    bottom.set(qn('w:sz'), '8')
+    bottom.set(qn('w:space'), '0')
+    bottom.set(qn('w:color'), 'auto')
+    tblBorders.append(bottom)
+    
+    # Clear other borders
+    for b_name in ['left', 'right', 'insideH', 'insideV']:
+        b = OxmlElement(f'w:{b_name}')
+        b.set(qn('w:val'), 'none')
+        tblBorders.append(b)
+        
+    # Add bottom border to headers
+    for cell in table.rows[0].cells:
+        tc = cell._tc
+        tcPr = tc.get_or_add_tcPr()
+        tcBorders = tcPr.find(qn('w:tcBorders'))
+        if tcBorders is None:
+            tcBorders = OxmlElement('w:tcBorders')
+            tcPr.append(tcBorders)
+        else:
+            tcBorders.clear()
+            
+        b_cell = OxmlElement('w:bottom')
+        b_cell.set(qn('w:val'), 'single')
+        b_cell.set(qn('w:sz'), '4') # 0.5 pt
+        b_cell.set(qn('w:space'), '0')
+        b_cell.set(qn('w:color'), 'auto')
+        tcBorders.append(b_cell)
+        
+        for edge in ('top', 'left', 'right'):
+            e = OxmlElement(f'w:{edge}')
+            e.set(qn('w:val'), 'none')
+            tcBorders.append(e)
+
+
+def to_roman(val):
+    """Converts an integer to Roman numeral OR returns a string label as-is (e.g. 'I-B', 'III-A')."""
+    if isinstance(val, str):
+        return val  # Already a label string like 'I-B' or 'III-A'
+    roman_map = {
+        1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI', 7: 'VII', 8: 'VIII', 9: 'IX', 10: 'X',
+        11: 'XI', 12: 'XII', 13: 'XIII', 14: 'XIV', 15: 'XV', 16: 'XVI', 17: 'XVII', 18: 'XVIII',
+        19: 'XIX', 20: 'XX', 21: 'XXI', 22: 'XXII', 23: 'XXIII', 24: 'XXIV', 25: 'XXV'
+    }
+    return roman_map.get(int(val), str(val))
+
+
+def add_note_paragraph(doc, note_text, style='Normal'):
+    """
+    Adds an IEEE-style Note paragraph.
+    Uses 8.5pt Times New Roman with bold 'Note:' prefix.
+    Left-indented with a thin XML border to distinguish from body text.
+    """
+    p = doc.add_paragraph(style=style)
+    p.paragraph_format.left_indent = Inches(0.18)
+    p.paragraph_format.right_indent = Inches(0.05)
+    p.paragraph_format.space_before = Pt(4)
+    p.paragraph_format.space_after = Pt(5)
+    p.paragraph_format.line_spacing = 1.0
+    p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
+    # Bold "Note:" label
+    run_label = p.add_run("Note: ")
+    run_label.font.name = "Times New Roman"
+    run_label.font.size = Pt(8.5)
+    run_label.font.bold = True
+    run_label.font.italic = False
+
+    # Body text — same size, not italic
+    run_text = p.add_run(note_text)
+    run_text.font.name = "Times New Roman"
+    run_text.font.size = Pt(8.5)
+    run_text.font.italic = False
+
+    # Add a thin left border via XML to visually separate from body paragraphs
+    pPr = p._element.get_or_add_pPr()
+    pBdr = OxmlElement('w:pBdr')
+    left_bdr = OxmlElement('w:left')
+    left_bdr.set(qn('w:val'), 'single')
+    left_bdr.set(qn('w:sz'), '4')       # 0.5 pt thin line
+    left_bdr.set(qn('w:space'), '4')
+    left_bdr.set(qn('w:color'), '888888')  # medium grey
+    pBdr.append(left_bdr)
+    pPr.append(pBdr)
+
+    return p
+
+
+
+def fix_paragraph_justification(p):
+    """
+    Applies XML-level character spacing control to a paragraph.
+    Sets w:characterSpacingControl to 'doNotCompress' which prevents Word
+    from over-expanding inter-word gaps in justified narrow-column text.
+    Also sets w:jc to 'both' with w:textAlignment 'baseline' for uniform baselines.
+    """
+    pPr = p._element.get_or_add_pPr()
+    # Character spacing control: doNotCompress avoids gap rivers
+    csc = pPr.find(qn('w:characterSpacingControl'))
+    if csc is None:
+        csc = OxmlElement('w:characterSpacingControl')
+        pPr.append(csc)
+    csc.set(qn('w:val'), 'doNotCompress')
+    return p
+
+
+def add_table_ieee(doc, caption_text, headers, rows, table_num, widths=None, caption_style='Normal'):
+    """
+    Adds a formatted scientific table with a Table Caption centered above it.
+    Uses IEEE small caps numbering (e.g. TABLE I. CAPTION TEXT).
+    All tables are formatted to fit within the 3.25-inch column width.
+    """
+    # Caption above
+    cap = doc.add_paragraph(style=caption_style)
+    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    cap.paragraph_format.space_before = Pt(8)
+    cap.paragraph_format.space_after = Pt(4)
+    
+    is_table_head = 'table' in str(caption_style).lower()
+    if not is_table_head:
+        roman_num = to_roman(table_num)
+        run_num = cap.add_run(f"TABLE {roman_num}.  ")
+        run_num.font.name = "Times New Roman"
+        run_num.font.bold = True
+        run_num.font.size = Pt(8.5)
+    
+    # Table description in uppercase
+    run_desc = cap.add_run(caption_text.upper())
+    run_desc.font.name = "Times New Roman"
+    run_desc.font.size = Pt(8.0)
+    
+    # Table setup
+    table = doc.add_table(rows=1 + len(rows), cols=len(headers))
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    
+    # Auto-select font size based on number of columns to fit the column width
+    num_cols = len(headers)
+    if num_cols >= 7:
+        hdr_font_size = Pt(6.5)
+        data_font_size = Pt(6.0)
+    elif num_cols >= 5:
+        hdr_font_size = Pt(7.0)
+        data_font_size = Pt(6.5)
+    else:
+        hdr_font_size = Pt(8.0)
+        data_font_size = Pt(7.5)
+        
+    # Header Row
+    hdr = table.rows[0]
+    hdr.height = Cm(0.4)
+    for i, h in enumerate(headers):
+        cell = hdr.cells[i]
+        cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+        
+        # Set extremely tight cell margins (padding) for A4 column fit
+        tcPr = cell._tc.get_or_add_tcPr()
+        tcMar = OxmlElement('w:tcMar')
+        for margin in ['left', 'right']:
+            m = OxmlElement(f'w:{margin}')
+            m.set(qn('w:w'), '40')  # 40 dxa = 2 pt padding
+            m.set(qn('w:type'), 'dxa')
+            tcMar.append(m)
+        tcPr.append(tcMar)
+        
+        p = cell.paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_before = Pt(1)
+        p.paragraph_format.space_after = Pt(1)
+        p.paragraph_format.line_spacing = 1.0
+        run = p.add_run(h)
+        run.font.name = "Times New Roman"
+        run.font.bold = True
+        run.font.size = hdr_font_size
+        
+    # Data Rows
+    for r_idx, row_data in enumerate(rows):
+        row = table.rows[r_idx + 1]
+        row.height = Cm(0.35)
+        for c_idx, val in enumerate(row_data):
+            cell = row.cells[c_idx]
+            cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+            
+            # Set extremely tight cell margins
+            tcPr = cell._tc.get_or_add_tcPr()
+            tcMar = OxmlElement('w:tcMar')
+            for margin in ['left', 'right']:
+                m = OxmlElement(f'w:{margin}')
+                m.set(qn('w:w'), '40')
+                m.set(qn('w:type'), 'dxa')
+                tcMar.append(m)
+            tcPr.append(tcMar)
+            
+            p = cell.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(1)
+            p.paragraph_format.space_after = Pt(1)
+            p.paragraph_format.line_spacing = 1.0
+            run = p.add_run(str(val))
+            run.font.name = "Times New Roman"
+            run.font.size = data_font_size
+            
+    # Set explicit widths if provided
+    if widths:
+        for r in table.rows:
+            for i, w in enumerate(widths):
+                if i < len(r.cells):
+                    r.cells[i].width = w
+                    
+    # Apply scientific borders
+    format_ieee_table(table)
+    
+    # Minor spacer below table
+    p_spacer = doc.add_paragraph()
+    p_spacer.paragraph_format.space_before = Pt(0)
+    p_spacer.paragraph_format.space_after = Pt(4)
+    r = p_spacer.add_run()
+    r.font.size = Pt(1)
+    return table
+
+
+def add_centered_image(doc, filename, width, caption_text, fig_num, caption_style='Normal'):
+    """
+    Adds a centered image with a Figure Caption below it.
+    Uses IEEE Fig. X format.
+    """
+    path = os.path.join(IMGS, filename)
+    if os.path.exists(path):
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_before = Pt(4)
+        p.paragraph_format.space_after = Pt(2)
+        run = p.add_run()
+        run.add_picture(path, width=Inches(min(width, 3.5)))
+        
+        # Caption below
+        cap = doc.add_paragraph(style=caption_style)
+        cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        cap.paragraph_format.space_before = Pt(2)
+        cap.paragraph_format.space_after = Pt(6)
+        
+        is_fig_cap = 'figure' in str(caption_style).lower()
+        if not is_fig_cap:
+            run_lbl = cap.add_run(f"Fig. {fig_num}.  ")
+            run_lbl.font.name = "Times New Roman"
+            run_lbl.font.bold = True
+            run_lbl.font.size = Pt(8.5)
+            
+        run_desc = cap.add_run(caption_text)
+        run_desc.font.name = "Times New Roman"
+        run_desc.font.size = Pt(8.0)
+    else:
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = p.add_run(f"[Fig. {fig_num}: {caption_text} - Image file '{filename}' not found]")
+        run.font.italic = True
+        run.font.size = Pt(9.0)
+
+
+# ─── CORE BUILD PROCEDURE ────────────────────────────────────────────────────
+

@@ -1,0 +1,12 @@
+name: qos
+version: "2.0.0"
+description: "Quality of Service and Bandwidth Management"
+type: hybrid
+priority: 90
+requires:
+  - db
+  - config
+provides:
+  - qos_manager
+event_subscriptions: []
+event_publications: []

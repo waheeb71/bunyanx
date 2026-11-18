@@ -1,0 +1,12 @@
+name: ssl_inspection
+version: "2.0.0"
+description: "TLS/SSL Deep Inspection with CA Pool Management"
+type: service
+priority: 5
+requires:
+  - config
+provides:
+  - ca_manager
+  - ssl_inspector
+event_subscriptions: []
+event_publications: []

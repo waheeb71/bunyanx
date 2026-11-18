@@ -1,0 +1,14 @@
+name: uba
+version: "2.0.0"
+description: "User Behavior Analytics with Anomaly Detection"
+type: inspector
+priority: 60
+requires:
+  - db
+  - config
+provides:
+  - uba_engine
+event_subscriptions:
+  - anomaly.scored
+event_publications:
+  - anomaly.scored

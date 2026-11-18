@@ -1,0 +1,8 @@
+qos:
+  default_user_rate_bytes: 1250000
+  default_user_burst_bytes: 2500000
+  gc_interval_sec: 60
+  gc_idle_timeout_sec: 300
+  max_buckets: 50000
+  global_rate_bytes: 0
+

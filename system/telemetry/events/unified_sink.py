@@ -1,0 +1,434 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+═══════════════════════════════════════════════════════════════════
+Enterprise bunyanx - Unified Event Sink
+═══════════════════════════════════════════════════════════════════
+
+Centralized event collection point for all traffic paths.
+Receives events from XDP and Normal (Proxy) paths and forwards
+them to configured backends (file, database, streaming).
+
+Features:
+- Async event submission
+- Batch processing
+- Multiple backend support
+- Error handling and retry logic
+- Event buffering
+
+Author: Enterprise Security Team
+License: Proprietary
+"""
+
+import asyncio
+import logging
+from typing import List, Optional, Dict, Any
+from dataclasses import dataclass, field
+from datetime import datetime
+from pathlib import Path
+
+from .event_schema import EventSchema
+from .backends.base import EventBackend
+from .backends.file_backend import FileBackend
+from .backends.database_backend import DatabaseBackend
+from .backends.streaming_backend import StreamingBackend
+
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class SinkConfig:
+    """Configuration for Unified Event Sink"""
+    
+    # Buffer settings
+    buffer_size: int = 1000  # Max events in buffer before flush
+    flush_interval: float = 1.0  # Seconds between flushes
+    
+    # Backend configurations
+    backends: List[Dict[str, Any]] = field(default_factory=list)
+    
+    # Error handling
+    max_retries: int = 3
+    retry_delay: float = 1.0
+    
+    # Performance
+    batch_size: int = 100  # Events per batch to backends
+    
+    @classmethod
+    def from_dict(cls, config: Dict[str, Any]) -> 'SinkConfig':
+        """Create config from dictionary"""
+        return cls(
+            buffer_size=config.get('buffer_size', 1000),
+            flush_interval=config.get('flush_interval', 1.0),
+            backends=config.get('backends', []),
+            max_retries=config.get('max_retries', 3),
+            retry_delay=config.get('retry_delay', 1.0),
+            batch_size=config.get('batch_size', 100),
+        )
+
+
+class UnifiedEventSink:
+    """
+    Unified Event Sink for Enterprise bunyanx
+    
+    Receives events from all traffic paths and forwards them
+    to configured backends and Real-Time Observers (ex: Correlation Engine).
+    """
+    
+    def __init__(self, config: SinkConfig):
+        """
+        Initialize Unified Event Sink
+        """
+        self.config = config
+        self.logger = logger
+        
+        # Event buffer
+        self._buffer: List[EventSchema] = []
+        self._buffer_lock = asyncio.Lock()
+        
+        # Backends & Observers
+        self._backends: List[EventBackend] = []
+        self._observers: List[callable] = []
+        
+        # Background tasks
+        self._flush_task: Optional[asyncio.Task] = None
+        self._running = False
+        self._flush_semaphore = asyncio.Semaphore(3)  # Production constraint: Limit concurrent I/O
+        
+        # Statistics
+        self._stats = {
+            'total_events': 0,
+            'events_buffered': 0,
+            'events_flushed': 0,
+            'events_failed': 0,
+            'flush_count': 0,
+            'last_flush': None,
+        }
+        self._stats_lock = asyncio.Lock()
+        
+        self.logger.info(f"Initialized UnifiedEventSink with buffer_size={config.buffer_size}")
+
+    def register_observer(self, callback: callable):
+        """Register an async callback for real-time event processing."""
+        self._observers.append(callback)
+        self.logger.info(f"Registered internal observer: {callback.__name__}")
+    
+    async def start(self):
+        """Start the event sink and background tasks"""
+        self.logger.info("Starting Unified Event Sink...")
+        
+        # Initialize backends
+        await self._initialize_backends()
+        
+        # Start background flush task
+        self._running = True
+        self._flush_task = asyncio.create_task(self._flush_loop())
+        
+        self.logger.info(f"✅ Unified Event Sink started with {len(self._backends)} backends and {len(self._observers)} observers")
+    
+    async def stop(self):
+        """Stop the event sink and flush remaining events"""
+        if not self._running:
+            return
+        
+        self.logger.info("Stopping Unified Event Sink...")
+        self._running = False
+        
+        # Stop flush task
+        if self._flush_task:
+            self._flush_task.cancel()
+            try:
+                await self._flush_task
+            except asyncio.CancelledError:
+                pass
+        
+        # Flush remaining events
+        await self._flush_buffer()
+        
+        # Close backends
+        for backend in self._backends:
+            try:
+                await backend.close()
+            except Exception as e:
+                self.logger.error(f"Error closing backend {backend.__class__.__name__}: {e}")
+        
+        self.logger.info("✅ Unified Event Sink stopped")
+    
+    def _write_dlq(self, events: List[EventSchema], reason: str) -> None:
+        try:
+            import json
+            import os
+            output_dir = "data/logs/events"
+            os.makedirs(output_dir, exist_ok=True)
+            dlq_path = os.path.join(output_dir, "dlq_failed.jsonl")
+            with open(dlq_path, "a", encoding="utf-8") as f:
+                for event in events:
+                    event_dict = event.to_dict() if hasattr(event, "to_dict") else dict(event)
+                    dlq_entry = {"reason": reason, "payload": event_dict}
+                    f.write(json.dumps(dlq_entry, default=str) + "\n")
+            self.logger.warning(f"[Telemetry:DLQ] Wrote {len(events)} failed events to DLQ: {dlq_path}")
+        except Exception as e:
+            self.logger.error(f"[Telemetry:DLQ] Failed to write to DLQ: {e}")
+
+    async def submit_event(self, event: EventSchema):
+        """
+        Submit a single event to the sink
+        
+        Args:
+            event: Event to submit
+        """
+        # Dispatch to real-time observers FIRST (for instant mitigation)
+        import inspect
+        for observer in self._observers:
+            try:
+                res = observer(event)
+                if inspect.isawaitable(res):
+                    await res
+            except Exception as e:
+                obs_name = getattr(observer, '__name__', str(observer))
+                self.logger.error(f"Observer {obs_name} failed processing event: {e}", exc_info=True)
+
+        async with self._buffer_lock:
+            self._buffer.append(event)
+            
+            async with self._stats_lock:
+                self._stats['total_events'] += 1
+                self._stats['events_buffered'] += 1
+            
+            # Check if buffer is full
+            if len(self._buffer) >= self.config.buffer_size:
+                # Production constraint: Drop telemetry to protect firewall RAM during DDoS
+                if len(self._buffer) > self.config.buffer_size * 2:
+                    dropped_events = self._buffer.copy()
+                    self._buffer.clear()
+                    self._stats['events_failed'] += len(dropped_events)
+                    self._write_dlq(dropped_events, "buffer_overflow")
+                    self.logger.warning(f"🚨 Telemetry Buffer Overflow! Saved {len(dropped_events)} events to DLQ to protect firewall stability.")
+                    return
+                
+                # Trigger flush safely
+                if not self._flush_semaphore.locked():
+                    asyncio.create_task(self._safe_flush_buffer())
+    
+    async def batch_submit(self, events: List[EventSchema]):
+        """
+        Submit multiple events at once
+        
+        Args:
+            events: List of events to submit
+        """
+        if not events:
+            return
+        
+        async with self._buffer_lock:
+            self._buffer.extend(events)
+            
+            async with self._stats_lock:
+                self._stats['total_events'] += len(events)
+                self._stats['events_buffered'] += len(events)
+            
+            # Check if buffer is full
+            if len(self._buffer) >= self.config.buffer_size:
+                if len(self._buffer) > self.config.buffer_size * 2:
+                    dropped_events = self._buffer.copy()
+                    self._buffer.clear()
+                    self._stats['events_failed'] += len(dropped_events)
+                    self._write_dlq(dropped_events, "buffer_overflow")
+                    self.logger.warning(f"🚨 Telemetry Buffer Overflow! Saved {len(dropped_events)} events to DLQ to protect firewall stability.")
+                    return
+                    
+                if not self._flush_semaphore.locked():
+                    asyncio.create_task(self._safe_flush_buffer())
+    
+    async def _initialize_backends(self):
+        """Initialize configured backends"""
+        for backend_config in self.config.backends:
+            backend_type = backend_config.get('type', 'file')
+            
+            try:
+                if backend_type == 'file':
+                    backend = FileBackend(backend_config)
+                elif backend_type == 'database':
+                    backend = DatabaseBackend(backend_config)
+                elif backend_type == 'streaming':
+                    backend = StreamingBackend(backend_config)
+                else:
+                    self.logger.warning(f"Unknown backend type: {backend_type}")
+                    continue
+                
+                await backend.initialize()
+                self._backends.append(backend)
+                self.logger.info(f"✅ Initialized {backend_type} backend")
+                
+            except Exception as e:
+                self.logger.error(f"Failed to initialize {backend_type} backend: {e}")
+    
+    async def _flush_loop(self):
+        """Background task to periodically flush buffer"""
+        self.logger.info(f"Flush loop started (interval={self.config.flush_interval}s)")
+        
+        try:
+            while self._running:
+                await asyncio.sleep(self.config.flush_interval)
+                if not self._flush_semaphore.locked():
+                    await self._safe_flush_buffer()
+                
+        except asyncio.CancelledError:
+            self.logger.info("Flush loop cancelled")
+        except Exception as e:
+            self.logger.error(f"Error in flush loop: {e}", exc_info=True)
+    
+    async def _safe_flush_buffer(self):
+        """Wrapper for flush_buffer with concurrency limits"""
+        if self._flush_semaphore.locked():
+            return
+            
+        async with self._flush_semaphore:
+            await self._flush_buffer()
+
+    async def flush(self):
+        """Public method to force flush the buffer"""
+        await self._flush_buffer()
+
+    async def _flush_buffer(self):
+        """Flush buffered events to backends"""
+        async with self._buffer_lock:
+            if not self._buffer:
+                return
+            
+            # Get events to flush
+            events_to_flush = self._buffer.copy()
+            self._buffer.clear()
+        
+        # Update stats
+        async with self._stats_lock:
+            self._stats['flush_count'] += 1
+            self._stats['last_flush'] = datetime.utcnow()
+        
+        # Send to backends in batches
+        batch_size = self.config.batch_size
+        for i in range(0, len(events_to_flush), batch_size):
+            batch = events_to_flush[i:i + batch_size]
+            await self._send_to_backends(batch)
+    
+    async def _send_to_backends(self, events: List[EventSchema]):
+        """
+        Send events to all backends
+        
+        Args:
+            events: Events to send
+        """
+        for backend in self._backends:
+            for retry in range(self.config.max_retries):
+                try:
+                    await backend.write_batch(events)
+                    
+                    # Update stats
+                    async with self._stats_lock:
+                        self._stats['events_flushed'] += len(events)
+                    
+                    break  # Success
+                    
+                except Exception as e:
+                    self.logger.error(
+                        f"Error writing to {backend.__class__.__name__} "
+                        f"(attempt {retry + 1}/{self.config.max_retries}): {e}"
+                    )
+                    
+                    if retry < self.config.max_retries - 1:
+                        await asyncio.sleep(self.config.retry_delay)
+                    else:
+                        # Final failure
+                        async with self._stats_lock:
+                            self._stats['events_failed'] += len(events)
+                        self._write_dlq(events, f"backend_failure: {backend.__class__.__name__}")
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """
+        Get sink statistics
+        
+        Returns:
+            Dictionary with statistics
+        """
+        return {
+            **self._stats,
+            'buffer_size': len(self._buffer),
+            'backends_count': len(self._backends),
+            'backends': [
+                {
+                    'type': backend.__class__.__name__,
+                    'stats': backend.get_statistics()
+                }
+                for backend in self._backends
+            ]
+        }
+    
+    async def health_check(self) -> Dict[str, Any]:
+        """
+        Perform health check on sink and backends
+        
+        Returns:
+            Health status dictionary
+        """
+        status = {
+            'sink_running': self._running,
+            'buffer_size': len(self._buffer),
+            'buffer_usage': len(self._buffer) / self.config.buffer_size,
+            'backends': []
+        }
+        
+        for backend in self._backends:
+            try:
+                backend_health = await backend.health_check()
+                status['backends'].append({
+                    'type': backend.__class__.__name__,
+                    'healthy': backend_health.get('healthy', False),
+                    **backend_health
+                })
+            except Exception as e:
+                status['backends'].append({
+                    'type': backend.__class__.__name__,
+                    'healthy': False,
+                    'error': str(e)
+                })
+        
+        status['healthy'] = (
+            status['sink_running'] and 
+            status['buffer_usage'] < 0.9 and
+            any(b['healthy'] for b in status['backends'])
+        )
+        
+        return status
+
+
+# ═══ Factory Function ═══
+
+def create_unified_sink(config: Dict[str, Any]) -> UnifiedEventSink:
+    """
+    Factory function to create Unified Event Sink from config
+    
+    Args:
+        config: Configuration dictionary
+        
+    Returns:
+        UnifiedEventSink instance
+    """
+    # Robust config extraction: handle case where config is already the content of event_sink
+    if 'backends' in config and not 'event_sink' in config:
+        sink_config = config
+    else:
+        sink_config = config.get('event_sink', {})
+    
+    # Default backend if none configured
+    if not sink_config.get('backends'):
+        sink_config['backends'] = [
+            {
+                'type': 'file',
+                'output_dir': 'data/logs/events',
+                'format': 'json',
+                'rotation': 'daily'
+            }
+        ]
+    
+    return UnifiedEventSink(SinkConfig.from_dict(sink_config))

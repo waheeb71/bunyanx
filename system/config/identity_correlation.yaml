@@ -1,0 +1,233 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  BunyanX NGFW — Identity Correlation Engine Configuration
+#  Path: system/config/identity_correlation.yaml
+#
+#  PURPOSE:
+#    Maps network IP addresses to real user identities from enterprise
+#    directories (LDAP/AD, RADIUS, VPN) so that UBA and all security
+#    modules know WHO is behind every packet.
+#
+#  SUPPORTED SOURCES (enabled independently):
+#    1. LDAP/AD Sync   — periodic batch query of the directory
+#    2. RADIUS Acct    — real-time login/logout events (UDP 1813)
+#    3. VPN Bridge     — VPN tunnel up/down events
+#    4. Captive Portal — manual login page for guests/BYOD
+#    5. Manual API     — REST endpoint for custom integrations
+#
+#  SECURITY:
+#    - All passwords/secrets MUST use ${ENV_VAR} syntax
+#    - Never hardcode credentials in this file
+#    - LDAP: LDAPS only (TLS), plain LDAP rejected
+#    - RADIUS: Authenticator HMAC validation enforced
+#
+#  USAGE:
+#    Loaded automatically at startup by IdentityCorrelationEngine.
+#    Changes require restart (or call /api/identity/reload).
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+# ── Identity Cache ─────────────────────────────────────────────────────────────
+# Core in-memory store shared by all sources.
+cache:
+  # How long an IP→user binding is valid (seconds).
+  # Each source can override this per-entry.
+  default_ttl_seconds: 1800          # 30 minutes
+
+  # Hard limit on simultaneous bindings.
+  # When full, the oldest entry is evicted.
+  max_entries: 100000                # 100k users (banks, universities)
+
+  # Background cleanup thread interval (seconds)
+  cleanup_interval_s: 60
+
+  # Refresh last_seen timestamp on every lookup (for UBA activity tracking)
+  touch_on_read: true
+
+
+# ── Source 1: LDAP / Active Directory Sync ────────────────────────────────────
+# Periodic batch query — discovers IP→user from directory attributes.
+# Best for: corporate Windows domains, large enterprises.
+ldap_sync:
+  enabled: false                     # ← set true when AD is configured
+
+  # Primary DC (LDAPS only — plain ldap:// is rejected)
+  server: "ldaps://dc01.company.com:636"
+
+  # Fallback DCs — tried in order if primary is unavailable
+  fallback_servers:
+    - "ldaps://dc02.company.com:636"
+    - "ldaps://dc03.company.com:636"
+
+  # Distinguished Name for the search root
+  base_dn: "dc=company,dc=com"
+
+  # Read-only service account (never needs write access)
+  bind_dn: "cn=ngfw-reader,ou=service-accounts,dc=company,dc=com"
+  bind_password: "${NGFW_LDAP_BIND_PASSWORD}"   # set in .env or systemd unit
+
+  # Server type detection
+  # auto   → probe DSE to detect AD vs OpenLDAP automatically
+  # ad     → force Windows Active Directory mode
+  # openldap → force OpenLDAP mode
+  server_type: "auto"
+
+  # How often to refresh the full IP→user mapping
+  interval_seconds: 300              # 5 minutes
+
+  # Paged search size (0 = no paging — not recommended for large directories)
+  page_size: 500
+
+  # LDAP operation timeout
+  timeout_seconds: 15
+
+  # TLS certificate verification (disable only in dev/test)
+  tls_verify: true
+
+  # ── IP attributes ──────────────────────────────────────────────────────────
+  # LDAP attributes that hold the user's IP address.
+  # The sync scans all users that have at least one of these attributes set.
+  # List in order of preference.
+  ip_attributes:
+    - "msRADIUSFramedIPAddress"      # Windows AD + NPS — most common
+    - "radiusFramedIPAddress"        # OpenLDAP + FreeRADIUS
+    - "ipHostNumber"                 # Generic posixAccount (Linux LDAP)
+
+  # ── Username attribute ─────────────────────────────────────────────────────
+  # auto → sAMAccountName for AD, uid for OpenLDAP
+  # Override with specific attribute if needed (e.g. "userPrincipalName")
+  username_attribute: "auto"
+
+  # Attribute holding group memberships (DNs)
+  group_attribute: "memberOf"
+
+  # Attribute holding department / OU name
+  department_attribute: "department"
+
+  # Extra LDAP filter (appended to the base filter with AND)
+  # Example: "(!(userAccountControl:1.2.840.113556.1.4.803:=2))"  (exclude disabled users)
+  filter: ""
+
+  # Cache TTL for LDAP-sourced entries (shorter than default to force re-sync)
+  ttl_seconds: 900                   # 15 minutes
+
+  # ── Role mapping ───────────────────────────────────────────────────────────
+  # AD group CN → NGFW role
+  # First match wins. Groups not listed → role = "user"
+  role_mapping:
+    "Domain Admins":       "admin"
+    "bunyanx-admins":      "admin"
+    "bunyanx-operators":   "operator"
+    "IT-Department":       "operator"
+    "bunyanx-viewers":     "viewer"
+    "Security-Team":       "operator"
+    # Everything else → "user" (read-only UBA tracking)
+
+
+# ── Source 2: RADIUS Accounting ───────────────────────────────────────────────
+# Real-time login/logout events from NPS (Windows) or FreeRADIUS (Linux).
+# Gives instant identity the moment a user authenticates to WiFi or VPN.
+# Best for: 802.1X WiFi, RADIUS-based VPN, NAC (Network Access Control).
+radius_accounting:
+  enabled: false                     # ← set true when RADIUS is configured
+
+  # Which interface to listen on (0.0.0.0 = all interfaces)
+  listen_ip: "0.0.0.0"
+
+  # Standard RADIUS Accounting port
+  port: 1813
+
+  # Default shared secret (used if NAS IP not in nas_clients list)
+  default_secret: "${NGFW_RADIUS_SECRET}"
+
+  # Per-NAS secrets (more secure — each NAS has its own secret)
+  nas_clients:
+    - ip: "10.0.0.100"              # Windows NPS server
+      secret: "${RADIUS_NAS_100_SECRET}"
+    - ip: "10.0.0.101"              # FreeRADIUS / WiFi controller
+      secret: "${RADIUS_NAS_101_SECRET}"
+
+  # Cache TTL for RADIUS-sourced entries
+  # Usually shorter than LDAP because RADIUS sends explicit logout events
+  ttl_seconds: 1800                  # 30 minutes (refreshed by Interim-Update)
+
+  # TTL for Interim-Update packets (session still active)
+  interim_ttl_s: 3600               # 1 hour
+
+  max_packet_size: 4096
+
+  # RADIUS Class attribute → NGFW role mapping
+  # The NAS/RADIUS server populates the Class attribute based on group/policy
+  role_class_map:
+    "Finance":      "user"
+    "IT-Admins":    "operator"
+    "Security-SOC": "operator"
+    "Executive":    "user"
+
+
+# ── Source 3: VPN Bridge ──────────────────────────────────────────────────────
+# Subscribes to VPN module events for remote-access users.
+# No extra configuration needed — piggybacks on the existing VPN module.
+vpn_bridge:
+  enabled: true
+  # TTL for VPN sessions (longer — users often stay connected all day)
+  ttl_seconds: 86400                 # 24 hours
+
+
+# ── Source 4: Captive Portal ──────────────────────────────────────────────────
+# For guest networks / BYOD where AD is not available.
+# A login page binds MAC+IP to a username (social login, guest pass, etc.)
+captive_portal:
+  enabled: false                   # set true for guest WiFi / BYOD networks
+
+  # ── Authentication mode ───────────────────────────────────────────
+  # none       : open portal (collect device info only, no credentials)
+  # guest_pass : pre-generated codes (receptionist prints and gives to visitor)
+  # ldap       : authenticate against LDAP/AD (employees on guest WiFi)
+  auth_mode: "guest_pass"
+
+  # ── Session settings ─────────────────────────────────────────────
+  ttl_seconds:   28800             # 8 hours (typical guest session)
+  max_sessions:  10000             # maximum concurrent portal sessions
+
+  # ── Redirect URLs ────────────────────────────────────────────────
+  # URL shown to guest browser before authentication
+  landing_url:   "/captive/login"
+  # URL to redirect to after successful login
+  redirect_url:  "https://www.google.com"
+
+  # ── Guest pass settings (used when auth_mode = guest_pass) ───────
+  guest_pass:
+    length:      8                 # code length (e.g. "ABCD1234")
+    valid_hours: 24                # how long the code is valid
+    single_use:  false             # if true, each code used by one device only
+
+
+
+# ── Source 5: Manual API ──────────────────────────────────────────────────────
+# REST endpoint: POST /api/identity/bind  { ip, username, ttl }
+# Useful for: custom SSO integrations, testing, emergency override
+manual_api:
+  enabled: true
+  # Require admin role to call the bind/unbind endpoints
+  require_admin: true
+
+
+# ── Logging & Observability ────────────────────────────────────────────────────
+logging:
+  # Log every IP→user binding (INFO level)
+  log_bindings: true
+  # Log every cache hit/miss (DEBUG level — high volume)
+  log_lookups: false
+  # Log expired entry removals
+  log_expirations: true
+
+
+# ── Priority / Conflict Resolution ────────────────────────────────────────────
+# When multiple sources bind the same IP simultaneously, who wins?
+# Higher priority number = higher precedence.
+source_priority:
+  manual:   100    # explicit admin override always wins
+  radius:    80    # real-time login events are very reliable
+  vpn:       70    # VPN assigns IPs deterministically
+  ldap_sync: 50    # batch sync is background knowledge
+  captive:   40    # guest logins are least authoritative

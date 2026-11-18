@@ -1,0 +1,29 @@
+uba:
+  baseline_min_events: 50
+  ema_alpha: 0.1
+  max_known_ips: 30
+  max_known_services: 100
+  detector_weights:
+    time: 0.2
+    location: 0.3
+    exfil: 0.25
+    privilege: 0.15
+    peer: 0.1
+  thresholds:
+    medium: 25.0
+    high: 55.0
+    critical: 80.0
+  alert_on_risk_level: high
+  deception_enabled: true
+  privileged_services:
+    - ssh
+    - rdp
+    - winrm
+    - admin
+    - root
+    - sudo
+    - '3389'
+    - '22'
+    - '5985'
+    - '5986'
+    - '445'

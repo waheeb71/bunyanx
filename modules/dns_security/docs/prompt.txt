@@ -1,0 +1,305 @@
+مفهوم — تريد **برومبتات صارمة (rigorous prompts)** تُجبر أي نموذج/فريق على تنفيذ كل خطوة بمستوى قابل للنشر الأكاديمي. سأعطيك مجموعة برومبتات جاهزة، كل واحد مصمم كأنه “تعليمات Reviewer قاسية + قائد مختبر”.
+
+استخدمها مع أي نموذج (أو حتى كـ SOP لفريقك). لا تعدّلها إلا إذا فهمت الهدف.
+
+---
+
+# 🔴 1. برومبت البيانات الحقيقية (Real Data Acquisition)
+
+أنت باحث أمن شبكات مكلف بإعداد dataset قابل للنشر الأكاديمي لدراسة DNS malware detection.
+
+المطلوب:
+
+1. استخدم ONLY datasets حقيقية (NO synthetic data إطلاقًا)
+
+2. اجمع ثلاث فئات:
+
+   * DGA domains من مصادر موثوقة (مثل Bambenek / DGArchive)
+   * benign domains من passive DNS أو enterprise traces
+   * temporal DNS query logs (pcap أو flow-level timing)
+
+3. لكل dataset:
+
+   * صف المصدر بدقة (الجهة، السنة، طريقة الجمع)
+   * وضّح أي bias محتمل
+   * اشرح لماذا dataset يمثل الواقع
+
+4. أنشئ تقسيم صارم:
+
+   * train / validation / test
+   * يجب أن يكون test set منفصل بالكامل (no leakage)
+
+5. امنع:
+
+   * أي data leakage
+   * أي توليد صناعي domains
+
+المخرجات:
+
+* جدول مفصل بكل dataset
+* وصف علمي لكل مصدر
+* justification لاستخدامه
+* مخطط التقسيم النهائي
+
+أي استخدام لبيانات synthetic = فشل المهمة.
+
+---
+
+# 🟠 2. برومبت التجارب الأساسية (Baseline Evaluation)
+
+أنت الآن مسؤول عن تنفيذ تقييم علمي صارم لنظام DNS malware detection.
+
+المطلوب:
+
+1. قيّم الأنظمة التالية:
+
+   * Shannon entropy baseline
+   * n-gram / statistical model
+   * ML-based DGA detector (LSTM أو Transformer)
+   * النظام المقترح (DART)
+
+2. لكل نظام:
+
+   * احسب: Precision, Recall, F1, FPR
+   * احسب ROC curve و AUC
+   * احسب latency per query
+
+3. نفّذ:
+
+   * k-fold cross-validation (k >= 5)
+   * average + standard deviation
+
+4. لا تستخدم نفس البيانات للتدريب والاختبار
+
+5. قدّم النتائج في:
+
+   * جداول مقارنة
+   * رسوم ROC
+
+6. ممنوع:
+
+   * استخدام tuning على test set
+   * أي claim بدون أرقام
+
+المخرجات:
+
+* جدول مقارنة شامل
+* تحليل لماذا نظامك يتفوق أو يفشل
+* تفسير trade-offs (accuracy vs latency)
+
+أي نقص في المقارنة مع baselines = رفض مباشر.
+
+---
+
+# 🟡 3. برومبت Adversarial Evaluation (الأهم)
+
+أنت attacker + defender في نفس الوقت. هدفك كسر النظام المقترح.
+
+نفّذ الهجمات التالية:
+
+1. كسر Layer 1 (Lexical):
+
+   * dictionary DGA
+   * domains تشبه brands
+   * low-entropy DGAs
+
+2. كسر Layer 2 (Temporal):
+
+   * random jitter
+   * non-periodic beaconing
+   * bursty + delayed queries
+
+3. كسر Layer 3 (Graph):
+
+   * single-host queries فقط
+   * staggered bot activation
+   * توزيع queries على زمن طويل
+
+لكل هجوم:
+
+* صف طريقة التنفيذ
+* قِس performance (F1, FPR)
+* هل النظام انهار أم لا؟
+
+ثم:
+
+* حلل لماذا نجح أو فشل النظام
+* هل triangulation فعلاً صمد؟
+
+المخرجات:
+
+* جدول adversarial results
+* تحليل عميق لنقاط الضعف
+* اقتراح تحسينات
+
+إذا لم تستطع كسر النظام جزئيًا → أنت لم تحاول بجدية.
+
+---
+
+# 🔵 4. برومبت تحليل الإحصاء (Statistical Rigor)
+
+أنت إحصائي مكلف بتحويل النتائج إلى دليل علمي مقنع.
+
+المطلوب:
+
+1. احسب:
+
+   * 95% confidence intervals لكل metric
+   * standard deviation عبر التجارب
+
+2. نفّذ:
+
+   * significance testing (t-test أو bootstrap)
+
+3. قارن:
+
+   * هل الفرق بين DART و baselines statistically significant؟
+
+4. قدّم:
+
+   * ROC curves
+   * Precision-Recall curves
+
+5. لا تستخدم:
+
+   * claims بدون دعم إحصائي
+
+المخرجات:
+
+* جداول إحصائية
+* تفسير واضح للثقة في النتائج
+* هل التحسن حقيقي أم noise؟
+
+أي نتيجة بدون statistical validation = غير مقبولة للنشر.
+
+---
+
+# 🟣 5. برومبت Fusion Validation
+
+أنت باحث يحاول إثبات أن طريقة fusion المقترحة ليست عشوائية.
+
+المطلوب:
+
+1. قارن بين:
+
+   * product-of-complements (الحالي)
+   * logistic regression fusion
+   * simple averaging
+
+2. احسب:
+
+   * performance لكل طريقة
+
+3. حلل:
+
+   * هل independence assumption صحيح؟
+   * هل MI كافٍ كدليل؟
+
+4. استنتج:
+
+   * هل fusion الحالي أفضل فعلاً؟
+   * أم مجرد heuristic؟
+
+المخرجات:
+
+* جدول مقارنة fusion methods
+* تفسير علمي (not marketing)
+* قرار مدعوم بالبيانات
+
+إذا لم تثبت superiority → يجب تعديل الطريقة.
+
+---
+
+# ⚫ 6. برومبت إعادة كتابة المساهمة (Contribution Rewrite)
+
+أنت reviewer في مؤتمر أمني، أعد صياغة المساهمة بشكل علمي صارم.
+
+المطلوب:
+
+1. احذف:
+
+   * أي لغة تسويقية (resonance, revolutionary, zero FP)
+
+2. اكتب المساهمة بصيغة:
+
+   * measurable
+   * testable
+   * قابلة للنقد
+
+3. ركّز على:
+
+   * ما الجديد فعلاً مقارنة بالأعمال السابقة
+   * ما الذي أثبته experimentally
+
+4. قدّم:
+
+   * 3 إلى 4 contributions فقط (واضحة ومحددة)
+
+المخرجات:
+
+* قسم Contributions جاهز للنشر
+* بدون مبالغة
+* بدون ادعاءات غير مدعومة
+
+أي claim غير مثبت = احذفه.
+
+---
+
+# ⚪ 7. برومبت Threats to Validity
+
+أنت reviewer يحاول رفض الورقة. اكتب Threats to Validity بصرامة.
+
+المطلوب:
+
+1. حدّد:
+
+   * dataset bias
+   * evaluation limitations
+   * deployment assumptions
+   * adversarial gaps
+
+2. لكل نقطة:
+
+   * اشرح التأثير
+   * هل يهدد النتائج؟
+
+3. لا تدافع عن النظام — انتقده
+
+المخرجات:
+
+* قسم Threats to Validity واقعي وقاسٍ
+* يعترف بالقيود بوضوح
+
+إذا بدا القسم “لطيفًا” → أعد كتابته.
+
+---
+
+# 🧠 كيف تستخدم هذه البرومبتات؟
+
+نفّذها بهذا الترتيب:
+
+1. البيانات
+2. التقييم الأساسي
+3. الهجمات
+4. الإحصاء
+5. fusion
+6. إعادة الصياغة
+7. القيود
+
+---
+
+# 🎯 نصيحة أخيرة
+
+إذا نفّذت هذه البرومبتات حرفيًا:
+
+> أنت لا “تحسن الورقة”…
+> أنت تبني **paper قادرة على الصمود أمام Reviewer عدائي**
+
+---
+
+إذا أردت، أستطيع:
+
+* تشغيل أحد هذه البرومبتات معك خطوة بخطوة
+* أو مراجعة نتائجك كأنني reviewer في NDSS وأعطيك verdict حقيقي
+
+قل لي أي خطوة تبدأ بها.

@@ -1,0 +1,16 @@
+name: firewall
+version: "2.0.0"
+description: "Stateful Next-Gen Firewall with GeoIP, ACL, App Control"
+type: inspector
+priority: 0
+requires:
+  - db
+  - xdp_engine
+  - config
+provides:
+  - firewall_evaluator
+event_subscriptions:
+  - threat.detected
+  - response.block
+event_publications:
+  - policy.evaluated

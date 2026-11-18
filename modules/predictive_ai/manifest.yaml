@@ -1,0 +1,14 @@
+name: predictive_ai
+version: "3.0.0"
+description: "AEGIS v3 Predictive AI with Two-Stage Defense"
+type: hybrid
+priority: 70
+requires:
+  - config
+provides:
+  - AEGIS_engine
+event_subscriptions:
+  - threat.detected
+  - ai.score_generated
+event_publications:
+  - ai.score_generated

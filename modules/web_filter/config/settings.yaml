@@ -1,0 +1,296 @@
+# ═══════════════════════════════════════════════════════════════════
+# bunyanx NGFW — Web Filter Module Configuration
+# File: modules/web_filter/config/settings.yaml
+#
+# Authority: Module-level config.  Merged over base.yaml at runtime.
+#            Keys in this file OVERRIDE base.yaml equivalents.
+# ═══════════════════════════════════════════════════════════════════
+
+web_filter:
+
+
+  default_action: "ALLOW"
+
+  # ── Safe Search Enforcement ───────────────────────
+  safe_search:
+    enabled: true
+    # Append ?safe=active to search engine URLs (HTTP layer)
+    rewrite_url: true
+    # Redirect DNS to SafeSearch CNAMEs (DNS layer, requires dns_filter integration)
+    enforce_via_dns: true
+    # Engines to enforce (must match SafeSearch.SAFE_SEARCH_CNAMES keys)
+    engines:
+      - "google.com"
+      - "www.google.com"
+      - "bing.com"
+      - "www.bing.com"
+      - "duckduckgo.com"
+      - "yandex.com"
+      - "youtube.com"
+
+  # ── Domain Cache ──────────────────────────────────
+  cache:
+    # Maximum number of domain → category entries in memory
+    max_size: 50000
+    # Time-to-live per cache entry (seconds).  0 = no expiry.
+    ttl_seconds: 300
+
+  # ── DNS Sinkhole Integration ──────────────────────
+  dns_sinkhole:
+    enabled: true
+    # IP returned for sinkholes domains (should point to a block-page server)
+    sinkhole_ip: "0.0.0.0"
+    # Categories whose domains trigger DNS sinkholing
+    sinkhole_categories:
+      - "malware"
+      - "phishing"
+      - "botnet"
+      - "ransomware"
+      - "c2"
+
+  # ── Pre-seeded Category Definitions ──────────────
+  # These categories are created in the DB on first run if absent.
+  # risk_score: 0-100.  action: ALLOW | BLOCK | MONITOR
+  builtin_categories:
+    - name: "malware"
+      description: "Known malware distribution sites"
+      action: "BLOCK"
+      risk_score: 100
+
+    - name: "phishing"
+      description: "Phishing and credential-harvesting sites"
+      action: "BLOCK"
+      risk_score: 100
+
+    - name: "botnet"
+      description: "Botnet C2 and infected hosts"
+      action: "BLOCK"
+      risk_score: 100
+
+    - name: "ransomware"
+      description: "Ransomware delivery and payment sites"
+      action: "BLOCK"
+      risk_score: 100
+
+    - name: "c2"
+      description: "Command-and-Control infrastructure"
+      action: "BLOCK"
+      risk_score: 100
+
+    - name: "adult"
+      description: "Explicit adult content"
+      action: "BLOCK"
+      risk_score: 80
+
+    - name: "gambling"
+      description: "Online gambling"
+      action: "BLOCK"
+      risk_score: 70
+
+    - name: "social_media"
+      description: "Social media platforms"
+     # action: "MONITOR"
+      action: "ALLOW"  
+      risk_score: 30
+
+    - name: "streaming"
+      description: "Video and music streaming"
+      action: "MONITOR"
+      risk_score: 20
+
+    - name: "news"
+      description: "News and media"
+      action: "ALLOW"
+      risk_score: 10
+
+    - name: "education"
+      description: "Educational content"
+      action: "ALLOW"
+      risk_score: 5
+
+    - name: "finance"
+      description: "Banking and financial services"
+      action: "ALLOW"
+      risk_score: 5
+
+  # ── Logging ───────────────────────────────────────
+  logging:
+    log_decisions: true
+    log_safe_search_rewrites: true
+    log_cache_hits: false     # noisy — keep false in production
+    level: "INFO"
+
+  # ── AI HoloFilter (Zero-Latency Engine) ───────────
+  ai_holofilter:
+    enabled: true
+    # Dimensionality of the hypervectors (must match the trained offline_hv.npz)
+    vector_dimensions: 10048
+    # Absolute minimum risk score to evaluate as AI_BLOCK (0-100)
+    action_threshold_score: 70
+    
+    # Mathematical weights for the non-linear risk boundary
+    weights:
+      w_dga: 12.0
+      w_phish: 8.0
+      w_benign: 15.0
+    
+    # Model Sigmoid Bias mapping
+    bias: -3.5
+
+  # ── Custom Domain Rules ────────────────────────────
+  # FIX: was empty (0 domains) — Web Filter was effectively inactive.
+  # Added real domains per category so blocking and monitoring work.
+  # Format: { domain, category, action }
+  # action: BLOCK | MONITOR | ALLOW
+  custom_rules:
+
+    # ── Malware (BLOCK) ─────────────────────────────
+    - domain: "malware.wicar.org"
+      category: "malware"
+      action: "BLOCK"
+    - domain: "eicar.org"
+      category: "malware"
+      action: "BLOCK"
+    - domain: "malwaredomainlist.com"
+      category: "malware"
+      action: "BLOCK"
+    - domain: "*.malware-test.com"
+      category: "malware"
+      action: "BLOCK"
+
+    # ── Phishing (BLOCK) ────────────────────────────
+    - domain: "*.phishtank.com"
+      category: "phishing"
+      action: "BLOCK"
+    - domain: "phishing.test.example"
+      category: "phishing"
+      action: "BLOCK"
+    - domain: "login-paypal-verify.tk"
+      category: "phishing"
+      action: "BLOCK"
+    - domain: "secure-account-update.ml"
+      category: "phishing"
+      action: "BLOCK"
+    - domain: "bankofamerica-login.xyz"
+      category: "phishing"
+      action: "BLOCK"
+
+    # ── Botnet / C2 (BLOCK) ─────────────────────────
+    - domain: "ssbzmoy.biz"
+      category: "c2"
+      action: "BLOCK"
+    - domain: "4rtghgghjgj878.top"
+      category: "c2"
+      action: "BLOCK"
+    - domain: "*.c2server.xyz"
+      category: "c2"
+      action: "BLOCK"
+    - domain: "*.botnet-c2.tk"
+      category: "botnet"
+      action: "BLOCK"
+    - domain: "feodotracker.abuse.ch"
+      category: "botnet"
+      action: "BLOCK"
+
+    # ── Ransomware (BLOCK) ──────────────────────────
+    - domain: "*.onion.to"
+      category: "ransomware"
+      action: "BLOCK"
+    - domain: "ransomware-payment.xyz"
+      category: "ransomware"
+      action: "BLOCK"
+
+    # ── Gambling (BLOCK) ────────────────────────────
+    - domain: "bet365.com"
+      category: "gambling"
+      action: "BLOCK"
+    - domain: "pokerstars.com"
+      category: "gambling"
+      action: "BLOCK"
+    - domain: "draftkings.com"
+      category: "gambling"
+      action: "BLOCK"
+    - domain: "fanduel.com"
+      category: "gambling"
+      action: "BLOCK"
+
+    # ── Social Media (MONITOR) ──────────────────────
+    - domain: "facebook.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "www.facebook.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "instagram.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "twitter.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "x.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "tiktok.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "snapchat.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "linkedin.com"
+      category: "social_media"
+      action: "MONITOR"
+    - domain: "reddit.com"
+      category: "social_media"
+      action: "MONITOR"
+
+    # ── Streaming (MONITOR) ─────────────────────────
+    - domain: "youtube.com"
+      category: "streaming"
+      action: "MONITOR"
+    - domain: "netflix.com"
+      category: "streaming"
+      action: "MONITOR"
+    - domain: "twitch.tv"
+      category: "streaming"
+      action: "MONITOR"
+    - domain: "spotify.com"
+      category: "streaming"
+      action: "MONITOR"
+    - domain: "tidal.com"
+      category: "streaming"
+      action: "MONITOR"
+    - domain: "disneyplus.com"
+      category: "streaming"
+      action: "MONITOR"
+
+    # ── Finance (ALLOW) ─────────────────────────────
+    - domain: "paypal.com"
+      category: "finance"
+      action: "ALLOW"
+    - domain: "stripe.com"
+      category: "finance"
+      action: "ALLOW"
+    - domain: "wise.com"
+      category: "finance"
+      action: "ALLOW"
+    - domain: "stc.com.sa"
+      category: "finance"
+      action: "ALLOW"
+
+    # ── Education (ALLOW) ───────────────────────────
+    - domain: "github.com"
+      category: "education"
+      action: "ALLOW"
+    - domain: "stackoverflow.com"
+      category: "education"
+      action: "ALLOW"
+    - domain: "coursera.org"
+      category: "education"
+      action: "ALLOW"
+    - domain: "udemy.com"
+      category: "education"
+      action: "ALLOW"
+    - domain: "wikipedia.org"
+      category: "education"
+      action: "ALLOW"
+

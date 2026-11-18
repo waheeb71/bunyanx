@@ -1,0 +1,393 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# bunyanx NGFW — Main Configuration File
+# Path:    system/config/base.yaml
+# Docs:    system/config/CONFIG.md
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Database ──────────────────────────────────────────────────────────────────
+# Path to the SQLite database file (relative to project root or absolute).
+# Override with environment variable:  bunyanx_DB_PATH=/path/to/bunyanx.db
+# For PostgreSQL in production use:    bunyanx_DATABASE_URL=postgresql+asyncpg://...
+database:
+  path: data/bunyanx.db
+
+# ── Proxy Configuration ───────────────────────────────────────────────────────
+# mode: transparent  → MITM intercept all LAN traffic (nftables redirect)
+# mode: forward      → Explicit proxy (client configures proxy in browser)
+# mode: reverse      → Reverse proxy / WAF frontend for backend servers
+# mode: all          → Run all three simultaneously (current setting)
+proxy:
+  mode: all
+
+  # ── Transparent / Forward proxy ports ──────────────────────────────────────
+  listen_host: 0.0.0.0
+  listen_port: 8443        # HTTPS interception port (transparent proxy)
+  http_port: 8080          # HTTP  interception port (transparent proxy)
+
+  # Forward proxy uses port 3128 (standard) to avoid conflict with transparent's 8080
+  forward_listen_host: 0.0.0.0
+  forward_listen_port: 3128    # clients set: proxy 192.168.x.x:3128 in browser
+
+  # ── Reverse proxy ports ────────────────────────────────────────────────────
+  reverse_listen_host: 0.0.0.0
+  reverse_listen_port: 443         # External HTTPS (clients connect here)
+  reverse_http_port: 80            # External HTTP  (clients connect here)
+  reverse_http_enabled: true       # Enable HTTP listener on reverse proxy
+
+  # ── Backend TLS ────────────────────────────────────────────────────────────
+  verify_backend_tls: false        # Internal servers use self-signed certs
+
+  # ── Virtual IPs (VIPs) ────────────────────────────────────────────────────
+  # Maps external IP:port → internal server IP:port
+  # Both Transparent proxy and Reverse proxy use this table.
+  vips:
+  - name: Internal Bank App (HTTP)
+    external_ip: 192.168.1.33
+    external_port: 80
+    internal_ip: 10.10.0.50
+    internal_port: 8080
+    use_tls_upstream: false
+
+  - name: Internal Bank App (HTTPS)
+    external_ip: 192.168.1.33
+    external_port: 443            # ← nftables redirects :443 → :8080 → MemoryBIO TLS
+    internal_ip: 10.10.0.50
+    internal_port: 8080
+    use_tls_upstream: false
+
+  - name: Secure Internal DB
+    external_ip: 10.10.0.1
+    external_port: 5432
+    internal_ip: 10.10.0.50
+    internal_port: 5432
+    use_tls_upstream: true
+
+  - name: Email SMTP
+    external_ip: 192.168.1.33
+    external_port: 25
+    internal_ip: 10.10.0.50
+    internal_port: 25
+    use_tls_upstream: false
+
+  - name: "FTP Control"
+    external_ip: 192.168.1.33
+    external_port: 21
+    internal_ip: 10.10.0.50
+    internal_port: 2121
+    use_tls_upstream: false
+    mode: dnat   # kernel DNAT — bypasses WAF/DLP/TLS inspection (FTP is not HTTP-proxiable)
+
+  - name: "FTP Data"
+    external_ip: 192.168.1.33
+    external_port: 20
+    internal_ip: 10.10.0.50
+    internal_port: 2020
+    use_tls_upstream: false
+    mode: dnat   # kernel DNAT — bypasses WAF/DLP/TLS inspection (FTP data channel)
+
+  # ── HTTP hardening ─────────────────────────────────────────────────────────
+  hardening:
+    cloaking_enabled: true
+    server_banner: bunyanx-NGFW
+    strip_headers:
+    - Server
+    - X-Powered-By
+    - X-AspNet-Version
+    - X-AspNetMvc-Version
+    - X-Runtime
+    - X-Version
+    - Via
+    - X-Varnish
+
+  # ── Connection limits ──────────────────────────────────────────────────────
+  max_connections: 10000
+  buffer_size: 65536
+  connection_timeout: 300
+  health_check_interval: 10
+  health_check_timeout: 6
+
+
+modules:
+  firewall:
+    enabled: true
+    config_path: modules/firewall/config/settings.yaml
+    # enforce = block traffic | monitor = log only
+    # settings.yaml default_policy: DROP handles per-packet decisions
+    mode: enforce
+  ssl_inspection:
+    enabled: true
+    config_path: modules/ssl_inspection/config/ssl.yaml
+  dlp:
+    enabled: true
+    config_path: modules/dlp/config/settings.yaml
+    mode: enforce  # monitor | enforce
+  web_filter:
+    enabled: true
+    config_path: modules/web_filter/config/settings.yaml
+    mode: enforce
+  # Default action when a domain is UNRATED / no rule matches
+  # ALLOW | BLOCK
+  ids_ips:
+    enabled: true
+    config_path: modules/ids_ips/config/settings.yaml
+    mode: blocking
+  malware_av:
+    enabled: true
+    config_path: modules/malware_av/config/settings.yaml
+    mode: blocking
+  dns_security:
+    enabled: true
+    config_path: modules/dns_security/config/settings.yaml
+    mode: enforce
+  http_inspection:
+    enabled: true
+    config_path: modules/http_inspection/config/settings.yaml
+    mode:  enforce
+  qos:
+    enabled: true
+    config_path: modules/qos/config/settings.yaml
+    mode: enforce
+  email_security:
+    enabled: true
+    config_path: modules/email_security/config/email.yaml
+    mode: enforce
+  uba:
+    enabled: true
+    config_path: modules/uba/config/settings.yaml
+    mode:  enforce
+  predictive_ai:
+    enabled: true
+    config_path: modules/predictive_ai/config/settings.yaml
+    mode: full_auto         # monitor | active | full_auto
+  vpn:
+    enabled: true
+    config_path: modules/vpn/config/settings.yaml
+  waf:
+    enabled: true
+    config_path: modules/waf/config/waf.yaml
+    mode: enforce
+  log_manager:
+    enabled: true
+    config_path: modules/log_manager/config/settings.yaml
+  proxy:
+    enabled: true
+tls:
+  ca_cert_path: certs/root-ca.crt
+  ca_key_path: certs/root-ca.key
+  use_intermediate_ca: true
+  intermediate_ca_cert: certs/intermediate-ca.crt
+  intermediate_ca_key: certs/intermediate-ca.key
+  server_cert: certs/server.crt
+  server_key: certs/server.key
+  cert_chain: certs/chain.pem
+  cert_cache_dir: certs/cache
+  cert_cache_size: 10000
+  cert_validity_days: 365
+  cert_key_size: 2048
+  min_tls_version: TLSv1.2
+  max_tls_version: TLSv1.3
+  cipher_suites:
+  - TLS_AES_256_GCM_SHA384
+  - TLS_CHACHA20_POLY1305_SHA256
+  - TLS_AES_128_GCM_SHA256
+  - ECDHE-RSA-AES256-GCM-SHA384
+  - ECDHE-RSA-CHACHA20-POLY1305
+  - ECDHE-RSA-AES128-GCM-SHA256
+  alpn_protocols:
+  - h2
+  - http/1.1
+routing:
+  default_mode: transparent
+  port_mappings:
+    8080: forward
+    8443: forward
+    443: transparent
+    80: transparent
+flow_tracking:
+  enabled: true
+  max_flows: 100000
+  flow_timeout: 3600
+ebpf:
+  enabled: true
+  interface: auto    # auto = use WAN interface from network_auto_configurator state
+  xdp_mode: native
+  feedback_interval: 5
+  ml_integration:
+    enabled: true
+    action: block
+    confidence_threshold: 0.85
+  port_filter:
+    enabled: true
+    default_action:  drop # pass
+    allowed_ports:
+    - 80       # HTTP
+    - 443      # HTTPS
+    - 8080     # HTTP proxy
+    - 8443     # HTTPS proxy
+    - 53       # DNS
+    - 22       # SSH management
+    - 2222     # Mock SSH Server
+    - 25       # SMTP
+    - 110      # POP3 Email
+    - 21       # FTP Control
+    - 20       # FTP Data
+    - 2121     # Mock FTP Server / Backend
+    - 51820    # WireGuard VPN
+    - 4443     # Mock VPN Gateway
+    - 8888     # bunyanx Management API
+    - 8000     # bunyanx dev proxy / API server
+    - 5173     # Vite dev frontend
+
+  ring_buffers:
+    critical_size_kb: 1024
+    warning_size_kb: 4096
+    info_size_kb: 16384
+  pipeline:
+    enabled: false
+    bitmask: 16
+    max_stages: 8
+  conntrack:
+    enabled: false
+    max_entries: 1000000
+    tcp_timeout_established: 300
+    tcp_timeout_syn: 10
+    tcp_timeout_fin: 30
+    cleanup_interval: 30
+    per_cpu_fast_path: true
+  syn_proxy:
+    enabled: false
+    syn_rate_threshold: 1000
+    trusted_cache_size: 500000
+    suspicious_decay_sec: 300
+    use_native_helpers: true
+  l4_lb:
+    enabled: false
+    max_backends: 64
+    algorithm: hash
+    session_map_size: 500000
+security:
+  blacklist_ips: []
+  whitelist_ips: []
+  blacklist_domains:
+  - '*.malware.com'
+  - '*.phishing.net'
+  rate_limiting:
+    enabled: true
+    requests_per_second: 1000
+    burst_size: 5000
+  strict_cert_validation: true
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    path: /metrics
+  health_check:
+    enabled: true
+    port: 9091
+    path: /health
+api:
+  enabled: true
+  listen_host: 0.0.0.0
+  listen_port: 8888
+  auth:
+    enabled: true
+    api_key: ''
+  websocket:
+    enabled: true
+    port: 8889
+integration:
+  ldap:
+    enabled: false
+    # ⚠️  Must use ldaps:// — plain ldap:// is rejected by policy
+    server: ldaps://ldap.example.com:636
+    base_dn: dc=example,dc=com
+    bind_dn: cn=bunyanx-svc,ou=ServiceAccounts,dc=example,dc=com
+    # ⚠️  NEVER put the password here — use the env var:
+    #      export BUNYANX_LDAP_BIND_PASSWORD=yourpassword
+    bind_password: '${BUNYANX_LDAP_BIND_PASSWORD}'
+    # LDAP search filter — {username} is replaced at runtime
+    search_filter: '(sAMAccountName={username})'
+    # Which attribute holds the group memberships
+    group_attribute: memberOf
+    # AD group → bunyanx role mapping
+    role_mapping:
+      bunyanx-admins: admin
+      bunyanx-operators: operator
+      Domain Admins: admin
+      bunyanx-viewers: viewer
+    # Max simultaneous LDAP connections
+    connection_pool_size: 5
+    # Timeout for LDAP operations (seconds)
+    timeout: 10
+  siem:
+    enabled: false
+    type: syslog
+    server: siem.example.com
+    port: 514
+  ids_ips:
+    enabled: false
+    type: suricata
+    socket_path: suricata.socket
+vpn:
+  enabled: true
+  interface: wg0
+  listen_port: 51820
+  ip_address: 10.99.0.1/24
+  dns: ''
+  mtu: 1420
+  portal:
+    allow_multi_session: false
+ml:
+  enabled: true
+  deep_model_path: ml/models/ids_ips/l7_dpi_classifier.pkl
+  anomaly_detection:
+    enabled: true
+    model_path: ml/models/ids_ips/l3_anomaly_detector.pkl
+    threshold: 0.85
+  traffic_profiling:
+    enabled: true
+    learning_period: 86400
+  rl_policy_sync:
+    enabled: false
+interfaces:
+  management:
+    mac: 'd4:85:64:95:bf:37'
+    address: 10.10.0.1/24
+    locked: true
+    fail_safe: true
+  wan:
+    mac: '00:aa:34:58:89:0a'
+    mode: static
+    address: "192.168.1.33/24"
+    gateway: "192.168.1.1"
+  lan:
+    mac: 'd4:85:64:95:bf:37'
+    address: 10.10.0.1/24
+    mode: static
+
+ai_enforcement:
+  auto_block: true
+  anomaly_threshold: 0.8
+
+
+
+# ── Geographic Site Locations ──────────────────────────────────────────────────
+system:
+  location:
+    headquarters:
+      name: "Taiz HQ"
+      country: "Yemen"
+      flag: "🇾🇪"
+      lat: 13.5795
+      lng: 44.0206
+   #branches:
+    # - name: "Riyadh Branch"
+     #  country: "Saudi Arabia"
+      # flag: "🇸🇦"
+       #lat: 24.7136
+       #lng: 46.6753
+     #- name: "Aden Office"
+      # country: "Yemen"
+       #flag: "🇾🇪"
+       #lat: 12.7855
+      # lng: 44.9754

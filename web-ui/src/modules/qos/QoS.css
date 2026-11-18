@@ -1,0 +1,131 @@
+/* ═══════════════════════════════════════════════════════
+   bunyanx — QoS Module (SOC Enterprise Dark Glassmorphism)
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Config Summary Grid ──────────────────────────────── */
+.qos-config-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.qos-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all var(--transition-fast);
+}
+.qos-config-row:hover {
+  background: var(--bg-hover);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.qos-config-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.qos-config-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ── QoS Config Form ──────────────────────────────────── */
+.qos-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
+}
+.qos-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.qos-form-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.qos-input {
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.qos-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 200, 255, 0.15);
+}
+.qos-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+.qos-toggle-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+.qos-btn-group {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+/* ── Logs & Alerts Panels ─────────────────────────────── */
+.qos-log-panel {
+  max-height: 220px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-right: 4px;
+}
+.qos-log-panel::-webkit-scrollbar {
+  width: 5px;
+}
+.qos-log-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.qos-log-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+.qos-log-item.info {
+  background: rgba(0, 200, 255, 0.05);
+  color: var(--info);
+  border-right: 3px solid var(--info);
+}
+.qos-log-item.warning {
+  background: rgba(255, 171, 64, 0.08);
+  color: var(--warning);
+  border-right: 3px solid var(--warning);
+  border: 1px solid rgba(255, 171, 64, 0.15);
+}
+
+

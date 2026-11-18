@@ -1,0 +1,135 @@
+/* ═══════════════════════════════════════════════════════════════
+   HTTP Inspection — Premium Stylesheet · bunyanx NGFW
+   RTL · Dark Mode · SOC-Grade
+═══════════════════════════════════════════════════════════════ */
+
+.http-root { display:flex; flex-direction:column; gap:18px; padding:28px 32px; font-family:'Cairo',sans-serif; animation:http-in .35s ease; position:relative; }
+@keyframes http-in { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.http-spin { animation:http-spin-a .8s linear infinite; }
+@keyframes http-spin-a { to{transform:rotate(360deg)} }
+.http-mono { font-family:'Fira Code',monospace; }
+
+/* ── Hero ── */
+.http-hero { position:relative; background:linear-gradient(135deg,rgba(129,140,248,.07) 0%,rgba(13,14,22,0) 60%); border:1px solid rgba(129,140,248,.16); border-radius:16px; padding:20px 26px; overflow:hidden; }
+.http-hero-glow { position:absolute; top:-60px; right:-60px; width:220px; height:220px; background:radial-gradient(circle,rgba(129,140,248,.09) 0%,transparent 70%); pointer-events:none; }
+.http-hero-inner { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.http-hero-left { display:flex; align-items:center; gap:16px; }
+.http-hero-icon { width:50px; height:50px; border-radius:13px; background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.22); display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 0 20px rgba(129,140,248,.07); }
+.http-hero-title { margin:0; font-size:1.2rem; font-weight:800; color:#f0f0f5; }
+.http-hero-sub { margin:4px 0 0; font-size:.75rem; color:rgba(255,255,255,.28); font-family:'Fira Code',monospace; }
+.http-hero-right { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.http-status-pill { display:flex; align-items:center; gap:7px; padding:6px 14px; border-radius:24px; font-size:.78rem; font-weight:700; white-space:nowrap; }
+.http-status-pill--on  { background:rgba(40,199,111,.09);  border:1px solid rgba(40,199,111,.2);  color:#28c76f; }
+.http-status-pill--off { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:rgba(255,255,255,.28); }
+.http-status-dot { width:7px; height:7px; border-radius:50%; background:currentColor; animation:http-pulse 2s infinite; flex-shrink:0; }
+@keyframes http-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.http-stat-chips { display:flex; gap:10px; }
+.http-stat-chip { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:8px 14px; text-align:center; transition:border-color .2s; }
+.http-stat-chip:hover { border-color:rgba(255,255,255,.12); }
+.http-stat-n { display:block; font-size:1.1rem; font-weight:800; font-family:'Fira Code',monospace; line-height:1; }
+.http-stat-l { font-size:.64rem; color:rgba(255,255,255,.25); font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+
+/* ── Tabs ── */
+.http-tabs { display:flex; gap:3px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:11px; padding:5px; width:fit-content; }
+.http-tab { display:flex; align-items:center; gap:7px; padding:9px 18px; border:none; border-radius:8px; background:transparent; color:rgba(255,255,255,.35); font-family:'Cairo',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; transition:all .18s; white-space:nowrap; }
+.http-tab:hover { background:rgba(255,255,255,.05); color:rgba(255,255,255,.7); }
+.http-tab--active { background:#1e1f2e; color:#f0f0f5; box-shadow:0 1px 8px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.07); }
+
+/* ── Panel ── */
+.http-panel { background:#13141e; border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+.http-panel-header { display:flex; align-items:center; justify-content:space-between; padding:13px 18px; border-bottom:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.01); }
+.http-panel-title { display:flex; align-items:center; gap:8px; font-size:.83rem; font-weight:700; color:rgba(255,255,255,.5); }
+
+/* ── Search & Filter Controls ── */
+.http-search-box { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:8px; padding:4px 10px; width:220px; transition:border-color .2s; }
+.http-search-box:focus-within { border-color:rgba(129,140,248,.45); }
+.http-search-input { background:none; border:none; outline:none; color:#f0f0f5; font-size:.8rem; font-family:'Cairo',sans-serif; width:100%; }
+.http-search-input::placeholder { color:rgba(255,255,255,.2); }
+.http-filter-select { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:8px; color:#f0f0f5; font-family:'Cairo',sans-serif; font-size:.78rem; padding:5px 8px; outline:none; cursor:pointer; }
+.http-export-btn { display:inline-flex; align-items:center; gap:5px; padding:5px 10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:7px; color:rgba(255,255,255,.7); font-size:.76rem; font-family:'Fira Code',monospace; cursor:pointer; transition:all .18s; }
+.http-export-btn:hover { background:rgba(129,140,248,.12); border-color:rgba(129,140,248,.3); color:#818cf8; }
+
+/* ── Add form ── */
+.http-add-form { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:16px 18px; border-bottom:1px solid rgba(255,255,255,.05); }
+
+/* ── Table ── */
+.http-table-wrap { overflow-x:auto; max-height:460px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.07) transparent; }
+.http-table { width:100%; border-collapse:collapse; direction:rtl; }
+.http-table thead { position:sticky; top:0; z-index:1; background:#13141e; }
+.http-table th { padding:10px 14px; text-align:right; font-size:.65rem; font-weight:700; color:rgba(255,255,255,.18); text-transform:uppercase; letter-spacing:.07em; border-bottom:1px solid rgba(255,255,255,.06); white-space:nowrap; }
+.http-row { border-bottom:1px solid rgba(255,255,255,.04); transition:background .15s; }
+.http-row:hover { background:rgba(255,255,255,.025); }
+.http-row:last-child { border-bottom:none; }
+.http-table td { padding:11px 14px; font-size:.82rem; color:rgba(255,255,255,.5); vertical-align:middle; }
+
+/* Badges */
+.http-target-badge { display:inline-block; padding:3px 10px; border-radius:6px; font-size:.72rem; font-weight:700; border:1px solid; white-space:nowrap; font-family:'Cairo',sans-serif; }
+.http-sev-badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:6px; font-size:.7rem; font-weight:800; border:1px solid; white-space:nowrap; }
+.http-state-badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:.68rem; font-weight:800; font-family:'Fira Code',monospace; }
+.http-state-badge--on  { background:rgba(40,199,111,.1);  border:1px solid rgba(40,199,111,.2);  color:#28c76f; }
+.http-state-badge--off { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); color:rgba(255,255,255,.25); }
+
+/* Regex display */
+.http-regex { color:#818cf8; font-size:.8rem; }
+
+/* Count pill */
+.http-count-pill { background:rgba(129,140,248,.08); border:1px solid rgba(129,140,248,.18); color:#818cf8; padding:2px 10px; border-radius:20px; font-size:.68rem; font-weight:800; font-family:'Fira Code',monospace; }
+
+/* ── Settings rows ── */
+.http-setting-row { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:15px 20px; border-bottom:1px solid rgba(255,255,255,.05); transition:background .15s; }
+.http-setting-row:last-child { border-bottom:none; }
+.http-setting-row--on { background:rgba(129,140,248,.025); border-right:2px solid rgba(129,140,248,.35); }
+.http-setting-key { font-size:.9rem; font-weight:700; color:#f0f0f5; margin-bottom:4px; }
+.http-setting-desc { font-size:.76rem; color:rgba(255,255,255,.28); line-height:1.5; font-family:'Cairo',sans-serif; }
+
+/* ── Inputs / selects ── */
+.http-input { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:8px; color:#f0f0f5; font-family:'Fira Code',monospace; font-size:.82rem; padding:9px 12px; outline:none; transition:border-color .2s; box-sizing:border-box; }
+.http-input:focus { border-color:rgba(129,140,248,.45); }
+.http-input::placeholder { color:rgba(255,255,255,.18); }
+.http-input--flex { flex:1; min-width:160px; }
+.http-input--num  { width:90px; text-align:center; }
+
+.http-select { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:8px; color:#f0f0f5; font-family:'Cairo',sans-serif; font-size:.83rem; padding:9px 12px; outline:none; cursor:pointer; transition:border-color .2s; }
+.http-select:focus { border-color:rgba(129,140,248,.45); }
+
+/* ── Switch ── */
+.http-switch { position:relative; display:inline-block; width:44px; height:24px; cursor:pointer; flex-shrink:0; }
+.http-switch input { display:none; }
+.http-switch-track { position:absolute; inset:0; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); border-radius:12px; transition:all .25s; }
+.http-switch-track::after { content:''; position:absolute; left:3px; top:3px; width:16px; height:16px; background:rgba(255,255,255,.25); border-radius:50%; transition:transform .25s,background .25s; }
+.http-switch input:checked+.http-switch-track { background:#818cf8; border-color:#818cf8; box-shadow:0 0 10px rgba(129,140,248,.35); }
+.http-switch input:checked+.http-switch-track::after { transform:translateX(20px); background:#050a0d; }
+
+/* ── Button ── */
+.http-btn { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:9px; font-family:'Cairo',sans-serif; font-size:.85rem; font-weight:700; cursor:pointer; border:1px solid transparent; transition:all .2s; white-space:nowrap; }
+.http-btn:disabled { opacity:.4; cursor:not-allowed; }
+.http-btn--primary { background:linear-gradient(135deg,#818cf8,#6366f1); color:#fff; box-shadow:0 4px 14px rgba(129,140,248,.2); }
+.http-btn--primary:hover:not(:disabled) { transform:translateY(-1px); box-shadow:0 6px 20px rgba(129,140,248,.35); }
+.http-btn--ghost { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); color:rgba(255,255,255,.7); padding:6px 14px; font-size:.8rem; }
+.http-btn--ghost:hover:not(:disabled) { background:rgba(255,255,255,.08); color:#fff; }
+.http-btn--preset { background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.25); color:#fbbf24; padding:6px 14px; font-size:.8rem; }
+.http-btn--preset:hover { background:rgba(251,191,36,.15); }
+
+/* Del btn */
+.http-del-btn { width:30px; height:30px; border-radius:7px; background:none; border:1px solid rgba(255,95,95,.1); color:rgba(255,95,95,.3); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .18s; margin:0 auto; }
+.http-del-btn:hover { background:rgba(255,95,95,.1); border-color:rgba(255,95,95,.28); color:#ff5f5f; }
+
+/* Toast */
+.http-toast { fixed:top; position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; align-items:center; gap:8px; padding:10px 20px; border-radius:10px; font-size:.85rem; font-weight:700; box-shadow:0 10px 30px rgba(0,0,0,.5); animation:http-in .25s ease; }
+.http-toast--success { background:#1e1f2e; border:1px solid rgba(40,199,111,.4); color:#28c76f; }
+.http-toast--error { background:#1e1f2e; border:1px solid rgba(255,95,95,.4); color:#ff5f5f; }
+
+/* Modal */
+.http-modal-backdrop { position:fixed; inset:0; z-index:9990; background:rgba(0,0,0,.7); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:20px; }
+.http-modal-card { background:#13141e; border:1px solid rgba(129,140,248,.2); border-radius:16px; width:100%; max-width:620px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.6); animation:http-in .2s ease; }
+.http-modal-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.02); }
+.http-modal-close { background:none; border:none; color:rgba(255,255,255,.4); font-size:1.1rem; cursor:pointer; }
+.http-modal-close:hover { color:#fff; }
+.http-modal-body { padding:20px; max-height:60vh; overflow-y:auto; }
+.http-modal-footer { display:flex; align-items:center; justify-content:flex-end; gap:10px; padding:14px 20px; border-top:1px solid rgba(255,255,255,.07); background:rgba(0,0,0,.2); }
+.http-preset-item { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 14px; background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.06); border-radius:10px; }
+
+/* Empty / loading */
+.http-empty { display:flex; flex-direction:column; align-items:center; gap:12px; padding:52px; color:rgba(255,255,255,.18); font-size:.85rem; font-family:'Cairo',sans-serif; }
+.http-loading { display:flex; align-items:center; justify-content:center; gap:10px; padding:28px; color:rgba(255,255,255,.25); font-size:.82rem; }
+

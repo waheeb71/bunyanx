@@ -1,0 +1,337 @@
+/* ═══════════════════════════════════════════════════════
+   bunyanx — IDS/IPS Module (page-specific styles)
+   Shared styles are in styles/shared.css
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Notification Toast ────────────────────────── */
+.ids-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.ids-toast-success {
+  background: rgba(0, 230, 153, 0.12);
+  border: 1px solid rgba(0, 230, 153, 0.3);
+  color: var(--text-primary);
+}
+.ids-toast-error {
+  background: rgba(255, 77, 106, 0.12);
+  border: 1px solid rgba(255, 77, 106, 0.3);
+  color: var(--text-primary);
+}
+
+/* ── Custom Tabs ──────────────────────────────────────── */
+.ids-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 6px;
+  width: fit-content;
+  margin-bottom: var(--sp-2);
+}
+.ids-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.ids-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+.ids-tab.active {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* ── Mode Chip (Header) ───────────────────────────────── */
+.ids-mode-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ids-mode-chip[data-mode="blocking"] {
+  color: var(--danger);
+  background: rgba(255, 77, 106, 0.08);
+  border: 1px solid rgba(255, 77, 106, 0.2);
+}
+.ids-mode-chip[data-mode="monitoring"] {
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.08);
+  border: 1px solid rgba(0, 200, 255, 0.2);
+}
+.ids-mode-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ids-pulse 2s infinite;
+}
+@keyframes ids-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Engine Badge (table header) ──────────────────────── */
+.ids-engine-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.ids-engine-badge[data-mode="blocking"] {
+  color: var(--danger);
+  background: rgba(255, 77, 106, 0.1);
+}
+.ids-engine-badge[data-mode="monitoring"] {
+  color: var(--accent);
+  background: rgba(0, 200, 255, 0.1);
+}
+.ids-engine-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── IP Flow ──────────────────────────────────────────── */
+.ids-ip-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+}
+
+/* ── Block Button ─────────────────────────────────────── */
+.ids-block-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 77, 106, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--danger);
+  padding: 5px 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+.ids-block-btn:hover {
+  background: rgba(255, 77, 106, 0.12);
+  border-color: var(--danger);
+}
+.ids-block-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Config Rows ──────────────────────────────────────── */
+.ids-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  border: 1px solid transparent;
+  transition: background var(--transition-fast);
+  margin-bottom: 2px;
+}
+.ids-config-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ── Mode Pills ───────────────────────────────────────── */
+.ids-mode-pills {
+  display: flex;
+  gap: 8px;
+}
+.ids-mode-pill {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.ids-mode-pill.active[data-color="danger"] {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: rgba(255, 77, 106, 0.1);
+}
+.ids-mode-pill.active[data-color="accent"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(0, 200, 255, 0.1);
+}
+
+/* ── Slider ───────────────────────────────────────────── */
+.ids-slider-wrap {
+  width: 100%;
+}
+.ids-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.ids-slider-track {
+  position: relative;
+  height: 6px;
+  background: var(--bg-overlay);
+  border-radius: 4px;
+  overflow: visible;
+}
+.ids-slider-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: linear-gradient(90deg, var(--accent), var(--danger));
+  border-radius: 4px;
+  pointer-events: none;
+}
+.ids-slider-input {
+  position: absolute;
+  top: -6px; left: 0;
+  width: 100%;
+  height: 18px;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+/* ── Toggle ───────────────────────────────────────────── */
+.ids-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.ids-toggle input { opacity: 0; width: 0; height: 0; }
+.ids-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--bg-overlay);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  transition: .3s;
+}
+.ids-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; width: 16px;
+  left: 3px; bottom: 3px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  transition: .3s;
+}
+.ids-toggle input:checked + .ids-toggle-slider {
+  background-color: var(--tg-color, var(--accent));
+  border-color: var(--tg-color, var(--accent));
+}
+.ids-toggle input:checked + .ids-toggle-slider:before {
+  transform: translateX(20px);
+  background-color: #050810;
+}
+
+/* ── Deception Traps Grid ─────────────────────────────── */
+.ids-traps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: var(--sp-3);
+}
+.ids-trap-card {
+  padding: var(--sp-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Deception Note ───────────────────────────────────── */
+.ids-deception-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(255, 180, 0, 0.05);
+  border: 1px solid rgba(255, 180, 0, 0.12);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Spinner ──────────────────────────────────────────── */
+.ids-spin {
+  animation: ids-spin-a 1s linear infinite;
+}
+@keyframes ids-spin-a {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── PHANTOM Stats Grid & Cards ───────────────────────── */
+.ids-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+.ids-stat-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ids-stat-label {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+.ids-stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.ids-drift-panel {
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-4);
+}

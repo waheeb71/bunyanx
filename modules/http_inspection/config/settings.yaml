@@ -1,0 +1,10 @@
+http_inspection:
+  block_dangerous_methods: true
+  scan_headers: true
+  scan_body: true
+  max_upload_size_mb: 10
+  cache_ttl_seconds: 5
+  log_pool_max_workers: 8
+  url_max_length: 2048
+  payload_max_bytes: 33554432
+  max_pattern_length: 200

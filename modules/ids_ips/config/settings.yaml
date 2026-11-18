@@ -1,0 +1,107 @@
+ids_ips:
+sbe:
+  enabled: true
+  cache_size: 8192
+  fft_bins: 128
+  wavelet_coeffs: 120
+  entropy_segments: 8
+ctgb:
+  enabled: true
+  tau: 30.0
+  causal_threshold: 0.3
+  max_history: 20
+  max_idle_seconds: 300.0
+classifier:
+  enabled: true
+  model_path: modules/ids_ips/models/phantom_v1.pt
+  onnx_path: modules/ids_ips/models/phantom_v1.onnx
+  # FIX: was 0.70 — logs showed 553 "fusion error" events where PHANTOM
+  # detected encrypted_c2 at conf=0.64 but couldn't block (below threshold).
+  # Lowered to 0.55 to catch these mid-confidence threats. Raise back to 0.70
+  # if you experience false positives on legitimate encrypted traffic.
+  confidence_threshold: 0.75
+  causal_density_threshold: 0.5
+  num_classes: 10
+
+  # Per-class confidence overrides — raised for classes prone to false positives.
+  # encrypted_c2 gets 0.85 because management UI periodic HTTPS API calls
+  # look identical to C2 beaconing from a spectral/causal density perspective.
+  class_thresholds:
+    encrypted_c2: 0.85
+    dns_tunneling: 0.70
+    tls_fingerprint_anomaly: 0.75
+
+# ── Trusted IPs Whitelist ─────────────────────────────────────────────────────
+# IPs listed here are NEVER blocked by PHANTOM regardless of confidence.
+# Use for: management stations, monitoring servers, internal scan engines.
+# PHANTOM still runs inference (for telemetry) but overrides action to ALLOW.
+trusted_ips:
+  - "10.10.0.1"       # NGFW itself / gateway — self-traffic
+  - "10.10.0.50"
+
+# ── Internal Networks ─────────────────────────────────────────────────────────
+# IP prefix list for internal/LAN subnets.
+# If src_ip matches any prefix: PHANTOM logs the threat at ERROR level for
+# analyst review but does NOT block (blocking internal src = cutting off host).
+# Action: ALLOW + escalate → dashboard + audio alert.
+# To fully suppress telemetry for a host, add it to trusted_ips above.
+internal_networks:
+  - "10."             # RFC-1918 Class A (LAN, DMZ, Phones)
+  - "172.16."         # RFC-1918 Class B
+  - "127."            # Loopback
+  - "169.254."        # Link-local
+
+# ── Internal Threat Block Threshold ──────────────────────────────────────────
+# If a threat originates from an internal IP AND phantom_confidence >= this
+# value, the traffic is BLOCKED even though the src is internal.
+# Set to 0.92 for internal devices to prevent false-positive DoS bans on mobile apps,
+# while maintaining strict defense (0.75) for external WAN attackers.
+internal_block_threshold: 0.92
+
+
+# ── Never Block Destination ───────────────────────────────────────────────────
+# dst IPs/names listed here are protected from ever becoming block targets.
+# Prevents PHANTOM from adding a block rule that causes a self-DoS on the
+# firewall itself or critical infrastructure.
+# Add any dst that must always remain reachable, regardless of threat score.
+never_block_dst:
+  - "192.168.1.33"     # Symbolic name resolved at runtime — protects NGFW self
+  - "10.10.0.1"       # Gateway — must stay reachable
+
+
+ocl:
+  enabled: true
+  memory_size: 500
+  update_interval: 32
+  adwin_delta: 0.002
+legacy:
+  enabled: true
+  signature_db_path: modules/ids_ips/models/signatures.db
+  reputation_db_path: modules/ids_ips/models/reputation.db
+  threat_intel_db_path: modules/ids_ips/models/threat_intel.db
+api:
+  phantom_status_enabled: true
+  drift_status_enabled: true
+  feedback_enabled: true
+  threat_intel_add_enabled: true
+
+# ── Dynamic Threat Reputation Blocklist ───────────────────────────────────────
+# After `detection_threshold` confirmed blocks on a dst domain, it is
+# automatically added to a persistent blocklist.
+# Subsequent connections to that domain are BLOCKED INSTANTLY (< 1ms)
+# without running any ML modules — prevents pipeline overload.
+#
+# detection_threshold : كم مرة كشف قبل الحجب التلقائي
+# auto_expire_hours   : مدة الحجب (0 = دائم)
+# persist_path        : مسار ملف JSON للحفظ على القرص (يبقى بعد restart)
+# check_dst_domain    : فحص النطاق الوجهة (neazudmrq.biz) — الموصى به
+# check_src_ip        : فحص IP المصدر — false لأن 10.10.0.50 داخلي
+# max_entries         : حد أقصى لحجم القائمة (حماية من memory abuse)
+dynamic_blocklist:
+  enabled: true
+  detection_threshold: 1
+  auto_expire_hours: 24
+  persist_path: data/threat_blocklist.json
+  check_dst_domain: true
+  check_src_ip: false
+  max_entries: 10000

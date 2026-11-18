@@ -1,0 +1,13 @@
+{
+    "event_id": "<class 'str'>",
+    "timestamp": "<class 'str'>",
+    "source_type": "<class 'str'>",
+    "dataset_source": "<class 'str'>",
+    "entity_id": "(<class 'str'>, <class 'NoneType'>)",
+    "action": "<class 'str'>",
+    "attributes": "<class 'dict'>",
+    "label_raw": "<class 'str'>",
+    "is_attack": "<class 'int'>",
+    "attack_type": "<class 'str'>",
+    "processing_metadata": "<class 'dict'>"
+}

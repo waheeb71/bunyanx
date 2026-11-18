@@ -1,0 +1,1554 @@
+/* =========================================================
+   Executive Cybersecurity Command Center — Stylesheet
+   Modern Glassmorphism, Neon Accents, Balanced Grids & Luxury SOC Layout
+   ========================================================= */
+
+.exec-dash {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Top Executive Command Toolbar ────────────────────────── */
+.exec-top-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 4px;
+}
+
+.exec-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Timeframe Switcher */
+.exec-timeframe-switch {
+  display: flex;
+  align-items: center;
+  background: rgba(10, 14, 26, 0.7);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: var(--radius-md, 10px);
+  padding: 3px;
+  gap: 2px;
+}
+
+.exec-tf-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #7a9cc0);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exec-tf-btn:hover {
+  color: #fff;
+}
+
+.exec-tf-btn.active {
+  background: rgba(0, 200, 255, 0.15);
+  color: var(--accent, #00c8ff);
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+}
+
+/* Executive Buttons */
+.exec-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md, 10px);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Cairo', sans-serif;
+  border: 1px solid transparent;
+}
+
+.exec-btn-primary {
+  background: linear-gradient(135deg, #00c8ff 0%, #0060ff 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 200, 255, 0.3);
+}
+
+.exec-btn-primary:hover {
+  box-shadow: 0 6px 24px rgba(0, 200, 255, 0.45);
+  transform: translateY(-1.5px);
+}
+
+.exec-btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary, #e8f4ff);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.exec-btn-secondary:hover {
+  background: rgba(0, 200, 255, 0.08);
+  border-color: rgba(0, 200, 255, 0.35);
+  color: #00c8ff;
+  transform: translateY(-1px);
+}
+
+/* ── Executive Posture Strip (Summary Bar) ────────────────── */
+.exec-posture-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(10, 14, 26, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 200, 255, 0.15);
+  border-radius: var(--radius-lg, 14px);
+  padding: 10px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.exec-posture-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.exec-posture-dot.live-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00e676;
+  box-shadow: 0 0 10px #00e676;
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+.exec-posture-title {
+  color: var(--text-secondary, #7a9cc0);
+  font-weight: 500;
+}
+
+.exec-posture-value {
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+}
+
+.exec-posture-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Executive Loading Container ─────────────────────────── */
+.exec-loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 55vh;
+  gap: 16px;
+  color: var(--accent, #00c8ff);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* ── 6-Column KPI Grid ───────────────────────────────────── */
+.exec-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+
+.exec-kpi-card {
+  position: relative;
+  background: var(--bg-surface, #0a0e1a);
+  border: 1px solid rgba(0, 200, 255, 0.12);
+  border-radius: var(--radius-lg, 14px);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.exec-kpi-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 200, 255, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 200, 255, 0.15);
+}
+
+.exec-kpi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exec-kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-kpi-trend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.exec-kpi-trend-chip.positive {
+  color: #00e676;
+  background: rgba(0, 230, 118, 0.12);
+  border: 1px solid rgba(0, 230, 118, 0.25);
+}
+
+.exec-kpi-trend-chip.negative {
+  color: #ff4d6a;
+  background: rgba(255, 77, 106, 0.12);
+  border: 1px solid rgba(255, 77, 106, 0.25);
+}
+
+.exec-kpi-static-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+}
+
+.exec-kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.exec-kpi-val {
+  font-size: 1.45rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.exec-kpi-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+  margin-top: 4px;
+}
+
+.exec-kpi-sublabel {
+  font-size: 0.68rem;
+  color: var(--text-muted, #5a7b9c);
+}
+
+.exec-kpi-card-glow-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  opacity: 0.75;
+}
+
+/* ── Panel Standard Structure ────────────────────────────── */
+.exec-panel {
+  background: rgba(10, 14, 26, 0.75);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(0, 200, 255, 0.12);
+  border-radius: var(--radius-lg, 16px);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.exec-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.exec-panel-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.exec-panel-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-panel-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+}
+
+.exec-panel-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #7a9cc0);
+  display: block;
+  margin-top: 1px;
+}
+
+/* ── Section Tier Grid Layouts ───────────────────────────── */
+.exec-section-grid {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  min-width: 0;
+}
+
+.exec-tier-1-grid {
+  grid-template-columns: minmax(0, 390px) minmax(0, 1fr);
+}
+
+.exec-tier-2-grid {
+  grid-template-columns: minmax(0, 390px) minmax(0, 1fr);
+}
+
+.exec-tier-3-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* ── Component 1: Risk Panel (Gauge & Score) ─────────────── */
+.exec-gauge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0 8px 0;
+  position: relative;
+}
+
+.exec-gauge-svg-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-gauge-center-val {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.exec-gauge-number {
+  font-size: 2.3rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1;
+}
+
+.exec-gauge-max {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.exec-gauge-posture-badge {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.exec-gauge-subtext {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--text-muted, #5a7b9c);
+  text-align: center;
+}
+
+.exec-score-breakdown-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exec-breakdown-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-secondary, #7a9cc0);
+  font-weight: 600;
+}
+
+.exec-breakdown-sub {
+  color: var(--text-muted, #5a7b9c);
+}
+
+.exec-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exec-breakdown-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exec-breakdown-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.exec-breakdown-label {
+  color: var(--text-primary, #e8f4ff);
+  font-weight: 500;
+}
+
+.exec-breakdown-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.exec-breakdown-bar-wrap {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.exec-breakdown-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Component 2: Trend Chart Panel ───────────────────────── */
+.exec-chart-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exec-range-pill-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.exec-range-pill {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #7a9cc0);
+  font-size: 0.72rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.exec-range-pill.active {
+  background: rgba(0, 200, 255, 0.2);
+  color: #00c8ff;
+  font-weight: 700;
+}
+
+.exec-chart-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.exec-chart-metric-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exec-chart-metric-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-chart-metric-label {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-chart-metric-val {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.1;
+}
+
+.exec-chart-canvas-wrap {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.exec-chart-tooltip {
+  background: #0f1525;
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  direction: rtl;
+}
+
+.exec-tooltip-title {
+  font-size: 0.75rem;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.exec-tooltip-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exec-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+}
+
+.exec-tooltip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.exec-tooltip-name {
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-tooltip-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+
+/* ── Component 3: Maturity Radar Panel ───────────────────── */
+.exec-maturity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 200, 255, 0.12);
+  color: #00c8ff;
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.exec-radar-chart-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-radar-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.exec-radar-footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.exec-radar-footer-label {
+  font-size: 0.68rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-radar-footer-val {
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Component 4: Security Pillars Panel ─────────────────── */
+.exec-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.exec-pillar-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.exec-pillar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.exec-pillar-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.exec-pillar-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.exec-pillar-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exec-pillar-sub {
+  font-size: 0.65rem;
+  color: var(--text-muted, #5a7b9c);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.exec-pillar-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.exec-pillar-progress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.exec-pillar-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.exec-pillar-modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exec-pillar-module-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.exec-pillar-mod-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.exec-pillar-mod-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.exec-pillar-mod-name {
+  color: var(--text-primary, #e8f4ff);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exec-pillar-mod-tag {
+  font-size: 0.62rem;
+  color: var(--text-muted, #5a7b9c);
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.exec-pillar-mod-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.exec-pillar-mod-events {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted, #5a7b9c);
+}
+
+.exec-pillar-mod-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+/* ── Component 5: Recent Incidents Panel ─────────────────── */
+.exec-inc-filter-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.exec-inc-filter-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #7a9cc0);
+  font-size: 0.72rem;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.exec-inc-filter-btn:hover {
+  color: #fff;
+}
+
+.exec-inc-filter-btn.active {
+  background: rgba(0, 200, 255, 0.2);
+  color: #00c8ff;
+  font-weight: 700;
+}
+
+.exec-inc-filter-btn.active.critical {
+  background: rgba(255, 77, 106, 0.2);
+  color: #ff4d6a;
+}
+
+.exec-inc-filter-btn.active.high {
+  background: rgba(255, 171, 64, 0.2);
+  color: #ffab40;
+}
+
+.exec-incidents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.exec-incident-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
+}
+
+.exec-incident-row.clickable {
+  cursor: pointer;
+}
+
+.exec-incident-row.clickable:hover {
+  background: rgba(0, 200, 255, 0.06);
+  border-color: rgba(0, 200, 255, 0.28);
+  transform: translateX(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.exec-inc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.exec-inc-main-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.exec-inc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.exec-inc-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.exec-inc-id-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted, #5a7b9c);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.exec-inc-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 3px;
+  font-size: 0.7rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-inc-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exec-inc-end-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.exec-sev-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid;
+}
+
+.exec-status-pill {
+  font-size: 0.7rem;
+  color: var(--text-secondary, #7a9cc0);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.exec-inc-action-icon {
+  color: var(--text-muted, #5a7b9c);
+  transition: transform 0.2s ease;
+}
+
+.exec-incident-row:hover .exec-inc-action-icon {
+  color: #00c8ff;
+  transform: translateX(-2px);
+}
+
+.exec-incidents-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 8px;
+}
+
+.exec-inc-empty-icon {
+  color: #00e676;
+  opacity: 0.6;
+}
+
+.exec-inc-empty-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+}
+
+.exec-inc-empty-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+/* ── Component 6: Executive Insights Panel ───────────────── */
+.exec-insights-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(129, 140, 248, 0.12);
+  color: #818cf8;
+  border: 1px solid rgba(129, 140, 248, 0.25);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.exec-insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exec-insight-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exec-insight-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.exec-insight-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exec-insight-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.exec-insight-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+}
+
+.exec-insight-level-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.exec-insight-desc {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-insight-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.exec-insight-impact {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #00e676;
+  font-weight: 600;
+}
+
+.exec-insight-category-chip {
+  color: var(--text-muted, #5a7b9c);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+
+/* ── Modals & Dialogs ────────────────────────────────────── */
+.exec-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.82);
+  backdrop-filter: blur(12px);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.exec-modal-card {
+  background: #0b1120;
+  border: 1px solid rgba(0, 200, 255, 0.22);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 200, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.exec-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.exec-modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exec-modal-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exec-modal-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.exec-modal-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted, #5a7b9c);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.exec-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.exec-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.exec-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.exec-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.exec-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exec-field-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-field-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary, #e8f4ff);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exec-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #00c8ff;
+  background: rgba(0, 200, 255, 0.12);
+  padding: 2px 10px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.exec-modal-section h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8f4ff);
+  margin-bottom: 8px;
+}
+
+.exec-modal-desc {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #7a9cc0);
+  margin: 0;
+}
+
+.exec-recommendations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exec-recommendations-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-primary, #e8f4ff);
+}
+
+.exec-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Executive Report Modal Specifics ────────────────────── */
+.exec-report-card {
+  max-width: 820px;
+}
+
+.exec-report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.exec-report-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exec-report-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.exec-report-header p {
+  margin: 2px 0 0 0;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.exec-report-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exec-printable-report {
+  padding: 28px;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.report-brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.report-logo-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 200, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-logo h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.report-logo p {
+  margin: 2px 0 0 0;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #7a9cc0);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.report-meta {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #7a9cc0);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.report-classification-badge {
+  color: #ffab40;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.report-divider {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0;
+}
+
+.report-section-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #00c8ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.report-score-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.report-score-val {
+  font-size: 2.2rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.report-score-desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.report-kpi-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.report-kpi-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.report-kpi-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.report-table th,
+.report-table td {
+  padding: 10px 12px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.report-table th {
+  color: var(--text-secondary, #7a9cc0);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.report-progress-bar {
+  width: 120px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.report-progress-fill {
+  height: 100%;
+  background: #00c8ff;
+  border-radius: 4px;
+}
+
+.report-footer-signoff {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-secondary, #7a9cc0);
+}
+
+.report-footer-signoff p {
+  margin: 2px 0;
+}
+
+/* ── Printable Stylesheet Overrides ──────────────────────── */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #exec-printable-area,
+  #exec-printable-area * {
+    visibility: visible;
+  }
+
+  #exec-printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000 !important;
+    background: #fff !important;
+    padding: 24px;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .report-score-box,
+  .report-kpi-item,
+  .report-table th,
+  .report-table td {
+    border-color: #ddd !important;
+    color: #000 !important;
+    background: transparent !important;
+  }
+
+  .report-logo h2,
+  .report-section-title,
+  .report-score-val,
+  .report-kpi-value {
+    color: #000 !important;
+  }
+}
+
+/* ── Responsive Breakpoints ──────────────────────────────── */
+@media (max-width: 1400px) {
+  .exec-kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+
+  .exec-tier-1-grid,
+  .exec-tier-2-grid,
+  .exec-tier-3-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exec-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .exec-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .exec-chart-summary-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .exec-radar-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .exec-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exec-posture-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .exec-posture-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .exec-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

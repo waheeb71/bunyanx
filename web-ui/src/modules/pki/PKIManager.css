@@ -1,0 +1,634 @@
+/* ══════════════════════════════════════════════════════════════
+   Enterprise PKI Module — Dark SOC Theme & Glassmorphism
+   ══════════════════════════════════════════════════════════════ */
+
+.pki-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pki-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+/* ── Toolbar ────────────────────────────────────────── */
+.pki-toolbar-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-panel, rgba(15, 23, 42, 0.65));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.pki-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+  flex: 1;
+}
+
+.pki-search-icon {
+  position: absolute;
+  right: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.pki-search-input {
+  width: 100%;
+  padding: 8px 36px 8px 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.pki-search-input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+}
+
+.pki-clear-search {
+  position: absolute;
+  left: 10px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.pki-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pki-filter-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.pki-pill-btn {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pki-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pki-pill-btn.active {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: rgba(0, 212, 255, 0.4);
+  color: #00d4ff;
+  font-weight: 700;
+}
+
+.pki-select-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pki-toolbar-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.78rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.pki-toolbar-select option {
+  background: #0f172a;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.pki-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Buttons */
+.pki-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.pki-btn-primary {
+  background: rgba(0, 212, 255, 0.12);
+  border-color: rgba(0, 212, 255, 0.35);
+  color: #00d4ff;
+}
+
+.pki-btn-primary:hover {
+  background: rgba(0, 212, 255, 0.22);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
+}
+
+.pki-btn-secondary {
+  background: rgba(129, 140, 248, 0.12);
+  border-color: rgba(129, 140, 248, 0.35);
+  color: #818cf8;
+}
+
+.pki-btn-secondary:hover {
+  background: rgba(129, 140, 248, 0.22);
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.2);
+}
+
+.pki-btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pki-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+
+.pki-btn-danger {
+  background: rgba(255, 95, 95, 0.12);
+  border-color: rgba(255, 95, 95, 0.35);
+  color: #ff5f5f;
+}
+
+.pki-btn-danger:hover {
+  background: rgba(255, 95, 95, 0.22);
+  box-shadow: 0 0 12px rgba(255, 95, 95, 0.2);
+}
+
+/* ── Certificate Table ───────────────────────────────── */
+.pki-table-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.pki-table-header {
+  display: grid;
+  grid-template-columns: 32px 1.2fr 1fr 100px 120px 110px 90px 90px;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pki-cert-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pki-cert-row {
+  display: grid;
+  grid-template-columns: 32px 1.2fr 1fr 100px 120px 110px 90px 90px;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pki-cert-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pki-cert-row.pki-selected {
+  background: rgba(0, 212, 255, 0.06);
+  border-bottom-color: rgba(0, 212, 255, 0.2);
+}
+
+.pki-cn {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pki-issuer {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pki-usage {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pki-expiry {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.pki-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.25);
+  color: #818cf8;
+  display: inline-block;
+}
+
+.pki-type-ca {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.25);
+  color: #00d4ff;
+}
+
+.pki-row-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.pki-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.pki-icon-btn:hover {
+  background: rgba(0, 212, 255, 0.12);
+  color: #00d4ff;
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.pki-icon-btn.pki-icon-danger:hover {
+  background: rgba(255, 95, 95, 0.12);
+  color: #ff5f5f;
+  border-color: rgba(255, 95, 95, 0.3);
+}
+
+/* Loading & Empty States */
+.pki-loading-state,
+.pki-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  color: rgba(255, 255, 255, 0.45);
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+/* ── Selected Detail Drawer ──────────────────────────── */
+.pki-detail-card {
+  margin-top: 14px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.pki-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pki-detail-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.pki-detail-cn-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: #00d4ff;
+  background: rgba(0, 212, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.pki-detail-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.pki-detail-close:hover {
+  color: #ff5f5f;
+}
+
+.pki-detail-body {
+  padding: 18px;
+}
+
+.pki-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.pki-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pki-detail-full {
+  grid-column: 1 / -1;
+}
+
+.pki-detail-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.pki-detail-val {
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.pki-mono {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+}
+
+.pki-detail-footer {
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+/* ── Modals ────────────────────────────────────────── */
+.pki-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pki-modal {
+  width: min(540px, 95vw);
+  background: rgba(10, 15, 30, 0.98);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.pki-modal-wide {
+  width: min(680px, 95vw);
+}
+
+.pki-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pki-modal-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+}
+
+.pki-modal-close:hover {
+  color: #ff5f5f;
+}
+
+.pki-modal-body {
+  padding: 20px;
+}
+
+.pki-modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.pki-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.pki-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pki-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+.pki-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.pki-input:focus {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.15);
+}
+
+.pki-select {
+  cursor: pointer;
+}
+
+.pki-select option {
+  background: #0f172a;
+}
+
+/* CA Trust Store Modal Styling */
+.pki-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pki-ca-details-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pki-ca-badge-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(40, 199, 111, 0.1);
+  border: 1px solid rgba(40, 199, 111, 0.25);
+  border-radius: 8px;
+  color: #28c76f;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pki-download-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.pki-download-title {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.pki-download-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pki-ca-empty-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+  background: rgba(255, 193, 7, 0.05);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  border-radius: 12px;
+}
+
+.pki-ca-empty-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffc107;
+  margin-bottom: 6px;
+}
+
+.pki-ca-empty-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 440px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 992px) {
+  .pki-table-header,
+  .pki-cert-row {
+    grid-template-columns: 32px 1fr 100px 90px;
+  }
+  .pki-table-header span:nth-child(3),
+  .pki-table-header span:nth-child(5),
+  .pki-table-header span:nth-child(6),
+  .pki-cert-row span:nth-child(3),
+  .pki-cert-row span:nth-child(5),
+  .pki-cert-row span:nth-child(6) {
+    display: none;
+  }
+}

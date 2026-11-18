@@ -1,0 +1,30 @@
+primary_log_dir: data/logs
+main_log_file: data/logs/bunyanx.log
+max_file_size_bytes: 104857600
+backup_count: 10
+default_level: INFO
+event_db_path: data/events.db
+
+flow_logging:
+  enabled: true
+  file: data/logs/flows.log
+security_logging:
+  enabled: true
+  file: data/logs/security.log
+event_sink:
+  buffer_size: 1000
+  flush_interval: 1.0
+  backends:
+    - type: file
+      output_dir: data/logs/events
+      format: json
+      rotation: daily
+      max_size: 100
+      compress: true
+      retention_days: 365
+    - type: database
+      db_type: sqlite
+      connection_string: data/events.db
+      table_name: events
+      auto_create_table: true
+

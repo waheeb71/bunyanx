@@ -1,0 +1,17 @@
+name: vpn
+version: "2.0.0"
+description: "WireGuard VPN Server with Portal Management"
+type: service
+priority: 80
+requires:
+  - db
+  - config
+provides:
+  - vpn_manager
+  - vpn_portal
+event_subscriptions: []
+event_publications:
+  - vpn.failure
+  - vpn.restored
+  - vpn.connected
+  - vpn.disconnected

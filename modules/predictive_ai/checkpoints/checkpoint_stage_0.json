@@ -1,0 +1,15 @@
+{
+  "stage": 0,
+  "pipeline_version": "1.0.0",
+  "timestamp": "2026-05-13T23:01:10.053596+00:00",
+  "datasets_audited": [
+    "CIC-IDS2018",
+    "CIC-DDoS2019",
+    "UNSW-NB15",
+    "CERT-r4.1",
+    "Sysmon-SILRAD",
+    "MITRE-ATT&CK"
+  ],
+  "gate_passed": true,
+  "gate_issues": []
+}

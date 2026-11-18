@@ -1,0 +1,119 @@
+﻿
+=== modules/dns_security/engine/plugin.py L468-482 ===
+      L 468:                 "domain": domain,
+      L 469:                 "src_ip": context.src_ip,
+      L 470:                 "category": top.category,
+      L 471:                 "severity": top.severity,
+      L 472:                 "action": action.name
+      L 473:             }
+      L 474:             try:
+      L 475:                 loop = asyncio.get_event_loop()
+      L 476:                 if loop.is_running():
+      L 477:                     async def _publish_dns():
+      L 478:                         bus = await EventBus.instance()
+      L 479:                         await bus.publish(Topics.DNS_THREAT, payload)
+  >>> L 480:                     loop.create_task(_publish_dns())
+      L 481:             except Exception as e:
+      L 482:                 logger.debug("Failed to dispatch DNS live event: %s", e)
+
+=== modules/email_security/engine/core/email_inspector.py L586-600 ===
+      L 586:         if action in (InspectionAction.BLOCK, InspectionAction.QUARANTINE):
+      L 587:             try:
+      L 588:                 loop = asyncio.get_event_loop()
+      L 589:                 if loop.is_running():
+      L 590:                     async def _publish_email():
+      L 591:                         bus = await EventBus.instance()
+      L 592:                         await bus.publish(Topics.EMAIL_THREAT, {
+      L 593:                             "action": action.name,
+      L 594:                             "risk_score": breakdown.final_score,
+      L 595:                             "subject": parsed.subject,
+      L 596:                             "sender": parsed.raw_from
+      L 597:                         })
+  >>> L 598:                     loop.create_task(_publish_email())
+      L 599:             except Exception as e:
+      L 600:                 self.logger.debug("Failed to dispatch Email event: %s", e)
+
+=== modules/firewall/engine/firewall_plugin.py L276-290 ===
+      L 276:             ))
+      L 277:             
+      L 278:             try:
+      L 279:                 loop = asyncio.get_event_loop()
+      L 280:                 if loop.is_running():
+      L 281:                     async def _publish_fw():
+      L 282:                         bus = await EventBus.instance()
+      L 283:                         await bus.publish(Topics.RESPONSE_BLOCK, {
+      L 284:                             "src_ip": src_ip, "dst_ip": dst_ip, "proto": proto,
+      L 285:                             "rule_name": decision.get("rule_name", ""),
+      L 286:                             "reason": decision.get("reason", "")
+      L 287:                         })
+  >>> L 288:                     loop.create_task(_publish_fw())
+      L 289:             except Exception as e:
+      L 290:                 self.logger.debug("Failed to dispatch FW event: %s", e)
+
+=== modules/predictive_ai/engine/AEGIS/core/AEGIS_engine.py L339-353 ===
+      L 339:             belief.most_likely_stage,
+      L 340:             counter_strategy.action,
+      L 341:             ueba_tag,
+      L 342:             f" ظْ DECOY:{decoy_directive.redirect_to}" if decoy_directive else "",
+      L 343:         )
+      L 344: 
+      L 345:         try:
+      L 346:             loop = asyncio.get_event_loop()
+      L 347:             if loop.is_running():
+      L 348:                 async def _publish_ai():
+      L 349:                     bus = await EventBus.instance()
+      L 350:                     await bus.publish(Topics.AI_SCORE_GENERATED, result.to_dict())
+  >>> L 351:                 loop.create_task(_publish_ai())
+      L 352:         except Exception as e:
+      L 353:             _log.debug("Failed to dispatch AI AEGIS event: %s", e)
+
+=== modules/uba/engine/core/uba_plugin.py L186-200 ===
+      L 186:                 "risk_score": analysis.risk_score,
+      L 187:                 "risk_level": analysis.risk_level,
+      L 188:                 "anomaly_score": analysis.anomaly_score,
+      L 189:             }
+      L 190: 
+      L 191:             if analysis.detectors_triggered:
+      L 192:                 try:
+      L 193:                     loop = asyncio.get_event_loop()
+      L 194:                     if loop.is_running():
+      L 195:                         async def _publish_uba():
+      L 196:                             bus = await EventBus.instance()
+      L 197:                             await bus.publish(Topics.ANOMALY_SCORED, result.metadata["uba"])
+  >>> L 198:                         loop.create_task(_publish_uba())
+      L 199:                 except Exception as e:
+      L 200:                     self.logger.debug("Failed to dispatch UBA event: %s", e)
+
+=== modules/vpn/policy/vpn/portal.py L332-346 ===
+      L 332:                 self._event_callback(event_type, details)
+      L 333:             except Exception as exc:
+      L 334:                 logger.debug("VPN Portal event callback error: %s", exc)
+      L 335:                 
+      L 336:         # Fire global event for Audio/SSE and cross-process dispatchers
+      L 337:         try:
+      L 338:             loop = asyncio.get_event_loop()
+      L 339:             if loop.is_running():
+      L 340:                 async def _publish_vpn():
+      L 341:                     bus = await EventBus.instance()
+      L 342:                     topic = Topics.VPN_FAILURE if "terminate" in event_type else Topics.VPN_RESTORED
+      L 343:                     await bus.publish(topic, details)
+  >>> L 344:                 loop.create_task(_publish_vpn())
+      L 345:         except Exception as e:
+      L 346:             logger.debug("Failed to dispatch VPN event: %s", e)
+
+=== modules/web_filter/engine/plugin.py L184-198 ===
+      L 184:             payload = {
+      L 185:                 "domain": domain,
+      L 186:                 "src_ip": context.src_ip,
+      L 187:                 "action": result_action.name,
+      L 188:                 "target": target_url
+      L 189:             }
+      L 190:             try:
+      L 191:                 loop = asyncio.get_event_loop()
+      L 192:                 if loop.is_running():
+      L 193:                     async def _publish_web():
+      L 194:                         bus = await EventBus.instance()
+      L 195:                         await bus.publish(Topics.WEB_FILTER_BLOCK, payload)
+  >>> L 196:                     loop.create_task(_publish_web())
+      L 197:             except Exception as e:
+      L 198:                 self.logger.debug("Failed to dispatch WebFilter event: %s", e)

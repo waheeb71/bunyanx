@@ -1,0 +1,159 @@
+﻿=================================================================
+  EVENTS JSON
+=================================================================
+Total flow events: 115
+
+[Verdicts]
+    73  allow
+    42  drop
+
+[Top Reasons ظ¤ what the proxy decided]
+   73  VIP reverse proxy completed
+   23  [waap_rate_limiter] IP rate limit exceeded (30 req/60s)
+    4  [waf_nlp] NLP model detected sqli pattern (score=0.83)
+    4  [waf_rules] Deterministic rule matched Command Injection pattern: '../../../../etc/passwd'
+    3  [dlp_inspector] Standard DLP Pattern matched: CREDIT_CARD (4012****9999) | [dlp_inspector] Standard DLP Patter
+    2  [waf_rules] Deterministic rule matched XSS pattern: 'alert(' | [dlp_inspector] BEFP ERS=0.083 [NORMAL] on 192.
+    2  [waf_nlp] NLP model detected xss pattern (score=0.84) | [dlp_inspector] BEFP ERS=0.160 [NORMAL] on 192.168.1.5
+    1  [dlp_inspector] Standard DLP Pattern matched: CREDIT_CARD (3714****4794) | [dlp_inspector] Standard DLP Patter
+    1  [waf_rules] Deterministic rule matched XSS pattern: 'alert(' | [dlp_inspector] BEFP ERS=0.096 [NORMAL] on 192.
+    1  [dlp_inspector] Standard DLP Pattern matched: CREDIT_CARD (5124****1967) | [dlp_inspector] Standard DLP Patter
+    1  [dlp_inspector] Standard DLP Pattern matched: CREDIT_CARD (5124****3693) | [dlp_inspector] Standard DLP Patter
+
+[Modules mentioned in reasons]
+  1339  dlp_inspector
+    23  waap_rate_limiter
+     7  waf_rules
+     6  waf_nlp
+
+=================================================================
+  BUNYANX.LOG ظ¤ EventBus Publishes & Audio
+=================================================================
+Total log lines: 2558
+Audio/EventBus log lines found: 71
+
+[EventBus-related lines (last 50)]
+  2026-07-06 07:54:09 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboo
+  2026-07-06 07:54:09 [    INFO] FlowSpec-AV.modules.malware_av.detectors.network.wbs_detector: [bold green][FlowSpec-AV.modules.malware_av.detectors.ne
+  2026-07-06 07:54:09 [    INFO] FlowSpec-AV.modules.malware_av.detectors.network.flow_behavior: [bold dark_orange][FlowSpec-AV.modules.malware_av.detec
+  2026-07-06 07:54:09 [    INFO] FlowSpec-AV.modules.malware_av.detectors.network.fse: [bold turquoise2][FlowSpec-AV.modules.malware_av.detectors.networ
+  2026-07-06 07:54:09 [    INFO] modules.malware_av.threat_intel.c2_detector: [bold cyan][modules.malware_av.threat_intel.c2_detector][/] [C2Detector] L
+  2026-07-06 07:54:09 [    INFO] modules.malware_av.engine.plugin: [bold cyan][modules.malware_av.engine.plugin][/] [NM-MDE] ظ£à NetworkMalwarePlugin init
+  2026-07-06 07:54:09 [    INFO] InspectionPipeline: [bold bright_cyan][InspectionPipeline][/] Registered plugin: malware_av (priority=25, enabled=True)
+  2026-07-06 07:54:09 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Pipeline plugin registered: malware
+  2026-07-06 07:54:09 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Module initialized: malware_av
+  2026-07-06 07:54:12 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Module started: malware_av
+  2026-07-06 07:54:12 [    INFO] system.events.bus: [bold yellow][system.events.bus][/] [EventBus:memory] Connected (in-process, true queue)
+  2026-07-06 07:54:13 [    INFO] system.audio.event_subscriber: [bold dark_orange][system.audio.event_subscriber][/] [AudioSubscriber] Subscribed to 38 
+  2026-07-06 07:54:13 [    INFO] system.audio.audio_manager: [bold bright_magenta][system.audio.audio_manager][/] [AudioManager] ظ£à Audio Alert System st
+  2026-07-06 07:54:13 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] ظ£à Audio Alert System started (EventSubscriber registered)
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.yara_scanner: [bold spring_green1][FlowSpec-AV.modules.malware_av.detectors
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboo
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboo
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboo
+  2026-07-06 07:54:13 [    INFO] modules.malware_av.threat_intel.c2_detector: [bold cyan][modules.malware_av.threat_intel.c2_detector][/] [C2Detector] L
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.network.fse: [bold turquoise2][FlowSpec-AV.modules.malware_av.detectors.networ
+  2026-07-06 07:54:14 [    INFO] api.websocket.background: [bold spring_green1][api.websocket.background][/] EventBus Alert Monitor subscribed to 16 cri
+  2026-07-06 07:54:27 [    INFO] api.websocket.manager: [bold yellow][api.websocket.manager][/] Client 70925ba5-db6b-4dbf-b733-d435e3620df0 subscribed t
+  2026-07-06 07:54:27 [    INFO] api.websocket.manager: [bold yellow][api.websocket.manager][/] Client 70925ba5-db6b-4dbf-b733-d435e3620df0 subscribed t
+  2026-07-06 07:55:11 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] Audio alerts directory: /ho
+  2026-07-06 07:55:11 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] Manifest loaded from /home/
+  2026-07-06 07:55:11 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:11 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:55:15 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:15 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:55:22 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:22 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:55:26 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:26 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:55:32 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:32 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:55:35 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:55:35 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:56:44 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:56:44 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:56:49 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:56:49 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:56:53 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:56:53 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:56:57 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:56:57 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:57:02 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:57:02 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 07:57:18 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] ظû╢ dlp_incident.mp3 (vol=70%
+  2026-07-06 07:57:18 [    INFO] system.audio.native_player: [bold deep_pink1][system.audio.native_player][/] [NativePlayer] [alsa] CMD: mpg123 -q -o al
+  2026-07-06 08:01:56 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ≡اؤّ Module stopped: malware_av
+
+[Topics published to EventBus]
+  *** NONE FOUND ظ¤ modules are NOT publishing to EventBus! ***
+
+[WAF-related log lines]
+  2026-07-06 07:56:58 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:02 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:04 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:09 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:09 [    INFO] modules.waf.engine.waf_inspector: [bold deep_pink1][modules.waf.engine.waf_inspector][/] WAF [192.168.1.55] ظْ BLOCK (risk=0.85, d
+  2026-07-06 07:57:15 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:18 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:19 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:19 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:19 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:19 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [VIP REVERSE PROXY COMPLETED ظْ [WAF_RULES
+  2026-07-06 07:57:19 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:20 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [[WAF_RULES] DETERMINISTIC RULE MATCHED C
+  2026-07-06 07:57:20 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:20 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [VIP REVERSE PROXY COMPLETED ظْ VIP REVERS
+  2026-07-06 07:57:20 [    INFO] modules.waf.engine.core.decision.risk_engine: [bold magenta][modules.waf.engine.core.decision.risk_engine][/] RiskEngine: score=0
+  2026-07-06 07:57:21 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [VIP REVERSE PROXY COMPLETED ظْ [DLP_INSPE
+  2026-07-06 07:57:21 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [[DLP_INSPECTOR] STANDARD DLP PATTERN MAT
+  2026-07-06 07:57:21 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [VIP REVERSE PROXY COMPLETED ظْ VIP REVERS
+  2026-07-06 07:57:21 [ WARNING] system.core.engine: [bold yellow][system.core.engine][/] [KillchainGraph] 192.168.1.55: [VIP REVERSE PROXY COMPLETED ظْ VIP REVERS
+
+[IDS/Threat-related log lines]
+  2026-07-06 07:54:09 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Pipeline plugin registered: malware_av
+  2026-07-06 07:54:09 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Module initialized: malware_av
+  2026-07-06 07:54:12 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Module started: ids_ips
+  2026-07-06 07:54:12 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ظ£à Module started: malware_av
+  2026-07-06 07:54:12 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] Starting Correlation Engine...
+  2026-07-06 07:54:12 [    INFO] system.core.correlation_engine: [bold magenta][system.core.correlation_engine][/] [Correlation] Engine started ظ¤ subscribing to e
+  2026-07-06 07:54:12 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] ظ£à CorrelationEngine started ظ¤ threat correlation active
+  2026-07-06 07:54:13 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] ظ£à PredictiveCorrelationEngine REAL ظ¤ KillchainGraph + IntentPredictor ac
+  2026-07-06 07:54:13 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] ظ£à PredictiveCorrelationEngine loaded from modules.predictive_ai
+  2026-07-06 07:54:13 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] ظ£à Correlation Engine wired to Unified Event Sink ظْ AEGIS v3
+  2026-07-06 07:54:13 [    INFO] system.core.engine: [bold yellow][system.core.engine][/] PredictiveCorrelationEngine: AEGISEngine wired via set_AEGIS()
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.yara_scanner: [bold spring_green1][FlowSpec-AV.modules.malware_av.detectors.pe.yara_s
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base][/
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base][/
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base: [bold cyan][FlowSpec-AV.modules.malware_av.detectors.pe.xgboost_base][/
+  2026-07-06 07:54:13 [    INFO] modules.malware_av.threat_intel.c2_detector: [bold cyan][modules.malware_av.threat_intel.c2_detector][/] [C2Detector] Loaded 14 I
+  2026-07-06 07:54:13 [    INFO] FlowSpec-AV.modules.malware_av.detectors.network.fse: [bold turquoise2][FlowSpec-AV.modules.malware_av.detectors.network.fse][/] 
+  2026-07-06 07:55:10 [    INFO] modules.ids_ips.monitoring.phantom_metrics: [bold bright_yellow][modules.ids_ips.monitoring.phantom_metrics][/] PHANTOM Prometheu
+  2026-07-06 08:01:56 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ≡اؤّ Module stopped: malware_av
+  2026-07-06 08:01:56 [    INFO] system.core.module_registry: [bold bright_blue][system.core.module_registry][/]   ≡اؤّ Module stopped: ids_ips
+
+=================================================================
+  EVENTS.DB
+=================================================================
+Tables: ['events']
+
+  [events] rows=115
+  cols: ['event_id', 'timestamp', 'flow_id', 'src_ip', 'dst_ip', 'src_port', 'dst_port', 'protocol', 'iface_in', 'iface_out', 'bytes', 'packets', 'direction', 'source_path', 'verdict', 'reason', 'policy_id', 'ml_score', 'ml_label', 'confidence', 'domain', 'url', 'application', 'user_id', 'session_id', 'metadata', 'ingestion_time']
+    ('064bc795-ea03-430e-ad9e-8ac513ebb218', '2026-07-06T11:57:21.830211', 'proxy-47ca07a5-5ded-4050-a258-a9765ccb55b4', '192.168.1.55', '10.10.0.50', 59208, 8080, 'TCP/TLS', 'proxy', 'proxy', 339, 0, 'ou
+    ('608c8999-5068-49cf-995e-791a4e6ee9a2', '2026-07-06T11:57:21.674040', 'proxy-7ab8dd06-d29e-4ad7-9a8d-f19618a9e548', '192.168.1.55', '10.10.0.50', 59209, 8080, 'TCP/TLS', 'proxy', 'proxy', 189, 0, 'ou
+    ('c14ab074-1983-4834-a11d-0a2a1bc5fa02', '2026-07-06T11:57:21.463018', 'proxy-1ee92d4a-8968-48f6-8373-4f20506a261b', '192.168.1.55', '10.10.0.50', 59209, 8080, 'TCP', 'proxy', 'proxy', 189, 0, 'outbou
+
+=================================================================
+  ROOT CAUSE DIAGNOSIS
+=================================================================
+  EventBus publishes total : 0
+  DLP publishes            : 0
+  WAF publishes            : 0
+  IDS/Threat publishes     : 0
+
+  WAF blocks in events.json: 13
+  IDS events in events.json: 0
+
+  [CONFIRMED] WAF is BLOCKING attacks but NOT publishing to EventBus!
+  => waf.block / waf.alert events are never sent => no audio!
+  [CONFIRMED] IDS/Threat modules NOT publishing to EventBus!
+  => threat.detected / ids.port_scan never fire => no audio!

@@ -1,0 +1,167 @@
+firewall:
+  # ════════════════════════════════════════════════════════════════════════════
+  #  FIREWALL SETTINGS — Single Source of Truth for All Port Configuration
+  #  ─────────────────────────────────────────────────────────────────────────
+  #  ⚠️  This file is the ONLY place you need to edit to open/close/change
+  #      ports on the entire system. Changes take effect after restart.
+  #
+  #  HOW TO ADD A NEW PORT:
+  #    Add an entry under custom_ports below. Example:
+  #      - name: "My Service"
+  #        port: 8443
+  #        protocol: tcp          # tcp | udp | both
+  #        direction: forward     # input | forward | both
+  #        enabled: true
+  #
+  #    direction:
+  #      input   = port on the FIREWALL itself (SSH, management, VPN, DNS)
+  #      forward = port for INTERNAL SERVERS behind the firewall (email, web)
+  #      both    = both of the above
+  #
+  #  HOW TO CLOSE A PORT:
+  #    Set enabled: false  — or remove the entry entirely.
+  #
+  #  HOW TO CHANGE A PORT NUMBER:
+  #    Edit the port value below. The system reads it on every restart.
+  # ════════════════════════════════════════════════════════════════════════════
+
+  # ── Default Policy ──────────────────────────────────────────────────────────
+  # DROP  = block all traffic not explicitly allowed (recommended for production)
+  # ALLOW = allow all traffic not explicitly blocked  (not recommended)
+  default_policy: DROP
+
+  # ── ICMP Ping Policy ────────────────────────────────────────────────────────
+  # allow_icmp_ping: true  -> allow ICMP ping (echo-request)
+  #                  false -> block ICMP ping globally for security hardening
+  # icmp_interface_restrict: false -> allow ping on all interfaces (WAN & LAN)
+  #                          true  -> restrict ping to management interface only
+  allow_icmp_ping: true
+  icmp_interface_restrict: false
+
+  # ── Connection Tracking ─────────────────────────────────────────────────────
+  state_timeout_seconds: 300
+  max_active_connections: 100000
+
+  # ── Management Ports ────────────────────────────────────────────────────────
+  # Ports on the FIREWALL BOX itself that are ALWAYS open regardless of policy.
+  # These allow administrators to reach the management interface.
+  # To add a management port: add it to the list below.
+  # To disable a management port: remove it (or move it to custom_ports).
+  management_ports:
+    - 22       # SSH — remote shell administration
+    - 443      # HTTPS — secure web management UI
+    - 8888     # bunyanx Management API
+
+  # ── Development / Proxy Bypass Ports ────────────────────────────────────────
+  # Set dev_ports_enabled: false in production to enforce strict inspection
+  # and disable these ports entirely.
+  dev_ports_enabled: true
+  dev_ports:
+    - 8000     # bunyanx proxy / REST API server
+    - 5173     # Vite dev frontend
+
+  # ── GeoIP Filtering ─────────────────────────────────────────────────────────
+  geoip:
+    db_path: system/data/GeoIP2-City.mmdb
+    asn_db_path: system/data/GeoLite2-ASN.mmdb
+    blocked_countries:
+      - KP     # North Korea
+      - IR     # Iran
+      - RU     # Russia
+      - CN     # China
+ 
+    whitelisted_countries: []
+  # ── Operational Mode ────────────────────────────────────────────────────────
+  mode: enforce
+
+  # ── Zone Configuration ──────────────────────────────────────────────────────
+  # NOTE: Zones are AUTO-DETECTED at runtime from the network_auto_configurator
+  # state file (/etc/bunyanx/network_applied_state.json).
+  # The actual interface names (e.g. enx001122, ens3) depend on your hardware
+  # and are discovered dynamically — you do NOT need to hardcode eth0/eth1 here.
+  #
+  # This section only serves as a FALLBACK if the state file doesn't exist
+  # (e.g. on first boot before network_auto_configurator has run, or on Windows).
+  #
+  # To override auto-detection, uncomment and set your actual interface names:
+  # zones:
+  #   eth0: wan          # Change to your actual WAN interface name
+  #   eth1: lan          # Change to your actual LAN interface name
+  #   lo:   loopback
+  #   wg0:  vpn
+
+  # ── Custom Service Ports ────────────────────────────────────────────────────
+  # Add/remove/disable ports here. No code changes needed.
+  #
+  # Protocol: tcp | udp | both
+  # Direction:
+  #   input   = traffic TO the firewall box itself (VPN, DNS, custom API, etc.)
+  #   forward = traffic THROUGH the firewall to internal servers (email, web, etc.)
+  #   both    = input + forward
+  #
+  # enabled: false → port is completely closed without deleting the entry.
+  # ────────────────────────────────────────────────────────────────────────────
+  custom_ports:
+
+    # ── DNS ────────────────────────────────────────────────────────────────────
+    - name: "DNS Security"
+      port: 53
+      protocol: both
+      direction: input
+      enabled: true
+    # ── Email (inbound to internal mail server) ────────────────────────────────
+    - name: "Email SMTP"
+      port: 25
+      protocol: tcp
+      direction: forward
+      enabled: true
+    - name: "FTP Control"
+      port: 21
+      protocol: tcp
+      direction: both
+      enabled: true
+
+    - name: "FTP Data"
+      port: 20
+      protocol: tcp
+      direction: both
+      enabled: true
+
+    # ── HTTP Backend (VIP Relay) ───────────────────────────────────────────────
+    # Proxy relays VIP traffic (e.g., 192.168.1.33:443 → 10.10.0.50:8080).
+    # direction: both  →  matches InspectionBridge ctx.direction="inbound"
+    #                      AND iptables FORWARD chain (relay from proxy to backend).
+    # direction: forward alone misses the ctx "inbound" tag → false ACL BLOCK.
+    - name: "HTTP Backend (VIP)"
+      port: 8080
+      protocol: tcp
+      direction: both
+      enabled: true
+
+    # ── VPN ────────────────────────────────────────────────────────────────────
+    - name: "OpenVPN"
+      port: 1194
+      protocol: udp
+      direction: input
+      enabled: true
+
+    - name: "WireGuard"
+      port: 51820
+      protocol: udp
+      direction: input
+      enabled: true
+    - name: "Mock VPN Gateway"
+      port: 4443
+      protocol: tcp
+      direction: both
+      enabled: true  
+
+    # ── Add custom ports below this line ───────────────────────────────────────
+    # Example (disabled by default):
+    # - name: "Custom HTTPS"
+    #   port: 8443
+    #   protocol: tcp
+    #   direction: forward
+    #   enabled: false
+
+

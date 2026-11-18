@@ -1,0 +1,146 @@
+dns_security:
+  # ── General ──────────────────────────────────────────────────────────────────
+  enabled: true
+
+  # enforce = block matching traffic | monitor = log only
+  mode: enforce
+
+  # ── DNS Interception ─────────────────────────────────────────────────────────
+  # Port the DNS proxy listens on (transparent redirect from port 53)
+  intercept_port: 10053
+
+  # Upstream DNS server to forward clean queries to.
+  # Leave blank/empty to automatically read the system resolver from /etc/resolv.conf.
+  # FIX: was empty → caused [Errno -3] and hundreds of DNS timeout warnings.
+  upstream_dns: "8.8.8.8"               # Primary:   Google Public DNS
+  upstream_dns_secondary: "8.8.4.4"  # Secondary: Google Public DNS fallback
+  upstream_dns_tertiary: "1.1.1.1"   # Tertiary:  Cloudflare DNS fallback
+
+  # ── Sinkhole ─────────────────────────────────────────────────────────────────
+  # IP address returned for blocked/malicious domains
+  # Should be the IP of this firewall's LAN interface (serves a block page)
+  sinkhole_ip: 10.10.0.1
+
+  sinkhole_server:
+    enabled: true
+    http_port: 8081
+    https_port: 8444
+
+  # ── Detection Engines ────────────────────────────────────────────────────────
+  enable_dga_detection: true
+  # Shannon entropy threshold: domains above this are flagged as possible DGA
+  # Range: 3.0 (very sensitive) → 4.5 (less sensitive). Default: 3.8
+  dga_entropy_threshold: 3.8
+
+  enable_tunneling_detection: true
+  # Max total DNS query length before flagging as tunneling (bytes)
+  tunneling_query_threshold: 150
+
+  enable_threat_intel: true
+  enable_rate_limiting: true
+  # Max DNS queries per source IP per 60 seconds before rate-limiting
+  rate_limit_per_minute: 100
+
+  enable_tld_blocking: true
+  # Comma-separated list of suspicious TLDs to flag
+  suspicious_tlds: ".tk,.ml,.ga,.cf,.gq,.xyz,.top,.win,.bid,.onion"
+
+  enable_dart_detection: true
+
+  # ── Threat Intel Feed ────────────────────────────────────────────────────────
+  # Remote plaintext feed (one domain per line). Leave blank to use seed list.
+  # Recommended feeds:
+  #   - URLhaus  : https://urlhaus-api.abuse.ch/v1/urls/recent/
+  #   - OpenPhish: https://openphish.com/feed.txt
+  feed_url: ""
+  refresh_interval_hours: 6
+
+  # ── Whitelist (never block these domains) ────────────────────────────────────
+  # FIX: Microsoft telemetry domains were false-positively blocked 500+ times
+  # because the upstream DNS was empty. Now whitelisted explicitly.
+  whitelist_domains:
+    # Microsoft Windows Telemetry & Error Reporting
+    - "*.data.microsoft.com"
+    - "*.events.data.microsoft.com"
+    - "self.events.data.microsoft.com"
+    - "watson.events.data.microsoft.com"
+    - "watson.telemetry.microsoft.com"
+    - "*.watson.microsoft.com"
+    # Microsoft Update & Core Services
+    - "*.windowsupdate.com"
+    - "*.microsoft.com"
+    - "*.office.com"
+    - "*.live.com"
+    # Google & Search Services
+    - "*.google.com"
+    - "google.com"
+    - "*.googleapis.com"
+    - "*.gstatic.com"
+    - "*.youtube.com"
+    - "*.ytimg.com"
+    - "*.ggpht.com"
+    - "*.gvt1.com"
+    - "*.gvt2.com"
+    - "*.gvt3.com"
+    - "*.1e100.net"
+    # Meta & Facebook Services
+    - "*.facebook.com"
+    - "facebook.com"
+    - "*.fbcdn.net"
+    - "*.facebook.net"
+    - "*.meta.com"
+    - "meta.com"
+    - "*.instagram.com"
+    - "*.cdninstagram.com"
+    - "*.whatsapp.com"
+    - "*.whatsapp.net"
+    # Core Infrastructure & CDNs
+    - "*.cloudflare.com"
+    - "*.akamaiedge.net"
+    - "*.akamai.net"
+    - "*.fastly.net"
+    - "*.apple.com"
+    - "*.icloud.com"
+
+  # ── DNS Steering (Redirection) ────────────────────────────────────────────────
+  # Redirect specific internal domains to internal IPs.
+  # Customize domain_pattern and redirect_ip for your environment.
+  steering:
+    enabled: true
+    rules:
+      - name: Internal Portal
+        domain_pattern: portal.nexus
+        redirect_ip: 10.10.0.1
+        source_ips:
+          - 10.10.0.0/24
+
+      - name: Internal Secure
+        domain_pattern: secure.nexus
+        redirect_ip: 10.10.0.1
+
+      - name: Wildcard Internal
+        domain_pattern: "*.internal.app"
+        redirect_ip: 10.10.0.1
+
+  # ── DART-DNS Tuning ───────────────────────────────────────────────────────────
+  # DART = DNS Adversarial Resonance Triangulation (3-layer detection engine)
+  dart:
+    # Temporal layer: window and minimum query count to trigger analysis
+    high_freq_window: 120      # seconds
+    min_queries: 5
+
+    # Graph layer: cross-host coordination detection
+    window_size: 30            # seconds
+    min_hosts_for_alert: 3
+
+    # Fusion layer weights (must sum to ~1.0)
+    weight_lexical:  0.50      # w1: string analysis
+    weight_temporal: 0.30      # w2: timing pattern
+    weight_graph:    0.20      # w3: cross-host coordination
+
+    # Fusion decision thresholds (0.0 – 1.0)
+    theta_fusion:  0.55        # overall resonance score to flag
+    theta_s1:      0.60        # lexical layer confidence
+    theta_s2:      0.45        # temporal layer confidence
+    theta_s3:      0.45        # graph layer confidence
+    min_layers_confirm: 1      # minimum layers that must agree

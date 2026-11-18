@@ -1,0 +1,11 @@
+name: web_filter
+version: "2.0.0"
+description: "URL/Domain Web Content Filter"
+type: inspector
+priority: 35
+requires:
+  - config
+provides: []
+event_subscriptions: []
+event_publications:
+  - web_filter.block

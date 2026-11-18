@@ -1,0 +1,13 @@
+name: ids_ips
+version: "2.0.0"
+description: "PHANTOM IDS/IPS Engine with ML Anomaly Detection"
+type: inspector
+priority: 20
+requires:
+  - config
+provides: []
+event_subscriptions:
+  - packet.inspected
+event_publications:
+  - threat.detected
+  - ids.port_scan

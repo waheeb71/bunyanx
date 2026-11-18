@@ -1,0 +1,61 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# BunyanX NGFW — Shared Inspection Settings
+# Path: system/config/settings.yaml
+#
+# PURPOSE: Single source of truth for values that are shared across modules.
+#   - internal_networks: used by ContextBuilder, PHANTOM, UBA, Firewall
+#   - trusted_ips:       used by ContextBuilder, Firewall
+#   - inspection.*:      used by InspectionBridge, InspectionPipeline
+#
+# NOTE: This file is ADDITIVE to base.yaml.
+#   base.yaml  → proxy ports, VIPs, TLS certs, module paths
+#   settings.yaml → shared runtime values (networks, thresholds, policy)
+#
+# Usage in Python:
+#   from system.core.config_loader import ConfigLoader
+#   nets = ConfigLoader.get_internal_networks()
+#   threshold = ConfigLoader.get_inspection_settings()["internal_block_threshold"]
+# ─────────────────────────────────────────────────────────────────────────────
+
+ngfw:
+  name: "BunyanX Enterprise NGFW"
+  version: "1.0"
+  environment: production        # development | staging | production
+
+# ── Network topology ──────────────────────────────────────────────────────────
+network:
+  wan_ip: "192.168.1.33"
+  lan_ip: "10.10.0.1"
+
+  # Internal networks — traffic originating from these is tagged "internal"
+  # Used by: ContextBuilder (tagging), PHANTOM (block threshold), UBA, Firewall
+  internal_networks:
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+  
+
+  # Trusted IPs — always tagged "trusted", bypass some checks
+  # Used by: ContextBuilder, Firewall allowlist
+  trusted_ips:
+    - "10.10.0.1"       # LAN gateway / management
+    - "10.10.0.50"      # Internal application server
+
+# ── Inspection policy ─────────────────────────────────────────────────────────
+inspection:
+  # fail_open: true  → allow traffic if pipeline errors (safe for availability)
+  # fail_open: false → block traffic if pipeline errors (strict security)
+  fail_open: true 
+
+  # Maximum total time for all plugins to run per request (milliseconds)
+  # Requests exceeding this are blocked (fail_open=false) or allowed (true)
+  max_pipeline_time_ms: 10000
+  max_processing_time_ms: 10000
+
+  # Confidence threshold for blocking internal sources (0.0–1.0)
+  # Internal traffic is harder to block — require higher confidence
+  # Used by: PHANTOM/IDS-IPS, UBA, AI anomaly detection
+  internal_block_threshold: 0.70
+
+  # Whether to break the pipeline on first BLOCK result (faster)
+  # If false, all plugins run regardless (more findings, more CPU)
+  fast_path_on_block: true

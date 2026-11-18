@@ -1,0 +1,30 @@
+أنت خبير في بناء واجهات React حديثة لمراكز العمليات الأمنية (SOC).
+
+المطلوب: بناء واجهة لوحدة [اسم_الوحدة] (مثال: Web Filter).
+
+قبل كتابة أي كود، يجب عليك إلزامياً قراءة الملفات التالية لفهم نظام التصميم والمكونات المتاحة:
+1. F:\enterprise_ngfw\web-ui\UI_DESIGN_GUIDE.md (اقرأ القواعد بدقة)
+2. F:\enterprise_ngfw\web-ui\src\styles\tokens.css (لمعرفة الألوان)
+3. F:\enterprise_ngfw\web-ui\src\styles\shared.css (لمعرفة الكلاسات المشتركة)
+4. F:\enterprise_ngfw\web-ui\src\components\Shared.jsx (لتعرف المكونات الجاهزة — PageHeader, KpiCard, SectionCard, FilterBar, StatusBadge, EmptyState, LiveDot, ProgressBar, SkeletonLines, CxTooltip)
+5. F:\enterprise_ngfw\web-ui\src\components\ChartKit.jsx (لتعرف مكونات التصورات البيانية الجاهزة)
+
+القواعد الصارمة التي يجب اتباعها:
+1. استخدم المكونات المشتركة من `Shared.jsx` مثل (PageHeader, KpiCard, SectionCard, FilterBar, StatusBadge) ولا تقم بإنشائها من الصفر.
+2. اكتب كود CSS فقط للأشياء الخاصة جداً بهذه الوحدة وضعها في ملف `[Module].css`. أي تنسيق عام يجب أن يعتمد على `shared.css`.
+3. الواجهة يجب أن تكون Dark Mode فقط، باللغة العربية، و `dir="rtl"`.
+4. استخدم `framer-motion` للحركة (دخول سلس للعناصر).
+5. استخدم `lucide-react` للأيقونات، و `@tanstack/react-query` لجلب البيانات.
+6. إذا كان هناك رسوم بيانية، استخدم المكونات من `ChartKit.jsx`:
+   - CxAreaChart — لمخططات المرور والاتجاهات الزمنية
+   - CxBarChart — لأعلى الهجمات أو النطاقات المحظورة
+   - CxLineChart — للمقارنات والتوجهات
+   - CxGauge — لاستهلاك الموارد (CPU, Bandwidth)
+   - CxDonut — لتوزيع التصنيفات (Attack Types, Protocols)
+   - CxSparkline — لأرقام KPI المصغّرة
+   - CxHeatmap — لخريطة النشاط حسب الساعة/اليوم
+   - CxTimeline — لتسلسل أحداث الهجمات
+   - CxAttackMap — لخريطة الهجمات ثلاثية الأبعاد (globe.gl)
+7. لا تكتب مكون رسم بياني من الصفر! كل المكونات جاهزة في ChartKit.
+
+الرجاء كتابة كود الصفحة الرئيسية `[Module].jsx` وملف التنسيق الخاص بها `[Module].css` (إذا لزم الأمر).

@@ -1,0 +1,10 @@
+dlp:
+  model_path: ${NGFW_DATA_DIR}/models/befp_isolation_forest.pkl
+  training_log: ${NGFW_DATA_DIR}/logs/befp_training.jsonl
+  feedback_db: ${NGFW_DATA_DIR}/db/befp_feedback.json
+  weights_config: ${NGFW_DATA_DIR}/config/dlp_weights.json
+  max_payload_bytes: 65536
+  max_scan_chunk_bytes: 102400
+  max_extracted_text_bytes: 2097152
+  log_rotation_days: 30
+

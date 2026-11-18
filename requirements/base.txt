@@ -1,0 +1,81 @@
+# ═══════════════════════════════════════════════════════════════════
+# Enterprise bunyanx - Base Requirements
+# ═══════════════════════════════════════════════════════════════════
+
+# Web Framework & API
+fastapi>=0.104.0
+pydantic>=2.0.0
+uvicorn>=0.24.0
+
+# Authentication & Security
+PyJWT>=2.8.0
+bcrypt>=4.0.0
+cryptography>=41.0.0
+slowapi>=0.1.9
+
+# Database ORM
+SQLAlchemy>=2.0.0
+
+# HTTP & Async
+aiohttp>=3.8.0
+
+# ML & Numerics
+numpy>=1.24.0
+
+# Monitoring & Metrics
+prometheus-client>=0.17.0
+psutil>=5.9.0
+
+# Configuration
+PyYAML>=6.0
+jsonschema>=4.17.0
+
+# Logging
+python-json-logger>=2.0.0
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+tabulate>=0.9.0
+
+# Utilities
+python-dateutil>=2.8.2
+beautifulsoup4>=4.12.0   # VSDE: CSS-aware phishing email scanner
+
+# eBPF Support (optional - requires BCC installation)
+#python-bcc; platform_system=="Linux"
+
+# Threat Intel & GeoIP
+geoip2>=4.8.0
+
+# Network & Graph Analysis
+networkx>=3.0
+
+# ML & AI Base (Required for IDS/IPS, UBA, WAF)
+scikit-learn>=1.8.0
+xgboost>=2.0.0
+onnxruntime>=1.16.0
+joblib>=1.3.0
+#torch>=2.0.0 # Uncomment if Deep Learning engines are activated
+
+# ═══════════════════════════════════════════════════════════════════
+# Optional & Specialized Security Module Packages
+# ═══════════════════════════════════════════════════════════════════
+
+# EventBus JetStream Backend
+nats-py>=2.6.0
+
+# Malware AV — YARA Engine
+yara-python>=4.3.0
+
+# Email Security — DKIM Verification
+dkimpy>=1.0.5
+
+# DNS Security — Protocol Resolution
+dnspython>=2.4.0
+
+# DLP Engine — Document & File Text Extractors
+pypdf>=3.17.0
+python-docx>=1.0.0
+openpyxl>=3.1.0
+python-pptx>=0.6.21

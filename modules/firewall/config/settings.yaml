@@ -1,0 +1,271 @@
+firewall:
+  # ════════════════════════════════════════════════════════════════════════════
+  #  FIREWALL SETTINGS — Single Source of Truth for All Port Configuration
+  #  ─────────────────────────────────────────────────────────────────────────
+  #  ⚠️  This file is the ONLY place you need to edit to open/close/change
+  #      ports on the entire system. Changes take effect after restart.
+  #
+  #  HOW TO ADD A NEW PORT:
+  #    Add an entry under custom_ports below. Example:
+  #      - name: "My Service"
+  #        port: 8443
+  #        protocol: tcp          # tcp | udp | both
+  #        direction: forward     # input | forward | both
+  #        enabled: true
+  #
+  #    direction:
+  #      input   = port on the FIREWALL itself (SSH, management, VPN, DNS)
+  #      forward = port for INTERNAL SERVERS behind the firewall (email, web)
+  #      both    = both of the above
+  #
+  #  HOW TO CLOSE A PORT:
+  #    Set enabled: false  — or remove the entry entirely.
+  #
+  #  HOW TO CHANGE A PORT NUMBER:
+  #    Edit the port value below. The system reads it on every restart.
+  # ════════════════════════════════════════════════════════════════════════════
+
+  # ── Default Policy ──────────────────────────────────────────────────────────
+  # DROP  = block all traffic not explicitly allowed (recommended for production)
+  # ALLOW = allow all traffic not explicitly blocked  (not recommended)
+  default_policy: DROP
+
+  # ── ICMP Ping Policy ────────────────────────────────────────────────────────
+  # allow_icmp_ping: true  -> allow ICMP ping (echo-request)
+  #                  false -> block ICMP ping globally for security hardening
+  # icmp_interface_restrict: false -> allow ping on all interfaces (WAN & LAN)
+  #                          true  -> restrict ping to management interface only
+  allow_icmp_ping: true
+  icmp_interface_restrict: false
+
+  # ── Connection Tracking ─────────────────────────────────────────────────────
+  state_timeout_seconds: 300
+  max_active_connections: 100000
+
+  # ── Automated NAT & LAN Routing ─────────────────────────────────────────────
+  # Automatically enables kernel IP forwarding and NAT masquerade at boot
+  # so internal devices (servers, PCs) can route out through the firewall.
+  routing:
+    enabled: true
+    ip_forwarding: true
+    nat_masquerade: true
+    lan_subnets:
+      - "10.10.0.0/16"
+      - "10.0.0.0/8"
+
+  # ── Management Ports ────────────────────────────────────────────────────────
+  # Ports on the FIREWALL BOX itself that are ALWAYS open regardless of policy.
+  # These allow administrators to reach the management interface.
+  # To add a management port: add it to the list below.
+  # To disable a management port: remove it (or move it to custom_ports).
+  management_ports:
+    - 22       # SSH — remote shell administration
+    - 443      # HTTPS — secure web management UI
+    - 8888     # bunyanx Management API
+
+  # ── Development / Proxy Bypass Ports ────────────────────────────────────────
+  # Set dev_ports_enabled: false in production to enforce strict inspection
+  # and disable these ports entirely.
+  dev_ports_enabled: true
+  dev_ports:
+    - 8000     # bunyanx proxy / REST API server
+    - 5173     # Vite dev frontend
+
+  # ── GeoIP Filtering ─────────────────────────────────────────────────────────
+  geoip:
+    db_path: system/data/GeoIP2-City.mmdb
+    asn_db_path: system/data/GeoLite2-ASN.mmdb
+    blocked_countries:
+      - KP     # North Korea
+      - IR     # Iran
+      - RU     # Russia
+      - CN     # China
+ 
+    whitelisted_countries: []
+  # ── Operational Mode ────────────────────────────────────────────────────────
+  mode: enforce
+
+  # ── Zone Configuration ──────────────────────────────────────────────────────
+  # NOTE: Zones are AUTO-DETECTED at runtime from the network_auto_configurator
+  # state file (/etc/bunyanx/network_applied_state.json).
+  # The actual interface names (e.g. enx001122, ens3) depend on your hardware
+  # and are discovered dynamically — you do NOT need to hardcode eth0/eth1 here.
+  #
+  # This section only serves as a FALLBACK if the state file doesn't exist
+  # (e.g. on first boot before network_auto_configurator has run, or on Windows).
+  #
+  # To override auto-detection, uncomment and set your actual interface names:
+  # zones:
+  #   eth0: wan          # Change to your actual WAN interface name
+  #   eth1: lan          # Change to your actual LAN interface name
+  #   lo:   loopback
+  #   wg0:  vpn
+
+  # ── Custom Service Ports ────────────────────────────────────────────────────
+  # Add/remove/disable ports here. No code changes needed.
+  #
+  # Protocol: tcp | udp | both
+  # Direction:
+  #   input   = traffic TO the firewall box itself (VPN, DNS, custom API, etc.)
+  #   forward = traffic THROUGH the firewall to internal servers (email, web, etc.)
+  #   both    = input + forward
+  #
+  # enabled: false → port is completely closed without deleting the entry.
+  # ────────────────────────────────────────────────────────────────────────────
+  custom_ports:
+
+    # ── Firewall Ingress Web Services (Reverse Proxy & WAF Entrypoints) ──────
+    - name: "HTTP Public Ingress (Proxy)"
+      port: 80
+      protocol: tcp
+      direction: both
+      enabled: true
+
+    - name: "HTTPS Public Ingress (Proxy)"
+      port: 443
+      protocol: tcp
+      direction: both
+      enabled: true
+
+    # ── Bank Web Application (FastAPI on Internal Server 10.10.0.50) ─────────
+    - name: "Bank FastAPI Web App"
+      port: 8080
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    # ── Bank Remote Administration & File Transfer ───────────────────────────
+    - name: "Bank Mock SSH"
+      port: 2222
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank Mock FTP"
+      port: 2121
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank Mock FTP Data"
+      port: 2020
+      protocol: tcp
+      direction: forward
+      enabled: true   # Required: forward chain sees dport=2020 after DNAT (VIP: 20 → 10.10.0.50:2020)
+
+    - name: "Standard FTP Control"
+      port: 21
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Standard FTP Data"
+      port: 20
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    # ── Bank Email Services (SMTP - Sending) ──────────────────────────────────
+    - name: "Bank SMTP Standard"
+      port: 25
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank SMTPS (SSL)"
+      port: 465
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank SMTP Submission (TLS)"
+      port: 587
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank SMTP Alternate"
+      port: 2525
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    # ── Bank Email Services (POP3 - Retrieval) ────────────────────────────────
+    - name: "Bank POP3 Standard"
+      port: 110
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank POP3S (SSL)"
+      port: 995
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank POP3 Alternate"
+      port: 1110
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    # ── Bank Email Services (IMAP - Sync) ─────────────────────────────────────
+    - name: "Bank IMAP Standard"
+      port: 143
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank IMAPS (SSL)"
+      port: 993
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Bank IMAP Alternate"
+      port: 1143
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    # ── Bank VPN & Security Gateways ──────────────────────────────────────────
+    - name: "Bank Mock VPN Gateway"
+      port: 4443
+      protocol: tcp
+      direction: forward
+      enabled: true
+
+    - name: "Appliance OpenVPN"
+      port: 1194
+      protocol: udp
+      direction: input
+      enabled: true
+
+    - name: "Appliance WireGuard VPN"
+      port: 51820
+      protocol: udp
+      direction: input
+      enabled: true
+
+    # ── DNS Services ──────────────────────────────────────────────────────────
+    - name: "Firewall DNS Security Interceptor"
+      port: 53
+      protocol: both
+      direction: both
+      enabled: true
+
+    - name: "Bank Mock DNS Server"
+      port: 15353
+      protocol: udp
+      direction: forward
+      enabled: true  
+
+    # ── Add custom ports below this line ───────────────────────────────────────
+    # Example (disabled by default):
+    # - name: "Custom HTTPS"
+    #   port: 8443
+    #   protocol: tcp
+    #   direction: forward
+    #   enabled: false
+
+

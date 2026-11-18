@@ -1,0 +1,24 @@
+name: proxy
+version: "3.0"
+description: "Transparent, Forward, and Reverse Proxy with unified InspectionBridge"
+type: service
+priority: 5               # run before most modules (lower = earlier)
+requires:
+  - config
+  - ca_manager
+  - inspection_pipeline
+provides:
+  - transparent_proxy
+  - forward_proxy
+  - reverse_proxy
+
+config_path: "modules/proxy/config/proxy.yaml"
+
+# Proxy does not filter by protocol (handles all traffic at network layer)
+protocol_filter: []
+port_filter: []
+
+event_subscriptions: []
+event_publications:
+  - proxy.connection.allowed
+  - proxy.connection.blocked

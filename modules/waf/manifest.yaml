@@ -1,0 +1,13 @@
+name: waf
+version: "2.0.0"
+description: "AI-Powered Web Application Firewall (10-Layer)"
+type: inspector
+priority: 30
+requires:
+  - config
+provides: []
+event_subscriptions:
+  - threat.detected
+event_publications:
+  - waf.block
+  - waf.alert

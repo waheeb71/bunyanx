@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════════
+#  bunyanx Enterprise WAF — Local Overrides
+#  File: modules/waf/config/waf.local.yaml
+#
+#  هذا الملف للإعدادات المحلية فقط (API Keys + overrides شخصية).
+#  يُدمج فوق waf.yaml ويأخذ الأولوية على أي قيمة.
+#
+#  🚫 لا ترفع هذا الملف إلى git — يحتوي مفاتيح سرية
+#  ✅ أضفه لـ .gitignore
+#
+#  طريقة الاستخدام:
+#    - ضع مفاتيح API هنا بدلاً من waf.yaml
+#    - عطّل أي نموذج مؤقتاً بدون تعديل waf.yaml
+#    - غيّر mode للاختبار
+# ═══════════════════════════════════════════════════════════════════
+
+waf:
+
+  # ── مثال: تغيير الوضع لـ monitor أثناء الاختبار ──────────────────
+  # mode: monitor
+
+  # ── API Keys للـ Threat Intelligence ──────────────────────────────
+  threat_intelligence:
+    abuseipdb:
+      # احصل على مفتاح مجاني من: https://www.abuseipdb.com/api
+      api_key: ""
+
+    alienvault_otx:
+      # احصل على مفتاح من: https://otx.alienvault.com/api
+      api_key: ""
+
+  # ── أمثلة: تعطيل نماذج مؤقتاً ──────────────────────────────────
+  # (بدون إعادة تشغيل — استخدم settings.toggle_model() من الكود)
+
+  # gnn_model:
+  #   enabled: false   # عطّل GNN Session Graph
+
+  # bot_detection:
+  #   enabled: false   # عطّل Bot Detector
+
+  # fingerprinting:
+  #   enabled: false   # عطّل Client Fingerprinting
+
+  # shadow_mode:
+  #   enabled: true    # فعّل Shadow Mode (مراقبة بدون حجب)
+  #   observation_window_hours: 48

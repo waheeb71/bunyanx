@@ -1,0 +1,30 @@
+BILSTM INDEPENDENT TEST RESULTS (Fix C3)
+==========================================
+Best Val Accuracy        : 95.28%
+Independent Test Accuracy: 74.46%
+Independent Test AUC     : nan
+Val-Test Gap             : 20.82 pp
+
+Train Days : 02-14,02-15,02-16,02-20,02-21,02-22 (3,599,991 windows)
+Val Day    : 02-23 (599,991 windows)
+Test Days  : 02-28,03-01,03-02 (1,531,059 windows)
+
+Classification Report:
+              precision    recall  f1-score   support
+
+      BENIGN       1.00      0.74      0.85   1531059
+      ATTACK       0.00      0.00      0.00         0
+
+    accuracy                           0.74   1531059
+   macro avg       0.50      0.37      0.43   1531059
+weighted avg       1.00      0.74      0.85   1531059
+
+
+Confusion Matrix:
+[[1140040  391019]
+ [      0       0]]
+
+Training History (Epoch | Loss | Val Acc):
+  1 | 0.4377 | 90.15%
+  2 | 0.2224 | 94.66%
+  3 | 0.1431 | 95.28%

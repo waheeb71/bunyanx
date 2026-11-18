@@ -1,0 +1,170 @@
+[
+  {
+    "num": "1",
+    "text": "J. Cohen, E. Rosenfeld, and J. Z. Kolter, \"Certified adversarial robustness via randomized smoothing,\" in *Proc. ICML*, 2019, pp. 1310–1320."
+  },
+  {
+    "num": "2",
+    "text": "P. Chao et al., \"JailbreakBench: An open robustness benchmark for jailbreaking large language models,\" in *Proc. NeurIPS*, 2024."
+  },
+  {
+    "num": "3",
+    "text": "C. Dwork, \"Differential privacy,\" in *Proc. ICALP*, 2006, pp. 1–12."
+  },
+  {
+    "num": "4",
+    "text": "B. McMahan et al., \"Communication-efficient learning of deep networks from decentralized data,\" in *Proc. AISTATS*, 2017, pp. 1273–1282."
+  },
+  {
+    "num": "5",
+    "text": "C. Szegedy et al., \"Intriguing properties of neural networks,\" in *Proc. ICLR*, 2014."
+  },
+  {
+    "num": "6",
+    "text": "P. Veličković et al., \"Graph attention networks,\" in *Proc. ICLR*, 2018."
+  },
+  {
+    "num": "7",
+    "text": "S. B. Needleman and C. D. Wunsch, \"A general method applicable to the search for similarities in the amino acid sequence of two proteins,\" *J. Molecular Biology*, vol. 48, no. 3, pp. 443–453, 1970."
+  },
+  {
+    "num": "8",
+    "text": "G. Rodrigues, \"The paradox of cognitive defense: Limitations of traditional WAFs against LLM prompt injection,\" *arXiv preprint arXiv:2601.04832*, 2026. [Preprint, under peer review at time of submission.]"
+  },
+  {
+    "num": "9",
+    "text": "S. Sultana, \"A multi-layered defense framework against adversarial attacks on ML-based WAFs,\" *IEEE Access*, vol. 12, pp. 45231–45248, 2024."
+  },
+  {
+    "num": "10",
+    "text": "A. Abibulaiev et al., \"Context-aware ML/NLP pipeline for real-time anomaly detection,\" in *Proc. IEEE Int. Conf. Cyber Security (ICCS)*, 2026, pp. 112–121."
+  },
+  {
+    "num": "11",
+    "text": "I. Sharafaldin, A. H. Lashkari, and A. A. Ghorbani, \"Toward generating a new intrusion detection dataset and intrusion traffic characterization,\" in *Proc. ICISSP*, 2018, pp. 108–116."
+  },
+  {
+    "num": "12",
+    "text": "T. N. Kipf and M. Welling, \"Semi-supervised classification with graph convolutional networks,\" in *Proc. ICLR*, 2017."
+  },
+  {
+    "num": "13",
+    "text": "J. Althouse, J. Atkins, and J. Lee, \"JA3 — a method for profiling SSL/TLS client hello messages,\" presented at *RSA Conference (RSAC) Sandbox*, San Francisco, CA, 2019. [Technical report first published: Salesforce Engineering Blog, 2017. Available: https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967/]"
+  },
+  {
+    "num": "14",
+    "text": "I. Goodfellow, J. Shlens, and C. Szegedy, \"Explaining and harnessing adversarial examples,\" in *Proc. ICLR*, 2015."
+  },
+  {
+    "num": "15",
+    "text": "A. Madry, A. Makelov, L. Schmidt, D. Tsipras, and A. Vladu, \"Towards deep learning models resistant to adversarial attacks,\" in *Proc. ICLR*, 2018."
+  },
+  {
+    "num": "16",
+    "text": "F. Perez and I. Ribeiro, \"Ignore this title and HackAPrompt: Exposing systemic weaknesses of LLMs through a global scale prompt hacking competition,\" in *Proc. EMNLP*, 2023, pp. 4945–4977."
+  },
+  {
+    "num": "17",
+    "text": "K. Greshake, S. Abdelnabi, S. Mishra, C. Endres, T. Holz, and M. Fritz, \"Not what you've signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection,\" in *AISec Workshop, ACM CCS*, 2023, pp. 79–90."
+  },
+  {
+    "num": "18",
+    "text": "J. Zhou et al., \"Graph neural networks: A review of methods and applications,\" *AI Open*, vol. 1, pp. 57–81, 2020."
+  },
+  {
+    "num": "19",
+    "text": "W. W. Lo, S. Layeghy, M. Sarhan, M. Gallagher, and M. Portmann, \"E-GraphSAGE: A graph neural network based intrusion detection system for IoT,\" in *Proc. IEEE/IFIP NOMS*, 2022, pp. 1–9."
+  },
+  {
+    "num": "20",
+    "text": "C. Iliou, T. Kostoulas, T. Tsikrika, V. Katos, S. Vrochidis, and I. Kompatsiaris, \"Detection of advanced web bots by combining web logs with mouse behavioural biometrics,\" *Digital Threats: Research and Practice*, vol. 2, no. 3, pp. 1–26, 2021."
+  },
+  {
+    "num": "21",
+    "text": "H. Jonker, B. Krumnow, and G. Vlot, \"Fingerprint surface-based detection of web bot detectors,\" in *Proc. ESORICS*, Springer, 2019, pp. 586–605."
+  },
+  {
+    "num": "22",
+    "text": "M. Husák, M. Čermák, T. Jirsík, and P. Čeleda, \"HTTPS traffic analysis and client identification using passive SSL/TLS fingerprinting,\" *EURASIP J. Information Security*, vol. 2016, no. 1, pp. 1–14, 2016."
+  },
+  {
+    "num": "23",
+    "text": "OWASP Foundation, \"OWASP ModSecurity Core Rule Set (CRS) v3.3.5,\" 2023. [Online]. Available: https://coreruleset.org/ (Accessed: Jul. 2026)."
+  },
+  {
+    "num": "24",
+    "text": "Cloudflare, \"How Cloudflare's AI WAF proactively detects attacks,\" Cloudflare Blog, 2023. [Online]. Available: https://blog.cloudflare.com/ (Accessed: Jul. 2026)."
+  },
+  {
+    "num": "25",
+    "text": "L. Spitzner, *Honeypots: Tracking Hackers*. Boston, MA: Addison-Wesley, 2003."
+  },
+  {
+    "num": "25b",
+    "text": "J. Pawlick, E. Colbert, and Q. Zhu, \"A Game-Theoretic Taxonomy and Survey of Defensive Deception for Cybersecurity and Privacy,\" *ACM Comput. Surv.*, vol. 54, no. 2, pp. 1-28, 2021. [doi: 10.1145/3418306]"
+  },
+  {
+    "num": "25b",
+    "text": "Q. D. La, T. Q. S. Quek, J. Lee, S. Jin, and H. Zhu, \"Deceptive attack and defense game in honeypot-enabled networks for the Internet of Things,\" *IEEE Internet of Things J.*, vol. 3, no. 6, pp. 1025–1035, 2016."
+  },
+  {
+    "num": "26",
+    "text": "D. Fraunholz and H. D. Schotten, \"Demystifying deception technology: A survey,\" *arXiv preprint arXiv:1804.06196*, 2018. [Preprint.]"
+  },
+  {
+    "num": "27",
+    "text": "OWASP Foundation, \"OWASP Top 10:2021 — The ten most critical web application security risks,\" 2021. [Online]. Available: https://owasp.org/Top10/ (Accessed: Jul. 2026)."
+  },
+  {
+    "num": "28",
+    "text": "H. Liu and B. Lang, \"Machine learning and deep learning methods for intrusion detection systems: A survey,\" *Applied Sciences*, vol. 9, no. 20, p. 4396, 2019."
+  },
+  {
+    "num": "28b",
+    "text": "M. Sarhan, S. Layeghy, and M. Portmann, \"Towards a Standard Feature Set for Network Intrusion Detection System Datasets,\" *Mobile Netw. Appl.*, vol. 27, pp. 357-370, 2022. [doi: 10.1007/s11036-021-01843-0]"
+  },
+  {
+    "num": "29",
+    "text": "Z. Ahmad, A. S. Khan, C. W. Shiang et al., \"Network intrusion detection system: A systematic study of machine learning and deep learning approaches,\" *Trans. Emerging Telecommunications Technologies*, vol. 32, no. 1, p. e4150, 2020."
+  },
+  {
+    "num": "30",
+    "text": "R. Vinayakumar, M. Alazab, K. P. Soman et al., \"Deep learning approach for intelligent intrusion detection system,\" *IEEE Access*, vol. 7, pp. 41525–41550, 2019."
+  },
+  {
+    "num": "31",
+    "text": "K. Shaukat, S. Luo, V. Varadharajan et al., \"A survey on machine learning techniques for cyber security in the last decade,\" *IEEE Access*, vol. 8, pp. 222310–222354, 2020."
+  },
+  {
+    "num": "32",
+    "text": "E. B. Wilson, \"Probable inference, the law of succession, and statistical inference,\" *J. American Statistical Association*, vol. 22, no. 158, pp. 209–212, 1927."
+  },
+  {
+    "num": "33",
+    "text": "Ponemon Institute, \"Cost of a data breach report 2023,\" IBM Security, 2023. [Online]. Available: https://www.ibm.com/reports/data-breach (Accessed: Jul. 2026)."
+  },
+  {
+    "num": "34",
+    "text": "L. Sweeney, \"k-Anonymity: A model for protecting privacy,\" *Int. J. Uncertainty, Fuzziness and Knowledge-Based Systems*, vol. 10, no. 5, pp. 557–570, 2002."
+  },
+  {
+    "num": "35",
+    "text": "E. Bursztein, S. Bethard, C. Fabry, J. C. Mitchell, and D. Jurafsky, \"How good are humans at solving CAPTCHAs? A large scale evaluation,\" in *Proc. IEEE Symp. Security and Privacy (S&P)*, 2010, pp. 399–413."
+  },
+  {
+    "num": "36",
+    "text": "OWASP Foundation, \"OWASP API Security Top 10:2023,\" 2023. [Online]. Available: https://owasp.org/API-Security/ (Accessed: Jul. 2026)."
+  },
+  {
+    "num": "37",
+    "text": "T. Chen and C. Guestrin, \"XGBoost: A scalable tree boosting system,\" in *Proc. ACM SIGKDD*, 2016, pp. 785–794."
+  },
+  {
+    "num": "38",
+    "text": "H. He and E. A. Garcia, \"Learning from imbalanced data,\" *IEEE Trans. Knowledge and Data Engineering*, vol. 21, no. 9, pp. 1263–1284, 2009."
+  },
+  {
+    "num": "39",
+    "text": "W. Afzal, A. Gill, and A. Khan, \"Comparative analysis of WAF performance: A systematic benchmark study,\" *Int. J. Information Security*, vol. 22, no. 3, pp. 741–762, 2023."
+  }
+]

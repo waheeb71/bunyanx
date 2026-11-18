@@ -1,0 +1,16 @@
+name: log_manager
+version: "2.0.0"
+description: "Centralized Log Management with Rolling Files and Structured Events"
+type: hybrid
+priority: 95
+requires:
+  - config
+provides:
+  - log_manager
+  - log_controller
+event_subscriptions:
+  - security.alert
+  - traffic.flow
+  - system.audit
+event_publications: []
+

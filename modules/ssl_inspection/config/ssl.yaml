@@ -1,0 +1,76 @@
+ssl_inspection:
+  default_action: inspect
+  bypass_domains:
+    - '*.bank.com'
+    - '*.paypal.com'
+    - '*.banking.app'
+    - '*.swift.com'
+    - '*.visa.com'
+    - '*.mastercard.com'
+    - '*.health.gov'
+    - '*.hospital.com'
+    - '*.windowsupdate.com'
+    - '*.microsoft.com'
+    - '*.apple.com'
+    - '*.google.com'
+    - '*.gstatic.com'
+    - '*.googleapis.com'
+    - '*.google.co.in'   # النطاقات الإقليمية
+    - update.googleapis.com
+  bypass_ips:
+    - 127.0.0.1
+    - ::1
+  bypass_categories:
+    - banking
+    - healthcare
+    - government
+  detect_pinning: true
+  pinning_action: bypass
+  pinned_domains:
+    - '*.apple.com'
+    - '*.icloud.com'
+    - '*.google.com'
+    - '*.googleapis.com'
+    - api.twitter.com
+    - '*.twitter.com'
+    - api.facebook.com
+    - '*.facebook.com'
+    - '*.instagram.com'
+    - '*.whatsapp.net'
+    - '*.whatsapp.com'
+    - '*.banking.app'
+    - '*.snapchat.com'
+    - '*.tiktok.com'
+    - '*.signal.org'
+    - '*.telegram.org'
+  tls:
+    min_tls_version: TLSv1.2
+    max_tls_version: TLSv1.3
+    cipher_suites:
+      - TLS_AES_256_GCM_SHA384
+      - TLS_CHACHA20_POLY1305_SHA256
+      - TLS_AES_128_GCM_SHA256
+      - ECDHE-RSA-AES256-GCM-SHA384
+      - ECDHE-RSA-CHACHA20-POLY1305
+      - ECDHE-RSA-AES128-GCM-SHA256
+    alpn_protocols:
+      - h2
+      - http/1.1
+  pki:
+    ca_cert_path: certs/root-ca.crt
+    ca_key_path: certs/root-ca.key
+    use_intermediate_ca: true
+    intermediate_ca_cert: certs/intermediate-ca.crt
+    intermediate_ca_key: certs/intermediate-ca.key
+    cert_validity_days: 365
+    cert_key_size: 4096
+    cert_cache_size: 10000
+    cert_cache_dir: certs/cache
+  security:
+    strict_cert_validation: true
+    block_expired_certs: true
+    block_legacy_tls: true
+  logging:
+    log_decisions: true
+    log_sni: true
+    level: INFO

@@ -1,0 +1,348 @@
+# ═══════════════════════════════════════════════════════════════════
+#  bunyanx Enterprise WAF — Master Configuration
+#  File: modules/waf/config/waf.yaml
+#
+#  كل إعداد هنا مرتبط مباشرة بـ:
+#    modules/waf/engine/waf_inspector.py  (المحرك الرئيسي)
+#    modules/waf/engine/core/settings.py  (محمّل الإعدادات)
+#
+#  طريقة تعطيل أي نموذج: غيّر enabled: false
+#  لا حاجة لإعادة التشغيل — استخدم settings.reload()
+#
+#  القيم الموجودة هنا هي القيم الافتراضية.
+#  لتخصيص بدون تعديل هذا الملف: استخدم waf.local.yaml
+# ═══════════════════════════════════════════════════════════════════
+
+waf:
+
+  # ── المفتاح الرئيسي ─────────────────────────────────────────────
+  enabled: true
+  mode: enforce              # enforce | monitor | learning
+  monitored_ports:
+    - 80
+    - 443
+    - 8080
+    - 8443
+    - 3000
+    - 8000
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 0: الطبقة الأمنية الأساسية
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L0] فك الترميز متعدد الطبقات (URL / Base64 / Hex / HTML / Unicode)
+  preprocessing:
+    enabled: true
+    max_decode_iterations: 6
+    decoders:
+      url_decode:        true    # فك ترميز %2F %27 %3C...
+      html_entity:       true    # &amp; &lt; &quot;...
+      hex_decode:        true    # 0x41 0x44...
+      base64_detect:     true    # كشف وفك Base64 المخفي
+      unicode_normalize: true    # \u0041 unicode escape
+      sql_comment_strip: true    # إزالة /* */ --
+      xml_json_flatten:  true    # تسطيح JSON/XML داخل payload
+
+  # [L0b] استخراج المميزات الرقمية (10 features لكل طلب)
+  feature_extraction:
+    enabled: true
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 1: الدفاع الفوري
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L1a] Honeypot — كشف المسح الاستطلاعي فوراً
+  honeypot:
+    enabled: true
+    score_boost: 0.5                   # رفع درجة الخطر عند لمس مسار decoy
+    blacklist_ttl_seconds: 86400       # 24 ساعة حظر تلقائي
+    custom_paths:
+      - /api/v0/internal
+      - /debug_console
+      - /.git/config
+      - /wp-admin
+      - /phpmyadmin
+      - /.env
+      - /admin_backup
+      - /cgi-bin
+      - /server-status
+      - /trace.axd
+      - /scripts
+      - /cgi-local
+
+  # [L1b] Rate Limiter التكيفي
+  rate_limiter:
+    enabled: true
+    global_rate_limit: 1000     # الحد الأقصى للطلبات/دقيقة للنظام
+    ip_rate_limit: 300          # الحد لكل IP في الدقيقة
+    user_rate_limit: 100        # الحد لكل مستخدم في الدقيقة
+    time_window_seconds: 60
+    adaptive_ratelimit: true    # تقليل تلقائي عند هجوم DDoS
+
+  # [L1c] ATO Protector — حماية تسجيل الدخول
+  ato_protector:
+    enabled: true
+    max_attempts_per_ip: 10     # محاولات فاشلة قبل الحظر (per IP)
+    max_attempts_per_user: 3    # محاولات قبل قفل الحساب
+    time_window_seconds: 300    # نافذة الاحتساب (5 دقائق)
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 2: بصمة العميل والمصادقة
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L2] Client Fingerprinting — Needleman-Wunsch Header Alignment
+  fingerprinting:
+    enabled: true
+    check_ja3: true             # مطابقة بصمة TLS مع قاعدة بيانات الأدوات
+    check_headers: true         # محاذاة ترتيب الـ headers (NW algorithm)
+    # عند تعطيل check_headers: يستخدم JA3 فقط
+    # عند تعطيل الكليهما:    يعمل بدون fingerprinting
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 3: فحص البروتوكول
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L3a] API Schema Validator — Zero-Trust أوتوماتيكي
+  api_schema_validator:
+    enabled: true
+    max_payload_size: 524288    # الحجم الأقصى للـ payload: 512KB
+
+  # [L3b] GraphQL Inspector
+  graphql_inspector:
+    enabled: true
+    max_depth: 5                # عمق الـ query الأقصى (منع depth bombs)
+    max_batched_queries: 10     # عدد queries المتضمنة في batch
+    detect_introspection: true  # منع introspection في production
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 4: نماذج الذكاء الاصطناعي
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L4a] NLP Attack Classifier — 1D-CNN + BiLSTM
+  # يكشف: SQL Injection, XSS, Command Injection, SSRF, LFI/RFI
+  # الوزن في Risk Engine: 25%
+  nlp_model:
+    enabled: true
+    model_path: ml/models/waf/waf_nlp_model.pt
+    detection_threshold: 0.60   # الحد الأدنى للإيجابية
+    weight: 0.25
+
+  # [L4b] GAF Semantic Intent — Sentence-Transformer + MiniLM-L6
+  # يكشف: Prompt Injection, AI Jailbreak, Semantic Attacks
+  # الوزن في Risk Engine: 15%
+  gaf_model:
+    enabled: true
+    model_path: ml/models/waf/semantic_intent
+    detection_threshold: 0.60
+    weight: 0.15
+
+  # [L4c] Bot Detection — XGBoost Behavioral Classifier
+  # يكشف: Scrapers, Scanners, Automated Attack Tools
+  # النموذج مُدرَّب على Kaggle Human-or-Robot (AUC=0.8969)
+  # الوزن في Risk Engine: مدمج مع GNN → bot_score
+  bot_detection:
+    enabled: true
+    model_path: ml/models/waf/bot_model.json
+    detection_threshold: 0.65
+    weight: 0.15
+    bot_action: challenge       # challenge | block
+
+  # [L4d] GNN Session Graph Detector — 2-layer GCN
+  # يكشف: Multi-step APT, Session Hijacking, Distributed Attacks
+  # يستخدم بيانات session_logs.csv (مجمَّعة تلقائياً)
+  # ملاحظة: مُعطَّل افتراضياً — فعّله بعد تجميع بيانات كافية
+  gnn_model:
+    enabled: true               # [تم تفعيله — النموذج مدرَّب]
+    model_path: ml/models/waf/gnn_model.pt
+    detection_threshold: 0.70
+    weight: 0.10
+    session_window_requests: 50 # حجم نافذة الـ session للرسم البياني
+    # تجميع بيانات Session تلقائياً لإعادة التدريب:
+    log_sessions: true
+    logs_path: modules/waf/ml_training/waf_gnn/datasets/session_logs.csv
+    max_log_records: 500000
+
+  # [L4e] Temporal BiLSTM — APT Low-and-Slow Tracker
+  # يكشف: هجمات APT البطيئة عبر عدة طلبات مؤقتة
+  # الوزن في Risk Engine: 15%
+  temporal_model:
+    enabled: true
+    model_path: ml/models/waf/temporal_lstm.pt
+    detection_threshold: 0.60
+    weight: 0.15
+
+  # [L4f] Anomaly Detection — Heuristic + Statistical
+  # فحص قواعدي سريع: high entropy, encoding layers, null bytes
+  # الوزن في Risk Engine: 15%
+  anomaly_detection:
+    enabled: true
+    weight: 0.15
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 5: Threat Intelligence
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L5] Threat Intelligence — مصادر متعددة
+  # الوزن في Risk Engine: 10%
+  threat_intelligence:
+    enabled: true
+    weight: 0.10
+    cache_ttl_seconds: 21600    # مدة الـ cache: 6 ساعات
+
+    # AbuseIPDB — أفضل مصدر للـ IP reputation
+    abuseipdb:
+      enabled: true
+      api_key: ''               # ← ضع المفتاح في waf.local.yaml
+      max_age_days: 30
+
+    # AlienVault OTX
+    alienvault_otx:
+      enabled: false
+      api_key: ''               # ← ضع المفتاح في waf.local.yaml
+
+    # Spamhaus ZEN — قوائم DNS Blocklist مجانية
+    spamhaus:
+      enabled: true
+      zones:
+        - zen.spamhaus.org
+
+    # Feodo Tracker — قوائم botnet C2
+    feodo_tracker:
+      enabled: true
+      update_interval_hours: 6
+
+  # ══════════════════════════════════════════════════════════════════
+  #  LAYER 6: القرار والسياسة
+  # ══════════════════════════════════════════════════════════════════
+
+  # [L6] Risk Scoring Engine — Weighted Ensemble
+  # المجموع: nlp(25%) + anomaly(15%) + bot(15%) + reputation(10%)
+  #         + gaf(15%) + temporal(15%) + honeypot(5%) = 100%
+  risk_scoring:
+    enabled: true
+    thresholds:
+      # SSL-Aware: رُفعت العتبة من 0.30 → 0.38 لاستيعاب الضوضاء الطبيعية:
+      #   - UBA time outlier (21H, 3Σ) يُضيف ~0.05-0.08
+      #   - GNN المُخفَّف (0.55×) لا يزال يُسهم ~0.05 عبر combined_bot
+      # الهجمات الحقيقية تسجل > 0.60 → هامش أمان = 0.22 (كافٍ)
+      allow:      0.30         # < 38%  → ALLOW
+      challenge:  0.60          # 38-60% → CHALLENGE (CAPTCHA)
+      soft_block: 0.80          # 60-80% → SOFT BLOCK (rate limit)
+      block:      0.80          # > 80%  → BLOCK (403)
+
+  # [L6b] XAI Explainer — SHAP-style attribution
+  # يُنتج: "XAI Attribution [Decision=BLOCK | Risk=0.912]: 45% NLP..."
+  xai_explainer:
+    enabled: true
+    explainer_type: shap        # shap | lime
+
+  # [L6c] Deception Engine — Honeytokens & Decoy Objects
+  deception_engine:
+    enabled: true
+    injection_threshold: 0.40   # عند تجاوز 40% يُحقن الـ decoy
+    ttl_seconds: 3600           # مدة صلاحية الـ decoy: ساعة
+
+  # ══════════════════════════════════════════════════════════════════
+  #  التعلم الذاتي والمراقبة
+  # ══════════════════════════════════════════════════════════════════
+
+  # Self-Learning Logger — يجمع البيانات لإعادة تدريب النماذج
+  self_learning:
+    enabled: true
+    log_blocked: true           # تسجيل الطلبات المحجوبة
+    log_challenged: true        # تسجيل الطلبات المشبوهة
+    log_allowed: false          # تسجيل الطلبات المسموحة (ثقيل)
+    max_records: 100000         # الحد الأقصى للسجلات
+
+  # Shadow Mode — مراقبة بدون حجب (لبناء baseline)
+  shadow_mode:
+    enabled: false              # فعّل عند النشر الأول لبناء baseline
+    observation_window_hours: 72  # مدة المراقبة: 72 ساعة
+
+  # ══════════════════════════════════════════════════════════════════
+  #  الأداء والقوائم
+  # ══════════════════════════════════════════════════════════════════
+
+  # حدود الأداء
+  performance:
+    max_inspection_time_ms: 50000   # مهلة الفحص الكاملة: 50 ثانية
+    fail_open: false                # false = حظر عند الخطأ (أكثر أماناً)
+    max_payload_inspect_bytes: 65536  # 64KB حجم الـ payload المفحوص
+
+  # Whitelist — IPs ومسارات مسموحة دائماً (تتجاوز كل فحوصات WAF)
+  whitelist:
+    enabled: true
+    ips:
+      - 127.0.0.1
+      - ::1
+      #- 192.168.1.2
+     # - 192.168.1.5
+    cidrs: []                   # مثال: - 10.0.0.0/8
+    # مسارات مستثناة دائماً من فحص الـ WAF (مثل مسارات رفع الصور والمستندات)
+    # فعّل المسارات بإزالة علامة # من البداية:
+    # paths:
+    #   - /api/upload
+    #   - /api/v1/files/upload
+    #   - /upload
+  # Blacklist — IPs محجوبة دائماً (قبل أي فحص)
+  blacklist:
+    enabled: true
+    ips: []
+    cidrs: []
+
+  # ══════════════════════════════════════════════════════════════════
+  #  السجلات
+  # ══════════════════════════════════════════════════════════════════
+
+  logging:
+    enabled: true
+    log_blocked: true
+    log_challenged: true
+    log_allowed: false
+    include_payload: false      # true = سجّل الـ payload (يزيد حجم السجل)
+    log_file: data/logs/waf.log
+    alert_threshold: 0.40       # أرسل تنبيه SIEM عند تجاوز 40%
+
+  # ══════════════════════════════════════════════════════════════════
+  #  SSL-Aware Inspection — Post-Decryption Context
+  #  تُطبَّق هذه الإعدادات فقط على حركة HTTPS التي فككها محرك MITM
+  #  (ctx.tls.is_decrypted == True)
+  #
+  #  المشكلة التي تحلها:
+  #    عند تفعيل SSL Inspection يقوم الـ Proxy بـ:
+  #      1. إنهاء اتصال TLS مع العميل (يُقدم شهادته الخاصة)
+  #      2. فتح اتصال TLS جديد مع الخادم
+  #      3. إعادة بناء طلب HTTP من التشفير المفكوك
+  #    هذا الاتصال المُعاد بناؤه يُسبب إيجابيات كاذبة في:
+  #      - JA3: بصمة TLS الـ Proxy وليست المتصفح الأصلي
+  #      - Bot Detection: HTTP headers المُعادة بناؤها تشبه bot
+  #      - Deception Engine: عتبة 0.40 تُفجّر حلقة ذاتية
+  #
+  #  الحل: تعديل سلوك هذه الفحوصات بناءً على سياق فك التشفير
+  #  دون المساس بفحوصات المحتوى (NLP, GNN, Temporal)
+  # ══════════════════════════════════════════════════════════════════
+  ssl_aware:
+    enabled: true
+
+    # معامل تخفيف bot_score عند فك التشفير
+    # 0.5 = خفّض الدرجة 50% | 1.0 = بلا تأثير | 0.0 = تعطيل Bot كلياً
+    bot_score_damping: 0.5
+
+    # تخطي JA3 TLS Fingerprint على الحركة المفكوكة
+    # true = تخطَ JA3 (مُوصى به دائماً عند MITM)
+    skip_ja3_on_decrypted: true
+
+    # عتبة Deception Engine للحركة المفكوكة (HTTP=0.40 | HTTPS=0.70)
+    # القيمة الأعلى تمنع الحلقة الذاتية القاتلة
+    deception_injection_threshold: 0.70
+
+    # تخفيف Temporal BiLSTM عند HTTPS MITM
+    # المتصفح يُعيد المحاولة عند فشل الاتصال → يبدو كـ APT low-and-slow للنموذج
+    # 0.55 = خفّض 45% | 1.0 = بلا تأثير
+    temporal_score_damping: 0.55
+
+    # تخفيف GNN Session Graph عند HTTPS MITM
+    # الطلبات المتسارعة من فشل VIP تبدو كـ MULTI-REQUEST ATTACK pattern
+    # يمنع تعويض تخفيف bot_score الذي أجريناه سابقاً
+    # 0.55 = خفّض 45% | 1.0 = بلا تأثير
+    gnn_score_damping: 0.55

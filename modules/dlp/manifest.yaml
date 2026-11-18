@@ -1,0 +1,11 @@
+name: dlp
+version: "2.0.0"
+description: "Data Loss Prevention with AI Classification"
+type: inspector
+priority: 40
+requires:
+  - config
+provides: []
+event_subscriptions: []
+event_publications:
+  - dlp.incident

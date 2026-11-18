@@ -1,0 +1,62 @@
+# ============================================================
+#  bunyanx Voice Alert Service (CVAS) — Master Configuration
+#  Every runtime setting MUST be read from here. No defaults
+#  in Python code should override these values silently.
+# ============================================================
+
+cvas:
+  enabled: true                   # true | false  — master on/off switch
+  language: "ar-SA"               # "ar-SA" | "en-US"
+  auto_language: false            # true = use operator session locale (requires session metadata in payload)
+  voice_gender: "female"          # "female" | "male"
+  speed_wpm: 160                  # Words per minute  (90–300)
+  volume: 0.9                     # 0.0 – 1.0
+  pitch: 1.0                      # 0.5 – 2.0
+  speech_mode: "natural"          # "natural" | "concise" | "critical_only"
+  tts_engine: "piper"            # "espeak" | "piper" | "auto"
+  audio_effect: "none"            # "none" | "robotic" | "cyber_ai" | "radio_comm" | "retro_computer"
+
+  # ── Queue ────────────────────────────────────────────────
+  queue:
+    max_size: 100                 # Maximum items in the voice priority queue
+
+  # ── Verbosity Thresholds ─────────────────────────────────
+  # Controls the minimum verbosity level for each alert class.
+  # "level1_critical" | "level2_high" | "level3_medium" | "level4_low_info"
+  verbosity_levels:
+    level1_critical: "level1_critical"   # Spoken full-detail phrase
+    level2_high:     "level2_high"       # Spoken short-summary phrase
+    level3_medium:   "level3_medium"     # Spoken brief-notice phrase
+    level4_low_info: "silent_ui_only"    # No speech — UI only
+
+  # ── Burst Aggregation ────────────────────────────────────
+  aggregation:
+    enabled: true
+    window_seconds: 30            # Sliding window for burst grouping
+    min_burst_count: 3            # Fire burst summary if count >= this
+
+  # ── Cooldown & Rate Limiting ─────────────────────────────
+  cooldown:
+    deduplication_window_s: 45   # Suppress identical spoken phrases within Xs
+    ip_cooldown_s: 60            # Max 1 spoken alert per src IP per minute
+    rate_limit_per_min: 10       # Max spoken alerts/min (critical bypasses this)
+
+  # ── Critical Interrupt ───────────────────────────────────
+  priority_override:
+    allow_critical_interrupt: true   # Stop current speech for Level-1 CRITICAL
+
+  # ── GeoIP Enrichment ─────────────────────────────────────
+  geoip:
+    enabled: true
+    database_path: "data/GeoLite2-City.mmdb"
+
+  # ── Worker Watchdog ──────────────────────────────────────
+  watchdog:
+    enabled: true
+    check_interval_s: 30         # Seconds between liveness checks
+    max_restart_attempts: 5      # Give up after N consecutive failures
+
+  # ── Logging / Observability ──────────────────────────────
+  logging:
+    structured_json: false       # true = JSON lines output for log aggregators
+    min_level: "INFO"            # DEBUG | INFO | WARNING | ERROR

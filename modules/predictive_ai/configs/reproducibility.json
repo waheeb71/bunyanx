@@ -1,0 +1,16 @@
+{
+    "pipeline_version": "1.0.0",
+    "random_seed": 42,
+    "execution_constraints": {
+        "max_ram_gb": 16,
+        "streaming_mode": true
+    },
+    "dataset_versions": {
+        "cic_ids_2018": "original",
+        "cic_ddos_2019": "original",
+        "unsw_nb15": "original",
+        "cert_r4_1": "r4.1",
+        "sysmon_silrad": "latest",
+        "mitre_attack": "enterprise-stix"
+    }
+}

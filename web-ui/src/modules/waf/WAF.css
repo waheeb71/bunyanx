@@ -1,0 +1,192 @@
+/* ═══════════════════════════════════════════════════════
+   bunyanx — WAF Module (page-specific styles)
+   Shared styles are in styles/shared.css
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Custom Tabs (Pill style) ─────────────────────────── */
+.waf-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 6px;
+  width: fit-content;
+  margin-bottom: var(--sp-2);
+}
+.waf-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.waf-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+.waf-tab.active {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* ── Feature Rows (Toggles) ───────────────────────────── */
+.waf-feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  border: 1px solid transparent;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.waf-feature-row.active {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.waf-feature-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.waf-feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-normal);
+}
+.waf-feature-label {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.waf-feature-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ── Custom Toggle ────────────────────────────────────── */
+.waf-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.waf-toggle input { opacity: 0; width: 0; height: 0; }
+.waf-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--bg-overlay);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  transition: .3s;
+}
+.waf-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; width: 16px;
+  left: 3px; bottom: 3px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  transition: .3s;
+}
+.waf-toggle input:checked + .waf-toggle-slider {
+  background-color: var(--tg-color, var(--accent));
+  border-color: var(--tg-color, var(--accent));
+}
+.waf-toggle input:checked + .waf-toggle-slider:before {
+  transform: translateX(20px);
+  background-color: #050810;
+}
+
+/* ── XAI Banner ───────────────────────────────────────── */
+.waf-xai-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: var(--sp-5);
+  background: linear-gradient(90deg, rgba(0, 200, 255, 0.05), transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-top: var(--sp-2);
+}
+.waf-xai-icon {
+  padding: 12px;
+  background: var(--bg-raised);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+}
+.waf-xai-title {
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.waf-xai-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Autopilot Hero ───────────────────────────────────── */
+.waf-autopilot-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--sp-8) 0;
+}
+.waf-ap-orb {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all var(--transition-slow);
+}
+.waf-ap-orb.active {
+  background: rgba(0, 200, 255, 0.1);
+  border-color: rgba(0, 200, 255, 0.4);
+  box-shadow: 0 0 40px rgba(0, 200, 255, 0.2);
+  animation: float-orb 3s ease-in-out infinite;
+}
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.waf-ap-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.waf-ap-stat-row:last-child {
+  border-bottom: none;
+}
+.waf-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

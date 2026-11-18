@@ -1,0 +1,229 @@
+email_security:
+  enabled: true
+  mode: enforce  # enforce | monitor | learning
+  monitored_ports:
+    - 25
+    - 587
+    - 465
+    - 143
+    - 993
+    - 110
+    - 995
+
+  preprocessing:
+    enabled: true
+    decode_base64_body: true
+    decode_quoted_printable: true
+    extract_plain_text: true
+    max_body_bytes: 524288
+
+  phishing_detection:
+    enabled: true
+    keyword_threshold: 2
+    weight: 0.30
+    custom_keywords: []
+    # --- scoring weights (sum must equal 1.0) ---
+    keyword_weight:  0.40   # contribution of keyword hits to phishing score
+    urgency_weight:  0.25   # contribution of urgency pattern hits
+    spoof_weight:    0.25   # contribution of brand-spoof detection
+    url_excess_weight: 0.10 # contribution of excessive URLs inside body
+    # --- per-signal coefficients ---
+    urgency_score_per_hit:  0.20   # score added per urgency pattern match
+    urgency_score_cap:      0.60   # maximum urgency sub-score
+    spoof_score_value:      0.70   # score assigned when brand spoof is confirmed
+    url_excess_threshold:   5      # URLs above this count are "excessive"
+    url_excess_score_per_extra: 0.05  # score per extra URL
+    url_excess_score_cap:   0.30   # max sub-score from URL excess
+    # --- decision thresholds ---
+    phishing_hard_threshold:    0.70   # score >= this → "phishing"
+    phishing_soft_threshold:    0.40   # score >= this → "suspicious"
+
+  url_scanner:
+    enabled: true
+    max_urls_per_email: 10
+    reputation_check: true
+    detect_redirects: true
+    weight: 0.10
+    trusted_domains:
+      - google.com
+      - microsoft.com
+      - github.com
+      - linkedin.com
+    # --- per-signal scores ---
+    score_ip_literal:          0.50   # http://1.2.3.4/...
+    score_shortener:           0.30   # bit.ly, tinyurl, etc.
+    score_suspicious_tld:      0.30   # .tk .ml .xyz etc.
+    score_excessive_subdomains: 0.20  # > 4 parts in domain
+    score_very_long_url:       0.10   # url > 200 chars
+    score_no_https:            0.10   # http:// instead of https://
+    threat_intel_weight:       0.50   # reputation score multiplier
+    # --- filtering ---
+    flag_min_score:            0.20   # URLs below this are ignored
+    excessive_url_penalty:     0.20   # added when total_urls > max_urls_per_email
+    # --- threat intel thresholds ---
+    threat_intel_high:         0.70   # log as high-confidence threat
+    threat_intel_medium:       0.40   # log as suspicious
+
+  attachment_guard:
+    enabled: true
+    max_attachment_size_mb: 25
+    block_dangerous_extensions: true
+    entropy_analysis: true
+    entropy_threshold: 0.92
+    weight: 0.15
+    # --- per-signal scores ---
+    score_dangerous_ext_blocked:    1.00  # instant block
+    score_dangerous_ext_allowed:    0.90  # block_dangerous=false fallback
+    score_suspicious_ext:           0.40  # .docm .xlsm .zip etc.
+    score_oversized:                0.20  # > max_attachment_size_mb
+    score_high_entropy:             0.35  # encrypted / obfuscated content
+    score_mime_mismatch:            0.30  # e.g. text/plain but .exe extension
+    # --- decision thresholds ---
+    action_block_threshold:  0.80   # score >= this → block
+    action_flag_threshold:   0.40   # score >= this → flag
+    dangerous_extensions:
+      - .exe
+      - .scr
+      - .bat
+      - .cmd
+      - .com
+      - .pif
+      - .vbs
+      - .js
+      - .jar
+      - .msi
+      - .dll
+      - .ps1
+      - .psm1
+      - .hta
+      - .lnk
+      - .reg
+      - ".inf"
+    suspicious_extensions:
+      - .docm
+      - .xlsm
+      - .pptm
+      - .zip
+      - .rar
+      - .7z
+      - .iso
+      - .img
+
+  sender_reputation:
+    enabled: true
+    weight: 0.15
+    spf_check: true
+    dkim_check: true
+    dmarc_check: true
+    block_disposable_domains: true
+    custom_suspicious_domains: []
+    ip_reputation_check: true
+    # --- per-signal scores ---
+    score_spf_fail:          0.40
+    score_spf_softfail:      0.20
+    score_no_dkim:           0.15
+    score_dkim_invalid:      0.35
+    score_dmarc_none:        0.10
+    score_dmarc_not_set:     0.05
+    score_disposable:        0.50
+    # --- IP reputation ---
+    ip_reputation_threshold: 0.50   # scores above this get penalised
+    ip_reputation_weight:    0.40   # multiplier applied to ip_score
+    # --- DNS timeouts ---
+    dns_lifetime_seconds:    2.0
+    dns_timeout_seconds:     2.0
+    ip_lookup_timeout:       2.0
+
+  spam_filter:
+    enabled: true
+    weight: 0.05
+    spam_threshold: 0.70
+    keyword_threshold: 3
+    # --- per-signal weights inside spam score ---
+    kw_weight:     0.50
+    caps_weight:   0.20
+    punct_weight:  0.15
+    hidden_weight: 0.15
+    # --- per-signal coefficients ---
+    caps_score_per_hit:       0.08
+    caps_score_cap:           0.30
+    punct_score_per_hit:      0.10
+    punct_score_cap:          0.20
+    hidden_score_per_hit:     0.15
+    hidden_score_cap:         0.30
+    spam_subject_prefix_score: 0.30
+    minimal_text_html_score:   0.15
+
+  smtp_commands:
+    enabled: true
+    suspicious_commands:
+      - VRFY
+      - EXPN
+      - DEBUG
+    weight: 0.05
+    command_penalty: 0.30   # penalty added when suspicious command is detected
+
+  plsf:
+    enabled: true
+    weight: 0.10
+    model_mode: auto
+    warmup_model: en
+    min_routing_length: 10
+    strict_language_routing: true
+    max_models_in_memory: 2
+    telemetry_level: verbose
+    db_path: modules/email_security/config/plsf_profiles_ai.db
+    lambda_opt: 0.442         # Youden-J optimal threshold (paper §V Table 1)
+    lambda_block: 0.70        # score above this → force BLOCK (high-confidence BEC)
+    ema_alpha: 0.10
+    w_semantic: 0.40          # weight for Dc (cosine deviation) — Eq.3
+    w_lexical:  0.60          # weight for L_BEC (lexical BEC score) — Eq.3
+    min_baseline_count: 3
+
+  vsde:
+    enabled: true
+    weight: 0.05
+    evasion_threshold: 0.35   # Jaccard R > this → force BLOCK
+    headless_browser: false
+    vit_model: nlpconnect/vit-tiny
+
+  webmail_inspection:
+    enabled: true
+    default_domain: "192.168.1.33"
+    monitored_paths:                        # 👈 تعديل/إضافة مسارات البريد المستهدفة بالشركة
+    - /webmail
+    - /mail
+    - /owa                              # مثال: إضافة مسار Outlook Web App
+    - /api/v1/email
+    - /api/email
+    - /send  
+
+  risk_scoring:
+    thresholds:
+      allow:      0.15
+      quarantine: 0.30
+      block:      0.50
+    # --- Single High-Confidence Threat Overrides ---
+    # These fire regardless of the weighted average
+    phishing_block_threshold:      0.35  # phishing_score >= this → force BLOCK
+    phishing_quarantine_threshold: 0.25  # phishing_score >= this → force QUARANTINE
+    url_block_threshold:           0.35  # url_score >= this → force BLOCK
+    url_quarantine_threshold:      0.25  # url_score >= this → force QUARANTINE
+    attachment_quarantine_threshold: 0.30 # attachment_score >= this → force QUARANTINE
+    vsde_block_threshold:          0.35  # vsde_score > this → force BLOCK
+    plsf_quarantine_threshold:     0.442 # plsf_score > this → force QUARANTINE
+    plsf_block_threshold:          0.60  # plsf_score > this → force BLOCK
+
+  logging:
+    enabled: true
+    log_blocked: true
+    log_quarantined: true
+    log_allowed: false
+    log_file: data/logs/email_security.log
+    save_suspicious_content: false
+
+  whitelist:
+    enabled: true
+    emails: []
+    domains: []
+    ips: []

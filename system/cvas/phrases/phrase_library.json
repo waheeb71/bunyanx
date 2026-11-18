@@ -1,0 +1,726 @@
+{
+  "version": "4.0",
+  "default_language": "ar-SA",
+  "notes": "Level keys use DUAL naming for backward compatibility: level1_critical=level1_full, level2_high=level2_short, level3_medium=level3_notice. Both resolve correctly via PhraseEngine._LEVEL_KEY_FALLBACK.",
+  "templates": {
+    "malware.detected": {
+      "title": "Malware Detected",
+      "description": "Triggered when antivirus or malware inspection engine detects a malicious file or payload.",
+      "variables": [
+        "src_ip",
+        "country",
+        "city",
+        "module",
+        "action",
+        "threat_type"
+      ],
+      "level1_critical": {
+        "en-US": "Critical malware attack {threat_type} detected from {country}, city {city}, source I P {src_ip}. Detected by {module}. Action taken: {action}.",
+        "ar-SA": "تم اكتشاف هجوم برمجيات خبيثة حرج {threat_type} من {country}، مدينة {city}. المكتشف: {module}. الإجراء المتخذ: {action}."
+      },
+      "level1_full": {
+        "en-US": "Critical malware attack {threat_type} detected from {country}, city {city}, source I P {src_ip}. Detected by {module}. Action taken: {action}.",
+        "ar-SA": "تم اكتشاف هجوم برمجيات خبيثة حرج {threat_type} من {country}، مدينة {city}. المكتشف: {module}. الإجراء المتخذ: {action}."
+      },
+      "level2_high": {
+        "en-US": "Critical malware attack {threat_type} from {country}. Action taken: {action}.",
+        "ar-SA": "هجوم برمجيات خبيثة {threat_type} من {country}. الإجراء المتخذ: {action}."
+      },
+      "level2_short": {
+        "en-US": "Critical malware attack {threat_type} from {country}. Action taken: {action}.",
+        "ar-SA": "هجوم برمجيات خبيثة {threat_type} من {country}. الإجراء المتخذ: {action}."
+      },
+      "level3_medium": {
+        "en-US": "Malware threat reported by {module}.",
+        "ar-SA": "إشعار برمجية خبيثة من وحدة {module}."
+      },
+      "level3_notice": {
+        "en-US": "Malware threat reported by {module}.",
+        "ar-SA": "إشعار برمجية خبيثة من وحدة {module}."
+      },
+      "aggregated_burst": {
+        "en-US": "{count} malware attack attempts detected from {country}, source I P {src_ip} in the last {window_s} seconds. Blocked by {module}.",
+        "ar-SA": "تم اكتشاف {count} محاولات هجوم برمجيات خبيثة من {country} خلال آخر {window_s} ثانية. تم الحظر بواسطة وحدة {module}."
+      }
+    },
+    "threat.detected": {
+      "title": "Security Threat Detected",
+      "description": "General security threat indicator detected across data plane inspection.",
+      "variables": [
+        "threat_type",
+        "country",
+        "src_ip",
+        "dst_ip",
+        "action",
+        "module"
+      ],
+      "level1_critical": {
+        "en-US": "Security threat {threat_type} detected from {country}, source I P {src_ip}, target {dst_ip}. Action: {action}.",
+        "ar-SA": "تم اكتشاف تهديد أمني {threat_type} من {country}. الإجراء: {action}."
+      },
+      "level1_full": {
+        "en-US": "Security threat {threat_type} detected from {country}, source I P {src_ip}, target {dst_ip}. Action: {action}.",
+        "ar-SA": "تم اكتشاف تهديد أمني {threat_type} من {country}. الإجراء: {action}."
+      },
+      "level2_high": {
+        "en-US": "Security threat {threat_type} blocked from {country}.",
+        "ar-SA": "تم حظر تهديد أمني {threat_type} من {country}."
+      },
+      "level2_short": {
+        "en-US": "Security threat {threat_type} blocked from {country}.",
+        "ar-SA": "تم حظر تهديد أمني {threat_type} من {country}."
+      },
+      "level3_medium": {
+        "en-US": "Security threat detected by {module}.",
+        "ar-SA": "تم رصد تهديد أمني من وحدة {module}."
+      },
+      "level3_notice": {
+        "en-US": "Security threat detected by {module}.",
+        "ar-SA": "تم رصد تهديد أمني من وحدة {module}."
+      },
+      "aggregated_burst": {
+        "en-US": "{count} attack attempts detected from same source {src_ip} in the last {window_s} seconds. Blocked by {module}.",
+        "ar-SA": "تم اكتشاف {count} محاولات هجوم من نفس المصدر خلال آخر {window_s} ثانية، وتم حظرها بواسطة وحدة {module}."
+      }
+    },
+    "waf.block": {
+      "title": "WAF Attack Blocked",
+      "description": "Web Application Firewall blocked an exploit attempt or SQLi/XSS attack.",
+      "variables": [
+        "threat_type",
+        "country",
+        "src_ip",
+        "dst_ip"
+      ],
+      "level1_critical": {
+        "en-US": "Web application firewall blocked {threat_type} from {country}, source I P {src_ip}, target server {dst_ip}.",
+        "ar-SA": "قام جدار حماية التطبيقات بحظر هجوم {threat_type} من {country}."
+      },
+      "level1_full": {
+        "en-US": "Web application firewall blocked {threat_type} from {country}, source I P {src_ip}, target server {dst_ip}.",
+        "ar-SA": "قام جدار حماية التطبيقات بحظر هجوم {threat_type} من {country}."
+      },
+      "level2_high": {
+        "en-US": "W A F blocked {threat_type} from {country}.",
+        "ar-SA": "قام جدار حماية التطبيقات بحظر {threat_type} من {country}."
+      },
+      "level2_short": {
+        "en-US": "W A F blocked {threat_type} from {country}.",
+        "ar-SA": "قام جدار حماية التطبيقات بحظر {threat_type} من {country}."
+      },
+      "level3_medium": {
+        "en-US": "W A F blocked suspicious request.",
+        "ar-SA": "تم حظر طلب مشبوه بواسطة جدار التطبيقات."
+      },
+      "level3_notice": {
+        "en-US": "W A F blocked suspicious request.",
+        "ar-SA": "تم حظر طلب مشبوه بواسطة جدار التطبيقات."
+      },
+      "aggregated_burst": {
+        "en-US": "{count} web attack attempts blocked from {src_ip} in the last {window_s} seconds by W A F.",
+        "ar-SA": "تم حظر {count} محاولات اختراق ويب من مصدر موحد خلال آخر {window_s} ثانية بواسطة جدار التطبيقات."
+      }
+    },
+    "waf.alert": {
+      "title": "WAF Warning Alert",
+      "description": "WAF anomaly detected in audit mode.",
+      "variables": [
+        "threat_type",
+        "src_ip"
+      ],
+      "level2_high": {
+        "en-US": "W A F alert. Potential web threat {threat_type} observed from source I P {src_ip}.",
+        "ar-SA": "تنبيه جدار التطبيقات. تم رصد اشتباه {threat_type} من مصدر خارجي."
+      },
+      "level2_short": {
+        "en-US": "W A F alert. Potential web threat {threat_type} observed from source I P {src_ip}.",
+        "ar-SA": "تنبيه جدار التطبيقات. تم رصد اشتباه {threat_type} من مصدر خارجي."
+      },
+      "level3_medium": {
+        "en-US": "W A F alert for source {src_ip}.",
+        "ar-SA": "تنبيه جدار التطبيقات من مصدر خارجي."
+      },
+      "level3_notice": {
+        "en-US": "W A F alert for source {src_ip}.",
+        "ar-SA": "تنبيه جدار التطبيقات من مصدر خارجي."
+      }
+    },
+    "ids.port_scan": {
+      "title": "Port Scan Detected",
+      "description": "Reconnaissance port scan or sweep detected by IDS engine.",
+      "variables": [
+        "country",
+        "src_ip",
+        "risk_score",
+        "unique_ports"
+      ],
+      "level2_high": {
+        "en-US": "Port scan activity detected from {country}, source I P {src_ip}. Scanned {unique_ports} ports.",
+        "ar-SA": "تم رصد مسح للمنافذ من {country}، المصدر {src_ip}."
+      },
+      "level2_short": {
+        "en-US": "Port scan activity detected from {country}, source I P {src_ip}.",
+        "ar-SA": "تم رصد مسح للمنافذ من {country}."
+      },
+      "level3_medium": {
+        "en-US": "Port scan activity detected from {country}.",
+        "ar-SA": "تم اكتشاف مسح للمنافذ من {country}."
+      },
+      "level3_notice": {
+        "en-US": "Port scan activity detected from {country}.",
+        "ar-SA": "تم اكتشاف مسح للمنافذ من {country}."
+      },
+      "aggregated_burst": {
+        "en-US": "{count} port scan probes detected from {src_ip} in the last {window_s} seconds.",
+        "ar-SA": "تم رصد {count} محاولات مسح منافذ من مصدر موحد خلال آخر {window_s} ثانية."
+      }
+    },
+    "auth.brute_force": {
+      "title": "Authentication Brute Force",
+      "description": "Repeated failed login attempts triggering brute force detection.",
+      "variables": [
+        "user",
+        "country",
+        "src_ip"
+      ],
+      "level2_high": {
+        "en-US": "Brute force authentication attack detected for user {user} from {country}, source I P {src_ip}.",
+        "ar-SA": "تم رصد هجوم تخمين كلمة المرور للمستخدم {user} من {country}."
+      },
+      "level2_short": {
+        "en-US": "Brute force attack blocked from {country}.",
+        "ar-SA": "تم حظر هجوم تخمين كلمة المرور من {country}."
+      },
+      "level3_medium": {
+        "en-US": "Brute force attack attempt detected.",
+        "ar-SA": "محاولة هجوم تخمين كلمات مرور."
+      },
+      "level3_notice": {
+        "en-US": "Brute force attack attempt detected.",
+        "ar-SA": "محاولة هجوم تخمين كلمات مرور."
+      },
+      "aggregated_burst": {
+        "en-US": "{count} failed login attempts from source I P {src_ip} in the last {window_s} seconds.",
+        "ar-SA": "تم رصد {count} محاولات دخول فاشلة من مصدر موحد خلال آخر {window_s} ثانية."
+      }
+    },
+    "auth.login_failure": {
+      "title": "Login Failure",
+      "description": "Single authentication failure.",
+      "variables": [
+        "user",
+        "src_ip"
+      ],
+      "level3_medium": {
+        "en-US": "Failed login attempt for user {user} from {src_ip}.",
+        "ar-SA": "محاولة دخول فاشلة للمستخدم {user}."
+      },
+      "level3_notice": {
+        "en-US": "Failed login attempt for user {user} from {src_ip}.",
+        "ar-SA": "محاولة دخول فاشلة للمستخدم {user}."
+      }
+    },
+    "auth.login_success": {
+      "title": "Admin Login Success",
+      "description": "Privileged administrator login event.",
+      "variables": [
+        "user",
+        "src_ip"
+      ],
+      "level3_medium": {
+        "en-US": "Administrator {user} logged in from {src_ip}.",
+        "ar-SA": "تم تسجيل دخول المسؤول {user} بنجاح."
+      },
+      "level3_notice": {
+        "en-US": "Administrator {user} logged in from {src_ip}.",
+        "ar-SA": "تم تسجيل دخول المسؤول {user} بنجاح."
+      }
+    },
+    "dlp.incident": {
+      "title": "Data Loss Incident",
+      "description": "Sensitive content or data exfiltration policy violation.",
+      "variables": [
+        "threat_type",
+        "action"
+      ],
+      "level2_high": {
+        "en-US": "Data loss prevention incident. Sensitive data transfer blocked. Pattern: {threat_type}.",
+        "ar-SA": "حادث تسريب بيانات. تم حظر نقل بيانات حساسة. نوع البيانات: {threat_type}."
+      },
+      "level2_short": {
+        "en-US": "D L P incident blocked.",
+        "ar-SA": "تم حظر حادث تسريب بيانات."
+      },
+      "level3_medium": {
+        "en-US": "D L P policy violation detected.",
+        "ar-SA": "مخالفة لسياسة منع تسريب البيانات."
+      },
+      "level3_notice": {
+        "en-US": "D L P policy violation detected.",
+        "ar-SA": "مخالفة لسياسة منع تسريب البيانات."
+      }
+    },
+    "dns.threat": {
+      "title": "DNS Security Threat",
+      "description": "DNS tunneling, C2 query, or domain reputation block.",
+      "variables": [
+        "src_ip",
+        "threat_type",
+        "domain"
+      ],
+      "level2_high": {
+        "en-US": "D N S security alert. Malicious domain query {domain} {threat_type} blocked for host {src_ip}.",
+        "ar-SA": "تنبيه أمان شبكة النطاق. تم حظر استعلام عن نطاق خبيث {domain} لجهاز داخلي {src_ip}."
+      },
+      "level2_short": {
+        "en-US": "D N S threat {domain} blocked for {src_ip}.",
+        "ar-SA": "تم حظر نطاق خبيث {domain} لجهاز داخلي."
+      }
+    },
+    "dns.suspicious": {
+      "title": "Suspicious DNS Activity",
+      "description": "High entropy domain or fast-flux DNS activity.",
+      "variables": [
+        "src_ip",
+        "domain"
+      ],
+      "level3_medium": {
+        "en-US": "Suspicious D N S request {domain} flagged from {src_ip}.",
+        "ar-SA": "تم رصد طلب نطاق مشبوه {domain} من جهاز داخلي."
+      },
+      "level3_notice": {
+        "en-US": "Suspicious D N S request {domain} flagged from {src_ip}.",
+        "ar-SA": "تم رصد طلب نطاق مشبوه {domain} من جهاز داخلي."
+      }
+    },
+    "email.threat": {
+      "title": "Email Security Threat",
+      "description": "Phishing email or malicious email attachment intercepted.",
+      "variables": [
+        "threat_type",
+        "sender",
+        "subject"
+      ],
+      "level2_high": {
+        "en-US": "Email security alert. Phishing email from {sender} intercepted and blocked.",
+        "ar-SA": "تنبيه أمان البريد الإلكتروني. تم اعتراض وحظر بريد خبيث من {sender}."
+      },
+      "level2_short": {
+        "en-US": "Malicious email blocked from {sender}.",
+        "ar-SA": "تم حظر بريد إلكتروني خبيث من {sender}."
+      }
+    },
+    "web_filter.block": {
+      "title": "Web Filter Category Block",
+      "description": "Blocked web URL category access attempt.",
+      "variables": [
+        "src_ip",
+        "user"
+      ],
+      "level3_medium": {
+        "en-US": "Web filter blocked restricted site access for {src_ip}.",
+        "ar-SA": "قام تصفية الويب بحظر وصول جهاز داخلي لموقع محظور."
+      },
+      "level3_notice": {
+        "en-US": "Web filter blocked restricted site access for {src_ip}.",
+        "ar-SA": "قام تصفية الويب بحظر وصول جهاز داخلي لموقع محظور."
+      }
+    },
+    "vpn.failure": {
+      "title": "VPN Connection Failure",
+      "description": "IPsec or SSL-VPN tunnel breakdown.",
+      "variables": [
+        "user",
+        "src_ip"
+      ],
+      "level2_high": {
+        "en-US": "V P N tunnel connection failed for user {user}.",
+        "ar-SA": "فشل اتصال نفق في بي إن للمستخدم {user}."
+      },
+      "level2_short": {
+        "en-US": "V P N tunnel connection failed for user {user}.",
+        "ar-SA": "فشل اتصال نفق في بي إن للمستخدم {user}."
+      }
+    },
+    "vpn.restored": {
+      "title": "VPN Tunnel Restored",
+      "description": "VPN tunnel auto-recovery.",
+      "variables": [
+        "module"
+      ],
+      "level3_medium": {
+        "en-US": "V P N tunnel connection restored.",
+        "ar-SA": "تم استعادة اتصال نفق في بي إن بنجاح."
+      },
+      "level3_notice": {
+        "en-US": "V P N tunnel connection restored.",
+        "ar-SA": "تم استعادة اتصال نفق في بي إن بنجاح."
+      }
+    },
+    "vpn.connected": {
+      "title": "VPN Tunnel Connected",
+      "description": "New VPN tunnel established.",
+      "variables": [
+        "user",
+        "src_ip"
+      ],
+      "level3_medium": {
+        "en-US": "V P N tunnel established for user {user}.",
+        "ar-SA": "تم تأسيس نفق في بي إن للمستخدم {user} بنجاح."
+      },
+      "level3_notice": {
+        "en-US": "V P N tunnel established for user {user}.",
+        "ar-SA": "تم تأسيس نفق في بي إن للمستخدم {user} بنجاح."
+      }
+    },
+    "vpn.disconnected": {
+      "title": "VPN Tunnel Disconnected",
+      "description": "VPN tunnel disconnected.",
+      "variables": [
+        "user"
+      ],
+      "level3_medium": {
+        "en-US": "V P N tunnel disconnected for user {user}.",
+        "ar-SA": "تم قطع اتصال نفق في بي إن للمستخدم {user}."
+      },
+      "level3_notice": {
+        "en-US": "V P N tunnel disconnected for user {user}.",
+        "ar-SA": "تم قطع اتصال نفق في بي إن للمستخدم {user}."
+      }
+    },
+    "anomaly.scored": {
+      "title": "Behavioral Anomaly Scored",
+      "description": "User behavior analytics flagged high risk score.",
+      "variables": [
+        "threat_type",
+        "risk_score"
+      ],
+      "level2_high": {
+        "en-US": "Behavioral anomaly detected. Activity pattern flagged by analytics engine.",
+        "ar-SA": "تم رصد سلوك شبكي غير طبيعي. تم الإبلاغ بواسطة محرك تحليل السلوك."
+      },
+      "level2_short": {
+        "en-US": "Behavioral anomaly detected. Activity pattern flagged by analytics engine.",
+        "ar-SA": "تم رصد سلوك شبكي غير طبيعي. تم الإبلاغ بواسطة محرك تحليل السلوك."
+      }
+    },
+    "ai.score_generated": {
+      "title": "Predictive AI Threat Score",
+      "description": "Predictive AI engine predicted imminent attack intent.",
+      "variables": [
+        "threat_type",
+        "risk_score"
+      ],
+      "level1_critical": {
+        "en-US": "Predictive A I warning. Imminent attack pattern {threat_type} detected with confidence {risk_score}.",
+        "ar-SA": "تحذير الذكاء الاصطناعي التنبؤي. تم رصد نمط هجوم وشيك {threat_type} بمستوى ثقة {risk_score}."
+      },
+      "level2_high": {
+        "en-US": "Predictive A I warning. Imminent attack pattern {threat_type} detected with confidence {risk_score}.",
+        "ar-SA": "تحذير الذكاء الاصطناعي التنبؤي. تم رصد نمط هجوم وشيك {threat_type} بمستوى ثقة {risk_score}."
+      },
+      "level2_short": {
+        "en-US": "A I threat prediction: {threat_type}.",
+        "ar-SA": "توقع تهديد بالذكاء الاصطناعي: {threat_type}."
+      }
+    },
+    "pki.cert_expiring": {
+      "title": "PKI Certificate Expiring",
+      "description": "SSL/TLS certificate expiring soon.",
+      "variables": [
+        "module",
+        "days_remaining"
+      ],
+      "level2_high": {
+        "en-US": "P K I alert. Security certificate for {module} is expiring soon.",
+        "ar-SA": "تنبيه الشهادات الرقمية. شهادة الأمان للخدمة {module} تقترب من الانتهاء."
+      },
+      "level2_short": {
+        "en-US": "P K I alert. Security certificate for {module} is expiring soon.",
+        "ar-SA": "تنبيه الشهادات الرقمية. شهادة الأمان للخدمة {module} تقترب من الانتهاء."
+      }
+    },
+    "pki.cert_invalid": {
+      "title": "PKI Certificate Invalid",
+      "description": "Invalid or revoked certificate encountered.",
+      "variables": [
+        "module"
+      ],
+      "level1_critical": {
+        "en-US": "Critical P K I alert. Invalid or revoked certificate detected for {module}.",
+        "ar-SA": "تنبيه شهادات حرج. تم اكتشاف شهادة غير صالحة أو ملغاة للخدمة {module}."
+      },
+      "level1_full": {
+        "en-US": "Critical P K I alert. Invalid or revoked certificate detected for {module}.",
+        "ar-SA": "تنبيه شهادات حرج. تم اكتشاف شهادة غير صالحة أو ملغاة للخدمة {module}."
+      }
+    },
+    "system.core_failure": {
+      "title": "Core System Failure",
+      "description": "Critical failure in core firewall process or daemon.",
+      "variables": [
+        "module"
+      ],
+      "level1_critical": {
+        "en-US": "Emergency alert. System core module {module} experienced a critical failure.",
+        "ar-SA": "تحذير طوارئ. تعرض مكون النظام الأساسي {module} لفشل حرج."
+      },
+      "level1_full": {
+        "en-US": "Emergency alert. System core module {module} experienced a critical failure.",
+        "ar-SA": "تحذير طوارئ. تعرض مكون النظام الأساسي {module} لفشل حرج."
+      },
+      "level2_high": {
+        "en-US": "Critical failure in module {module}.",
+        "ar-SA": "فشل حرج في وحدة {module}."
+      },
+      "level2_short": {
+        "en-US": "Critical failure in module {module}.",
+        "ar-SA": "فشل حرج في وحدة {module}."
+      }
+    },
+    "system.memory_critical": {
+      "title": "System Memory Critical",
+      "description": "Host RAM utilization exceeded 90% threshold.",
+      "variables": [
+        "risk_score"
+      ],
+      "level1_critical": {
+        "en-US": "Emergency system alert. RAM usage critical at {risk_score} percent.",
+        "ar-SA": "تنبيه نظام طارئ. استخدام الذاكرة حرج عند {risk_score} بالمائة."
+      },
+      "level1_full": {
+        "en-US": "Emergency system alert. RAM usage critical at {risk_score} percent.",
+        "ar-SA": "تنبيه نظام طارئ. استخدام الذاكرة حرج عند {risk_score} بالمائة."
+      }
+    },
+    "system.cpu_critical": {
+      "title": "System CPU Critical",
+      "description": "Host CPU utilization exceeded threshold.",
+      "variables": [
+        "risk_score"
+      ],
+      "level1_critical": {
+        "en-US": "Emergency system alert. C P U utilization critical at {risk_score} percent.",
+        "ar-SA": "تنبيه نظام طارئ. استخدام المعالج حرج عند {risk_score} بالمائة."
+      },
+      "level1_full": {
+        "en-US": "Emergency system alert. C P U utilization critical at {risk_score} percent.",
+        "ar-SA": "تنبيه نظام طارئ. استخدام المعالج حرج عند {risk_score} بالمائة."
+      }
+    },
+    "ha.failover": {
+      "title": "High Availability Failover",
+      "description": "Cluster node triggered state failover.",
+      "variables": [
+        "module"
+      ],
+      "level1_critical": {
+        "en-US": "High availability alert. Firewall failover state triggered on node {module}.",
+        "ar-SA": "تنبيه التوافر العالي. تم تفعيل التبديل الآلي على الخادم {module}."
+      },
+      "level1_full": {
+        "en-US": "High availability alert. Firewall failover state triggered on node {module}.",
+        "ar-SA": "تنبيه التوافر العالي. تم تفعيل التبديل الآلي على الخادم {module}."
+      }
+    },
+    "response.block": {
+      "title": "Automated Response Block",
+      "description": "Incident response engine instituted dynamic IP block.",
+      "variables": [
+        "src_ip",
+        "threat_type"
+      ],
+      "level1_critical": {
+        "en-US": "Enforcement action. Dynamic block enforced for I P {src_ip}. Reason: {threat_type}.",
+        "ar-SA": "تم تنفيذ حظر تلقائي فوري. السبب: {threat_type}."
+      },
+      "level1_full": {
+        "en-US": "Enforcement action. Dynamic block enforced for I P {src_ip}. Reason: {threat_type}.",
+        "ar-SA": "تم تنفيذ حظر تلقائي فوري. السبب: {threat_type}."
+      },
+      "level2_high": {
+        "en-US": "Dynamic I P block instituted for {src_ip}.",
+        "ar-SA": "تم فرض حظر تلقائي على مصدر التهديد."
+      },
+      "level2_short": {
+        "en-US": "Dynamic I P block instituted for {src_ip}.",
+        "ar-SA": "تم فرض حظر تلقائي على مصدر التهديد."
+      }
+    },
+    "response.quarantine": {
+      "title": "Automated Host Quarantine",
+      "description": "Incident response quarantined host endpoint.",
+      "variables": [
+        "src_ip"
+      ],
+      "level1_critical": {
+        "en-US": "Enforcement action. Host endpoint {src_ip} has been isolated and quarantined.",
+        "ar-SA": "تم عزل جهاز مصاب وفصله عن الشبكة تلقائيا."
+      },
+      "level1_full": {
+        "en-US": "Enforcement action. Host endpoint {src_ip} has been isolated and quarantined.",
+        "ar-SA": "تم عزل جهاز مصاب وفصله عن الشبكة تلقائيا."
+      }
+    },
+    "response.alert": {
+      "title": "Automated Response Alert",
+      "description": "Incident response raised a soft alert without blocking.",
+      "variables": [
+        "threat_type",
+        "src_ip"
+      ],
+      "level2_high": {
+        "en-US": "Security response alert. Threat {threat_type} flagged from {src_ip}.",
+        "ar-SA": "تنبيه نظام الاستجابة الأمنية. تم رصد تهديد {threat_type} من مصدر خارجي."
+      },
+      "level2_short": {
+        "en-US": "Response alert for {threat_type}.",
+        "ar-SA": "تنبيه استجابة لتهديد أمني."
+      }
+    },
+    "siem.incident_created": {
+      "title": "SIEM Incident Created",
+      "description": "Correlation engine created a new incident case.",
+      "variables": [
+        "threat_type"
+      ],
+      "level3_medium": {
+        "en-US": "S I E M incident created. Threat type: {threat_type}.",
+        "ar-SA": "تم إنشاء حادث أمني جديد في مدير الحوادث. نوع التهديد: {threat_type}."
+      },
+      "level3_notice": {
+        "en-US": "S I E M incident created. Threat type: {threat_type}.",
+        "ar-SA": "تم إنشاء حادث أمني جديد في مدير الحوادث. نوع التهديد: {threat_type}."
+      }
+    },
+    "siem.incident_escalated": {
+      "title": "SIEM Incident Escalated",
+      "description": "Correlation engine escalated high severity incident.",
+      "variables": [
+        "threat_type",
+        "risk_score"
+      ],
+      "level1_critical": {
+        "en-US": "S I E M alert. Incident escalated to critical severity. Threat type: {threat_type}.",
+        "ar-SA": "تنبيه مدير الحوادث. تم تصعيد الحادث إلى درجة حرج. نوع التهديد: {threat_type}."
+      },
+      "level1_full": {
+        "en-US": "S I E M alert. Incident escalated to critical severity. Threat type: {threat_type}.",
+        "ar-SA": "تنبيه مدير الحوادث. تم تصعيد الحادث إلى درجة حرج. نوع التهديد: {threat_type}."
+      }
+    },
+    "siem.incident_closed": {
+      "title": "SIEM Incident Closed",
+      "description": "Incident case resolved and closed.",
+      "variables": [
+        "threat_type"
+      ],
+      "level3_medium": {
+        "en-US": "S I E M incident resolved and closed.",
+        "ar-SA": "تم حل الحادث الأمني وإغلاقه في مدير الحوادث."
+      },
+      "level3_notice": {
+        "en-US": "S I E M incident resolved and closed.",
+        "ar-SA": "تم حل الحادث الأمني وإغلاقه في مدير الحوادث."
+      }
+    },
+    "correlation.triggered": {
+      "title": "Correlation Rule Triggered",
+      "description": "A SIEM correlation rule was triggered.",
+      "variables": [
+        "threat_type",
+        "module",
+        "count"
+      ],
+      "level2_high": {
+        "en-US": "Correlation rule triggered: {threat_type}. {count} events correlated by {module}.",
+        "ar-SA": "تم تفعيل قاعدة ربط الأحداث: {threat_type}. رصدت {count} هجمات مرتبطة."
+      },
+      "level2_short": {
+        "en-US": "Correlation rule triggered: {threat_type}.",
+        "ar-SA": "تم تفعيل قاعدة ربط الأحداث."
+      }
+    },
+    "module.health": {
+      "title": "Module Health Alert",
+      "description": "A security module reported degraded or failure health state.",
+      "variables": [
+        "module",
+        "risk_score"
+      ],
+      "level1_critical": {
+        "en-US": "Emergency health alert. Security module {module} experienced a critical failure.",
+        "ar-SA": "تحذير طوارئ. الوحدة الأمنية {module} تعرضت لفشل حرج."
+      },
+      "level1_full": {
+        "en-US": "Emergency health alert. Security module {module} experienced a critical failure.",
+        "ar-SA": "تحذير طوارئ. الوحدة الأمنية {module} تعرضت لفشل حرج."
+      },
+      "level2_high": {
+        "en-US": "Module health alert. Security component {module} reported degraded status.",
+        "ar-SA": "تنبيه صحة الوحدات. الوحدة الأمنية {module} أبلغت عن حالة تدهور."
+      },
+      "level2_short": {
+        "en-US": "Security module {module} health degraded.",
+        "ar-SA": "تدهور في صحة الوحدة {module}."
+      }
+    },
+    "captive_portal.login": {
+      "title": "Captive Portal Login",
+      "description": "User authenticated via captive portal.",
+      "variables": [
+        "user",
+        "src_ip"
+      ],
+      "level3_medium": {
+        "en-US": "Captive portal login for user {user} from {src_ip}.",
+        "ar-SA": "تم تسجيل دخول المستخدم {user} عبر البوابة المحدودة."
+      },
+      "level3_notice": {
+        "en-US": "Captive portal login for user {user} from {src_ip}.",
+        "ar-SA": "تم تسجيل دخول المستخدم {user} عبر البوابة المحدودة."
+      }
+    },
+    "captive_portal.logout": {
+      "title": "Captive Portal Logout",
+      "description": "User session ended via captive portal.",
+      "variables": [
+        "user"
+      ],
+      "level3_medium": {
+        "en-US": "Captive portal session ended for user {user}.",
+        "ar-SA": "انتهت جلسة المستخدم {user} في البوابة المحدودة."
+      },
+      "level3_notice": {
+        "en-US": "Captive portal session ended for user {user}.",
+        "ar-SA": "انتهت جلسة المستخدم {user} في البوابة المحدودة."
+      }
+    },
+    "system.started": {
+      "title": "CVAS System Initialized",
+      "description": "Voice alert subsystem start notification.",
+      "variables": [],
+      "level3_medium": {
+        "en-US": "bunyanx Voice Alert Service initialized.",
+        "ar-SA": "تم تشغيل خدمة التنبيهات الصوتية بنجاح."
+      },
+      "level3_notice": {
+        "en-US": "bunyanx Voice Alert Service initialized.",
+        "ar-SA": "تم تشغيل خدمة التنبيهات الصوتية بنجاح."
+      }
+    },
+    "system.shutdown": {
+      "title": "System Shutdown Initiated",
+      "description": "System graceful shutdown voice warning.",
+      "variables": [],
+      "level2_high": {
+        "en-US": "bunyanx System shutdown sequence initiated.",
+        "ar-SA": "تم بدء إجراءات إيقاف تشغيل نظام سايبر نكسس."
+      },
+      "level2_short": {
+        "en-US": "bunyanx System shutdown sequence initiated.",
+        "ar-SA": "تم بدء إجراءات إيقاف تشغيل نظام سايبر نكسس."
+      }
+    }
+  }
+}

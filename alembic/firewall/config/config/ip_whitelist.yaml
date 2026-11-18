@@ -1,0 +1,74 @@
+# ==============================================================================
+#  IP / CIDR Whitelist -- Auto-Block Exemptions
+#  ----------------------------------------------------------------------------
+#  IPs/CIDRs in this list will NEVER be auto-blocked by:
+#    - inspection_bridge   (proxy layer)
+#    - xdp_engine          (eBPF ML analysis)
+#
+#  Manage via API:
+#    GET    /api/v1/firewall/whitelist
+#    POST   /api/v1/firewall/whitelist/networks
+#    DELETE /api/v1/firewall/whitelist/networks
+#    POST   /api/v1/firewall/whitelist/hosts
+#    DELETE /api/v1/firewall/whitelist/hosts/{ip}
+#    POST   /api/v1/firewall/whitelist/reload
+#
+#  Or edit this file manually then call:
+#    POST /api/v1/firewall/whitelist/reload
+#
+#  WARNING: This file is saved automatically on every API change.
+#           It is NOT reset on system restart.
+# ==============================================================================
+
+ip_whitelist:
+
+  # -- CIDR Networks -----------------------------------------------------------
+  # Each entry must have: cidr, label, reason, added_by, added_at
+  networks:
+
+    - cidr: "10.0.0.0/8"
+      label: "Enterprise 10.x LAN Network"
+      reason: "RFC-1918 -- Internal enterprise LAN and servers"
+      added_by: "system"
+      added_at: "2026-07-31T00:00:00Z"
+
+    - cidr: "10.10.0.1/24"
+      label: "Internal LAN / Backend Servers"
+      reason: "RFC-1918 -- health-checks, backend servers, internal traffic"
+      added_by: "system"
+      added_at: "2026-07-31T00:00:00Z"
+
+    - cidr: "172.16.0.0/12"
+      label: "Docker / VM Internal Networks"
+      reason: "RFC-1918 -- Docker bridges, VM host-only, VPN tunnels"
+      added_by: "system"
+      added_at: "2026-07-31T00:00:00Z"
+
+  #  - cidr: "192.168.0.0/16"
+    #  label: "Local LAN & Developer Network"
+   #   reason: "RFC-1918 -- Local LAN workstations and developer IPs"
+   #   added_by: "system"
+     # added_at: "2026-08-05T00:00:00Z"
+
+
+    - cidr: "127.0.0.0/8"
+      label: "IPv4 Loopback"
+      reason: "Local loopback -- never block"
+      added_by: "system"
+      added_at: "2026-07-31T00:00:00Z"
+
+    - cidr: "::1/128"
+      label: "IPv6 Loopback"
+      reason: "Local loopback -- never block"
+      added_by: "system"
+      added_at: "2026-07-31T00:00:00Z"
+
+  # -- Single Host IPs ---------------------------------------------------------
+  # Each entry must have: ip, label, reason, added_by, added_at
+  hosts:
+
+    - ip: "10.10.0.50"
+      label: "VIP Backend Server"
+      reason: "Internal backend -- VIP Relay target, health-check source. Never auto-block."
+      added_by: "admin"
+      added_at: "2026-07-31T18:55:00Z"
